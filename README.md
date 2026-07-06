@@ -2,7 +2,7 @@
 
 CampusInsight is a full-stack portfolio project for a student performance analytics dashboard. The long-term goal is to help users upload academic records and explore GPA summaries, semester trends, grade distribution, course performance, credit summaries, at-risk courses, academic insights, and downloadable reports.
 
-The current repository is a foundation only. It does not implement analytics, file upload, database persistence, charts, authentication, or reports yet.
+The current repository includes the application foundation plus backend academic record schema validation for CSV content. It does not implement analytics, file upload endpoints, frontend upload UI, database persistence, charts, authentication, or reports yet.
 
 ## Tech Stack
 
@@ -22,6 +22,12 @@ frontend/   React + TypeScript + Vite application
 data/       Fictional sample datasets
 docs/       Roadmap, architecture, and decision log
 ```
+
+## Current Backend Capability
+
+The backend defines a canonical academic record schema and a CSV validation service. The validator checks required columns, rejects unknown columns, validates required values and numeric ranges, verifies accepted grade letters, and returns structured user-safe validation errors.
+
+The validator is currently service-layer code only. There is no upload endpoint yet.
 
 ## Local Setup
 
@@ -75,7 +81,7 @@ See [docs/ROADMAP.md](docs/ROADMAP.md) for the phased roadmap.
 ## Limitations
 
 - No academic analytics are implemented yet.
-- No upload flow is implemented yet.
+- No upload endpoint or frontend upload flow is implemented yet.
 - No database persistence exists yet.
 - No charts or downloadable reports are implemented yet.
 - The frontend backend-status area is a placeholder until API integration is added.

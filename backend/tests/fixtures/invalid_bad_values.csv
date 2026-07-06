@@ -1,0 +1,4 @@
+student_id,student_name,semester,academic_year,course_code,course_name,credits,grade_letter,grade_point,score
+S2001,Nadia Kirana,0,2024-2025,CS101,Introduction to Programming,3,A,4.0,91
+S2002,Rafi Mahendra,1,2024/2025,CS102,Data Structures,-3,Z,4.5,105
+S2003,Salsa Putri,two,2024/2025,CS103,Algorithms,3,B,3.0,eighty

@@ -92,22 +92,91 @@ describe("App", () => {
     expect(screen.queryByText("records.csv")).not.toBeInTheDocument();
   });
 
-  it("displays selected saved analysis metadata without full detail dashboard", async () => {
-    fetchMock.mockResolvedValueOnce(jsonResponse(savedHistoryResponse()));
+  it("loads saved analysis detail and displays metadata shell", async () => {
+    fetchMock
+      .mockResolvedValueOnce(jsonResponse(savedHistoryResponse()))
+      .mockResolvedValueOnce(jsonResponse(savedDetailResponse()));
     const user = userEvent.setup();
     render(<App />);
 
     await user.click(screen.getByRole("button", { name: "Load saved analyses" }));
     await screen.findByText("records.csv");
-    await user.click(screen.getByRole("button", { name: "Select metadata" }));
+    await user.click(screen.getByRole("button", { name: "Open detail" }));
 
-    expect(screen.getByRole("heading", { name: "Selected metadata preview" })).toBeInTheDocument();
+    expect(fetchMock).toHaveBeenLastCalledWith("http://127.0.0.1:8000/analyses/analysis-001", {
+      method: "GET",
+    });
+    expect(await screen.findByRole("heading", { name: "Saved Analysis Detail" })).toBeInTheDocument();
     expect(screen.getByText("analysis-001")).toBeInTheDocument();
     expect(screen.getByText("Source file")).toBeInTheDocument();
+    expect(screen.getByText("Created at")).toBeInTheDocument();
+    expect(screen.getByText("Saved detail loaded.")).toBeInTheDocument();
+    expect(screen.getByText(/Full saved dashboard rendering is planned/)).toBeInTheDocument();
     expect(screen.queryByRole("heading", { name: "Analytics charts" })).not.toBeInTheDocument();
     expect(
       screen.queryByRole("heading", { name: "GPA and credit summary" }),
     ).not.toBeInTheDocument();
+  });
+
+  it("shows loading state while saved detail loads", async () => {
+    let resolveDetail: (response: Response) => void = () => undefined;
+    fetchMock
+      .mockResolvedValueOnce(jsonResponse(savedHistoryResponse()))
+      .mockReturnValueOnce(
+        new Promise<Response>((resolve) => {
+          resolveDetail = resolve;
+        }),
+      );
+    const user = userEvent.setup();
+    render(<App />);
+
+    await user.click(screen.getByRole("button", { name: "Load saved analyses" }));
+    await screen.findByText("records.csv");
+    await user.click(screen.getByRole("button", { name: "Open detail" }));
+
+    expect(screen.getByText("Loading saved detail...")).toBeInTheDocument();
+
+    resolveDetail(jsonResponse(savedDetailResponse()));
+    expect(await screen.findByText("Saved detail loaded.")).toBeInTheDocument();
+  });
+
+  it("displays safe not found state for saved detail", async () => {
+    fetchMock
+      .mockResolvedValueOnce(jsonResponse(savedHistoryResponse()))
+      .mockResolvedValueOnce(jsonResponse({ detail: "Saved analysis was not found." }, 404));
+    const user = userEvent.setup();
+    render(<App />);
+
+    await user.click(screen.getByRole("button", { name: "Load saved analyses" }));
+    await screen.findByText("records.csv");
+    await user.click(screen.getByRole("button", { name: "Open detail" }));
+
+    expect(await screen.findByText("Saved detail could not be loaded.")).toBeInTheDocument();
+    expect(screen.getByText("Saved analysis was not found.")).toBeInTheDocument();
+    expect(screen.queryByText(/Traceback/i)).not.toBeInTheDocument();
+  });
+
+  it("displays saved detail backend error and supports retry", async () => {
+    fetchMock
+      .mockResolvedValueOnce(jsonResponse(savedHistoryResponse()))
+      .mockRejectedValueOnce(new Error("stack trace detail"))
+      .mockResolvedValueOnce(jsonResponse(savedDetailResponse()));
+    const user = userEvent.setup();
+    render(<App />);
+
+    await user.click(screen.getByRole("button", { name: "Load saved analyses" }));
+    await screen.findByText("records.csv");
+    await user.click(screen.getByRole("button", { name: "Open detail" }));
+
+    expect(await screen.findByText("Saved detail could not be loaded.")).toBeInTheDocument();
+    expect(
+      screen.getByText("Unable to reach the CampusInsight API. Confirm the backend is running."),
+    ).toBeInTheDocument();
+    expect(screen.queryByText(/stack trace detail/i)).not.toBeInTheDocument();
+
+    await user.click(screen.getByRole("button", { name: "Retry saved detail" }));
+
+    expect(await screen.findByText("Saved detail loaded.")).toBeInTheDocument();
   });
 
   it("displays a safe saved analyses backend error", async () => {
@@ -416,6 +485,13 @@ function savedHistoryResponse() {
       },
     ],
     limit: 20,
+  };
+}
+
+function savedDetailResponse() {
+  return {
+    analysis_id: "analysis-001",
+    ...validAnalysisResponse(),
   };
 }
 

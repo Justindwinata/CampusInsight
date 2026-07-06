@@ -591,6 +591,35 @@ tbody tr:last-child td {
   overflow-wrap: anywhere;
 }
 
+.saved-detail-status {
+  margin-top: 16px;
+  padding: 14px;
+  border: 1px solid #dfe5ee;
+  border-radius: 8px;
+  background: #fbfcfe;
+  color: #334155;
+  font-weight: 800;
+}
+
+.saved-detail-status p {
+  margin: 8px 0 0;
+  font-weight: 500;
+}
+
+.saved-detail-status-error {
+  border-color: #eba7a7;
+  background: #fff5f5;
+}
+
+.saved-detail-status-success {
+  border-color: #9ad1bb;
+  background: #f3fbf7;
+}
+
+.saved-detail-status .secondary-button {
+  margin-top: 12px;
+}
+
 .saved-history-controls {
   display: flex;
   flex-wrap: wrap;

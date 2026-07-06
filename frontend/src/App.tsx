@@ -7,6 +7,7 @@ import {
 import AnalyticsDashboard from "./components/analytics/AnalyticsDashboard";
 import {
   deleteSavedAnalysis,
+  getSavedAnalysis,
   listSavedAnalyses,
   SavedAnalysisSummary,
 } from "./services/savedAnalysesService";
@@ -164,9 +165,12 @@ function App() {
 function SavedAnalysesPanel() {
   const [savedAnalyses, setSavedAnalyses] = useState<SavedAnalysisSummary[]>([]);
   const [selectedAnalysis, setSelectedAnalysis] = useState<SavedAnalysisSummary | null>(null);
+  const [savedDetail, setSavedDetail] = useState<AcademicRecordsAnalysisResult | null>(null);
+  const [savedDetailError, setSavedDetailError] = useState<string | null>(null);
   const [historyError, setHistoryError] = useState<string | null>(null);
   const [hasLoadedHistory, setHasLoadedHistory] = useState(false);
   const [isLoadingHistory, setIsLoadingHistory] = useState(false);
+  const [isLoadingSavedDetail, setIsLoadingSavedDetail] = useState(false);
 
   async function loadHistory() {
     setIsLoadingHistory(true);
@@ -180,6 +184,11 @@ function SavedAnalysesPanel() {
           response.analyses.find(
             (analysis) => analysis.analysis_id === currentSelection?.analysis_id,
           ) ?? null,
+      );
+      setSavedDetail((currentDetail) =>
+        response.analyses.some((analysis) => analysis.analysis_id === currentDetail?.analysis_id)
+          ? currentDetail
+          : null,
       );
       setHasLoadedHistory(true);
     } catch (error) {
@@ -204,12 +213,38 @@ function SavedAnalysesPanel() {
       setSelectedAnalysis((currentSelection) =>
         currentSelection?.analysis_id === analysisId ? null : currentSelection,
       );
+      setSavedDetail((currentDetail) =>
+        currentDetail?.analysis_id === analysisId ? null : currentDetail,
+      );
+      setSavedDetailError((currentError) =>
+        selectedAnalysis?.analysis_id === analysisId ? null : currentError,
+      );
     } catch (error) {
       setHistoryError(
         error instanceof Error
           ? error.message
           : "Saved analysis could not be deleted. Please retry.",
       );
+    }
+  }
+
+  async function openSavedAnalysisDetail(analysis: SavedAnalysisSummary) {
+    setSelectedAnalysis(analysis);
+    setSavedDetail(null);
+    setSavedDetailError(null);
+    setIsLoadingSavedDetail(true);
+
+    try {
+      const detail = await getSavedAnalysis(analysis.analysis_id);
+      setSavedDetail(detail);
+    } catch (error) {
+      setSavedDetailError(
+        error instanceof Error
+          ? error.message
+          : "Saved analysis detail could not be loaded. Please retry.",
+      );
+    } finally {
+      setIsLoadingSavedDetail(false);
     }
   }
 
@@ -280,9 +315,9 @@ function SavedAnalysesPanel() {
                   <button
                     className="secondary-button"
                     type="button"
-                    onClick={() => setSelectedAnalysis(analysis)}
+                    onClick={() => void openSavedAnalysisDetail(analysis)}
                   >
-                    Select metadata
+                    Open detail
                   </button>
                   <button
                     className="danger-button"
@@ -296,42 +331,107 @@ function SavedAnalysesPanel() {
             ))}
           </div>
 
-          <aside className="metadata-preview" aria-labelledby="metadata-preview-title">
-            <h3 id="metadata-preview-title">Selected metadata preview</h3>
-            {selectedAnalysis ? (
-              <dl className="metadata-list">
-                <div>
-                  <dt>Analysis ID</dt>
-                  <dd>{selectedAnalysis.analysis_id}</dd>
-                </div>
-                <div>
-                  <dt>Source file</dt>
-                  <dd>{selectedAnalysis.source_filename}</dd>
-                </div>
-                <div>
-                  <dt>Rows</dt>
-                  <dd>{selectedAnalysis.row_count}</dd>
-                </div>
-                <div>
-                  <dt>Total courses</dt>
-                  <dd>{selectedAnalysis.total_courses}</dd>
-                </div>
-                <div>
-                  <dt>Weighted GPA</dt>
-                  <dd>{selectedAnalysis.weighted_gpa}</dd>
-                </div>
-                <div>
-                  <dt>Average score</dt>
-                  <dd>{selectedAnalysis.average_score}</dd>
-                </div>
-              </dl>
-            ) : (
-              <p>Select a saved analysis to preview metadata only.</p>
-            )}
-          </aside>
+          <SavedAnalysisDetailShell
+            detail={savedDetail}
+            error={savedDetailError}
+            isLoading={isLoadingSavedDetail}
+            onRetry={() => {
+              if (selectedAnalysis) {
+                void openSavedAnalysisDetail(selectedAnalysis);
+              }
+            }}
+            selectedAnalysis={selectedAnalysis}
+          />
         </div>
       ) : null}
     </section>
+  );
+}
+
+type SavedAnalysisDetailShellProps = {
+  detail: AcademicRecordsAnalysisResult | null;
+  error: string | null;
+  isLoading: boolean;
+  onRetry: () => void;
+  selectedAnalysis: SavedAnalysisSummary | null;
+};
+
+function SavedAnalysisDetailShell({
+  detail,
+  error,
+  isLoading,
+  onRetry,
+  selectedAnalysis,
+}: SavedAnalysisDetailShellProps) {
+  return (
+    <aside className="metadata-preview" aria-labelledby="saved-detail-title">
+      <h3 id="saved-detail-title">Saved Analysis Detail</h3>
+
+      {!selectedAnalysis ? <p>Select a saved analysis to load stored detail metadata.</p> : null}
+
+      {selectedAnalysis ? <SavedAnalysisMetadata analysis={selectedAnalysis} /> : null}
+
+      {isLoading ? (
+        <div className="saved-detail-status" aria-live="polite" aria-busy="true">
+          Loading saved detail...
+        </div>
+      ) : null}
+
+      {error ? (
+        <div className="saved-detail-status saved-detail-status-error" role="alert">
+          <strong>Saved detail could not be loaded.</strong>
+          <p>{error}</p>
+          <button className="secondary-button" type="button" onClick={onRetry}>
+            Retry saved detail
+          </button>
+        </div>
+      ) : null}
+
+      {detail && !isLoading && !error ? (
+        <div className="saved-detail-status saved-detail-status-success" aria-live="polite">
+          <strong>Saved detail loaded.</strong>
+          <p>
+            Validation status: {detail.is_valid ? "valid" : "invalid"}. Full saved dashboard
+            rendering is planned for the next step.
+          </p>
+        </div>
+      ) : null}
+    </aside>
+  );
+}
+
+function SavedAnalysisMetadata({ analysis }: { analysis: SavedAnalysisSummary }) {
+  return (
+    <dl className="metadata-list">
+      <div>
+        <dt>Analysis ID</dt>
+        <dd>{analysis.analysis_id}</dd>
+      </div>
+      <div>
+        <dt>Source file</dt>
+        <dd>{analysis.source_filename}</dd>
+      </div>
+      <div>
+        <dt>Created at</dt>
+        <dd>{analysis.created_at}</dd>
+      </div>
+      <div>
+        <dt>Rows</dt>
+        <dd>{analysis.row_count}</dd>
+      </div>
+      <div>
+        <dt>Total courses</dt>
+        <dd>{analysis.total_courses}</dd>
+      </div>
+      <div>
+        <dt>Weighted GPA</dt>
+        <dd>{analysis.weighted_gpa}</dd>
+      </div>
+      <div>
+        <dt>Average score</dt>
+        <dd>{analysis.average_score}</dd>
+      </div>
+    </dl>
   );
 }
 

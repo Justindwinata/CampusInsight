@@ -2,6 +2,7 @@ from decimal import ROUND_HALF_UP, Decimal
 
 from campusinsight_api.domain.academic_records import AcademicRecord
 from campusinsight_api.domain.analytics import (
+    AcademicAnalyticsResult,
     CoursePerformanceItem,
     CourseRiskItem,
     CreditSummary,
@@ -11,6 +12,17 @@ from campusinsight_api.domain.analytics import (
 )
 
 GRADE_ORDER = ("A", "A-", "B+", "B", "B-", "C+", "C", "D", "E")
+
+
+def calculate_academic_analytics(records: list[AcademicRecord]) -> AcademicAnalyticsResult:
+    return AcademicAnalyticsResult(
+        gpa_summary=calculate_gpa_summary(records),
+        semester_performance=calculate_semester_performance(records),
+        grade_distribution=calculate_grade_distribution(records),
+        course_performance=calculate_course_performance(records),
+        credit_summary=calculate_credit_summary(records),
+        course_risks=detect_course_risks(records),
+    )
 
 
 def calculate_gpa_summary(records: list[AcademicRecord]) -> GpaSummary:

@@ -6,6 +6,7 @@ All notable changes to CampusInsight will be documented in this file.
 
 ### Added
 
+- Add deterministic backend academic analytics contracts, services, and CSV analysis endpoint.
 - Add frontend academic records CSV validation UI and API client service.
 - Add `POST /academic-records/validate` backend endpoint for multipart CSV validation.
 - Add canonical academic record schema and backend CSV validation service.

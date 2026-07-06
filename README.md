@@ -2,7 +2,7 @@
 
 CampusInsight is a full-stack portfolio project for a student performance analytics dashboard. The long-term goal is to help users upload academic records and explore GPA summaries, semester trends, grade distribution, course performance, credit summaries, at-risk courses, academic insights, and downloadable reports.
 
-The current repository includes the application foundation plus a frontend and backend workflow for academic record CSV validation. It does not implement analytics, database persistence, charts, authentication, or reports yet.
+The current repository includes the application foundation, CSV validation workflow, and backend deterministic academic analytics foundation. It does not implement dashboard charts, database persistence, authentication, or reports yet.
 
 ## Tech Stack
 
@@ -25,9 +25,11 @@ docs/       Roadmap, architecture, and decision log
 
 ## Current Backend Capability
 
-The backend defines a canonical academic record schema, a CSV validation service, and `POST /academic-records/validate` for validating uploaded academic record CSV files. The validator checks required columns, rejects unknown columns, validates required values and numeric ranges, verifies accepted grade letters, and returns structured user-safe validation errors.
+The backend defines a canonical academic record schema, a CSV validation service, `POST /academic-records/validate` for validating uploaded academic record CSV files, and `POST /academic-records/analyze` for deterministic analytics from validated CSV records. The validator checks required columns, rejects unknown columns, validates required values and numeric ranges, verifies accepted grade letters, and returns structured user-safe validation errors.
 
 The endpoint accepts multipart form data with a `file` field. Valid CSV structure with invalid rows returns HTTP 200 and `is_valid: false`; missing, empty, unreadable, or non-CSV uploads return HTTP 400 with a safe validation response.
+
+The analytics endpoint calculates GPA summary, semester performance, grade distribution, course performance, credit summary, and deterministic course risk indicators. It does not use AI, does not predict failure, and does not calculate analytics from invalid CSV records.
 
 ## Current Frontend Capability
 
@@ -84,7 +86,7 @@ See [docs/ROADMAP.md](docs/ROADMAP.md) for the phased roadmap.
 
 ## Limitations
 
-- No academic analytics are implemented yet.
+- No frontend analytics dashboard is implemented yet.
 - No database persistence exists yet.
 - No charts or downloadable reports are implemented yet.
-- CSV validation does not calculate GPA, trends, risk, or reports yet.
+- Analytics are deterministic backend calculations only; no AI prediction exists.

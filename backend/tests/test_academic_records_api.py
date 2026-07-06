@@ -112,8 +112,66 @@ def test_upload_response_does_not_expose_stack_traces() -> None:
     assert str(ROOT_DIR) not in response_body
 
 
+def test_analyze_valid_csv_returns_analytics_result() -> None:
+    response = _post_file("/academic-records/analyze", SAMPLE_CSV)
+
+    payload = response.json()
+    assert response.status_code == 200
+    assert payload["is_valid"] is True
+    assert payload["validation"]["row_count"] == 16
+    assert payload["validation"]["errors"] == []
+    assert payload["analytics"]["gpa_summary"]["weighted_gpa"] == 3.11
+    assert payload["analytics"]["gpa_summary"]["total_courses"] == 16
+    assert len(payload["analytics"]["semester_performance"]) == 2
+    assert len(payload["analytics"]["course_performance"]) == 16
+    assert payload["analytics"]["credit_summary"]["total_credits"] == 46.0
+    assert payload["analytics"]["course_risks"]
+
+
+def test_analyze_invalid_csv_returns_validation_errors_without_analytics() -> None:
+    response = _post_file("/academic-records/analyze", FIXTURES_DIR / "invalid_bad_values.csv")
+
+    payload = response.json()
+    assert response.status_code == 200
+    assert payload["is_valid"] is False
+    assert payload["validation"]["row_count"] == 3
+    assert payload["validation"]["errors"][0]["row_number"] == 2
+    assert payload["validation"]["errors"][0]["field"] == "semester"
+    assert payload["analytics"] is None
+
+
+def test_analyze_upload_error_response_does_not_expose_stack_traces() -> None:
+    response = client.post(
+        "/academic-records/analyze",
+        files={"file": ("records.csv", b"\xff\xfe\xfa", "text/csv")},
+    )
+
+    payload = response.json()
+    response_body = response.text
+    assert response.status_code == 400
+    assert payload["is_valid"] is False
+    assert payload["analytics"] is None
+    assert "Traceback" not in response_body
+    assert "UnicodeDecodeError" not in response_body
+    assert str(ROOT_DIR) not in response_body
+
+
+def test_validation_endpoint_still_returns_validation_result() -> None:
+    response = _upload_file(SAMPLE_CSV)
+
+    payload = response.json()
+    assert response.status_code == 200
+    assert payload["is_valid"] is True
+    assert payload["row_count"] == 16
+    assert "analytics" not in payload
+
+
 def _upload_file(path: Path):
+    return _post_file("/academic-records/validate", path)
+
+
+def _post_file(url: str, path: Path):
     return client.post(
-        "/academic-records/validate",
+        url,
         files={"file": (path.name, path.read_bytes(), "text/csv")},
     )

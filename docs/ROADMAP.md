@@ -17,13 +17,15 @@
 - Return clear row-level validation errors.
 - Keep uploaded data local during development.
 
-Current status: the schema, CSV validation service, backend CSV validation endpoint, and frontend CSV validation UI exist. Excel handling, analytics, charts, and persistence remain future work.
+Current status: the schema, CSV validation service, backend CSV validation endpoint, and frontend CSV validation UI exist. Excel handling remains future work.
 
 ## 3. Analytics Engine
 
-- Add Pandas-based data processing.
-- Calculate GPA summary, semester trends, credit totals, and grade distribution.
+- Add deterministic backend analytics from validated academic records.
+- Calculate GPA summary, semester trends, credit totals, grade distribution, course performance, and course risk indicators.
 - Design test coverage around academic metric rules.
+
+Current status: backend deterministic analytics endpoint exists. Pandas expansion, frontend analytics views, charts, persistence, AI, and prediction are not implemented.
 
 ## 4. Dashboard Visualizations
 

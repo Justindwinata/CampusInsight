@@ -3,8 +3,9 @@ from typing import Annotated, Any
 
 from fastapi import APIRouter, Depends, Query
 from fastapi.encoders import jsonable_encoder
-from starlette.responses import JSONResponse
+from starlette.responses import HTMLResponse, JSONResponse
 
+from campusinsight_api.services.html_report_service import render_saved_analysis_html_report
 from campusinsight_api.services.saved_analysis_repository import (
     SavedAnalysisRepository,
     saved_analysis_summaries_to_dicts,
@@ -28,6 +29,23 @@ def list_saved_analyses(
             "limit": limit,
         }
     )
+
+
+@router.get("/{analysis_id}/report.html", response_class=HTMLResponse, response_model=None)
+def get_saved_analysis_html_report(
+    analysis_id: str,
+    repository: Annotated[SavedAnalysisRepository, Depends(get_saved_analysis_repository)],
+) -> HTMLResponse | JSONResponse:
+    def load_report() -> HTMLResponse | JSONResponse:
+        saved_analysis = repository.get(analysis_id)
+        if saved_analysis is None:
+            return _not_found(analysis_id)
+        return HTMLResponse(
+            content=render_saved_analysis_html_report(saved_analysis),
+            media_type="text/html; charset=utf-8",
+        )
+
+    return _safe_repository_response(load_report)
 
 
 @router.get("/{analysis_id}", response_model=None)
@@ -57,7 +75,9 @@ def delete_saved_analysis(
     return _safe_repository_response(delete_analysis)
 
 
-def _safe_repository_response(handler: Callable[[], dict[str, Any] | JSONResponse]) -> JSONResponse:
+def _safe_repository_response(
+    handler: Callable[[], dict[str, Any] | JSONResponse | HTMLResponse],
+) -> JSONResponse | HTMLResponse:
     try:
         response = handler()
     except Exception:
@@ -66,7 +86,7 @@ def _safe_repository_response(handler: Callable[[], dict[str, Any] | JSONRespons
             content={"detail": "Saved analyses are currently unavailable."},
         )
 
-    if isinstance(response, JSONResponse):
+    if isinstance(response, JSONResponse | HTMLResponse):
         return response
     return JSONResponse(content=jsonable_encoder(response))
 

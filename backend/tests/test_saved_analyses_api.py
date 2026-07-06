@@ -125,6 +125,79 @@ def test_get_analysis_returns_stored_canonical_response(
     assert response.json() == analysis
 
 
+def test_report_endpoint_returns_html_for_existing_analysis(
+    saved_analysis_repository: SavedAnalysisRepository,
+) -> None:
+    saved_analysis_repository.save(
+        analysis_id="analysis-001",
+        source_filename="records.csv",
+        row_count=16,
+        total_courses=16,
+        weighted_gpa=3.11,
+        average_score=80.0,
+        analysis=_analysis_response("analysis-001"),
+    )
+
+    response = client.get("/analyses/analysis-001/report.html")
+
+    assert response.status_code == 200
+    assert "text/html" in response.headers["content-type"]
+    assert "CampusInsight Academic Report" in response.text
+    assert "analysis-001" in response.text
+    assert "CS102 - Data Structures" in response.text
+
+
+def test_report_endpoint_returns_safe_404_for_unknown_analysis() -> None:
+    response = client.get("/analyses/missing-analysis/report.html")
+
+    assert response.status_code == 404
+    assert response.json()["detail"] == "Saved analysis was not found."
+    assert "Traceback" not in response.text
+    assert "sqlite" not in response.text.lower()
+
+
+def test_report_endpoint_uses_stored_canonical_json(
+    saved_analysis_repository: SavedAnalysisRepository,
+) -> None:
+    analysis = _analysis_response("analysis-001")
+    analysis["analytics"]["gpa_summary"]["best_course"] = "HIST999 - Stored Only Course"
+    saved_analysis_repository.save(
+        analysis_id="analysis-001",
+        source_filename="records.csv",
+        row_count=16,
+        total_courses=16,
+        weighted_gpa=3.11,
+        average_score=80.0,
+        analysis=analysis,
+    )
+
+    response = client.get("/analyses/analysis-001/report.html")
+
+    assert "HIST999 - Stored Only Course" in response.text
+
+
+def test_report_endpoint_does_not_expose_csv_content_paths_or_stack_traces(
+    saved_analysis_repository: SavedAnalysisRepository,
+) -> None:
+    saved_analysis_repository.save(
+        analysis_id="analysis-001",
+        source_filename="/private/tmp/student_records.csv",
+        row_count=16,
+        total_courses=16,
+        weighted_gpa=3.11,
+        average_score=80.0,
+        analysis=_analysis_response("analysis-001"),
+    )
+
+    response = client.get("/analyses/analysis-001/report.html")
+
+    assert "student_id,student_name" not in response.text
+    assert str(ROOT_DIR) not in response.text
+    assert "/private/tmp" not in response.text
+    assert "Traceback" not in response.text
+    assert "sqlite" not in response.text.lower()
+
+
 def test_get_unknown_analysis_returns_safe_404() -> None:
     response = client.get("/analyses/missing-analysis")
 

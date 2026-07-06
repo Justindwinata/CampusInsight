@@ -62,7 +62,16 @@ Screenshots must avoid:
 
 ## Current Screenshot Inventory
 
-No screenshots are committed yet. CI-0012 will add verified desktop and mobile screenshots after this policy is in place.
+Desktop screenshots captured from the local app after CI-0011 UX stabilization:
+
+- `assets/screenshots/home-desktop.png`
+- `assets/screenshots/upload-analysis-desktop.png`
+- `assets/screenshots/dashboard-charts-desktop.png`
+- `assets/screenshots/saved-analyses-desktop.png`
+- `assets/screenshots/saved-detail-desktop.png`
+- `assets/screenshots/html-report-desktop.png`
+
+Mobile screenshots will be added in a later CI-0012 commit.
 
 ## Safety Boundaries
 

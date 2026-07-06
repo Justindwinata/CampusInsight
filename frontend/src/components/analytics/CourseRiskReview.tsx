@@ -13,8 +13,8 @@ function CourseRiskReview({ analytics }: CourseRiskReviewProps) {
         <p className="eyebrow">Course Risk Review</p>
         <h2 id="risk-review-title">Courses that may need attention</h2>
         <p className="section-copy">
-          These deterministic indicators highlight lower performance signals for review. They do not
-          predict outcomes.
+          These deterministic indicators highlight lower performance signals for review and should
+          be used as advisory context only.
         </p>
       </div>
 

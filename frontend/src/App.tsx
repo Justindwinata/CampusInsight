@@ -329,6 +329,7 @@ function SavedAnalysesPanel() {
                   </button>
                   <button
                     className="danger-button"
+                    aria-label={`Delete saved analysis ${analysis.source_filename}`}
                     type="button"
                     onClick={() => void handleDelete(analysis.analysis_id)}
                   >
@@ -387,7 +388,7 @@ function SavedAnalysisDetailShell({
       {selectedAnalysis ? <SavedAnalysisMetadata analysis={selectedAnalysis} /> : null}
 
       {isLoading ? (
-        <div className="saved-detail-status" aria-live="polite" aria-busy="true">
+        <div className="saved-detail-status" role="status" aria-live="polite" aria-busy="true">
           Loading saved detail...
         </div>
       ) : null}
@@ -418,6 +419,7 @@ function SavedAnalysisDetailShell({
             {detail.analysis_id ? (
               <a
                 className="secondary-link-button"
+                aria-label={`Download HTML report for saved analysis ${detail.analysis_id}`}
                 href={getSavedAnalysisReportUrl(detail.analysis_id)}
                 rel="noreferrer"
                 target="_blank"
@@ -528,7 +530,7 @@ function ValidationResultPanel({
 }: ValidationResultPanelProps) {
   if (isLoading) {
     return (
-      <section className="result-panel" aria-live="polite" aria-busy="true">
+      <section className="result-panel" role="status" aria-live="polite" aria-busy="true">
         <h3>Analyzing CSV...</h3>
         <p>CampusInsight is validating the selected file and preparing deterministic analytics.</p>
       </section>
@@ -546,7 +548,7 @@ function ValidationResultPanel({
 
   if (!result) {
     return (
-      <section className="result-panel result-panel-empty" aria-live="polite">
+      <section className="result-panel result-panel-empty" role="status" aria-live="polite">
         <h3>Validation result</h3>
         <p>
           Select a CSV file and submit it to see validation status and academic summary metrics. You
@@ -558,7 +560,7 @@ function ValidationResultPanel({
 
   if (result.is_valid) {
     return (
-      <section className="result-panel result-panel-success" aria-live="polite">
+      <section className="result-panel result-panel-success" role="status" aria-live="polite">
         <h3>CSV validation passed.</h3>
         <dl className="result-summary">
           <div>
@@ -579,7 +581,7 @@ function ValidationResultPanel({
   }
 
   return (
-    <section className="result-panel result-panel-warning" aria-live="polite">
+    <section className="result-panel result-panel-warning" role="status" aria-live="polite">
       <h3>CSV validation found issues.</h3>
       <p>Review the listed validation errors, update the CSV, then retry the analysis.</p>
       <dl className="result-summary">

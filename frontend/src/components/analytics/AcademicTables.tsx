@@ -18,6 +18,9 @@ function AcademicTables({ analytics }: AcademicTablesProps) {
         <h3 id="semester-performance-title">Semester Performance</h3>
         <div className="table-scroll">
           <table>
+            <caption className="sr-only">
+              Semester performance table with GPA, average score, and credits.
+            </caption>
             <thead>
               <tr>
                 <th scope="col">Semester</th>
@@ -46,6 +49,9 @@ function AcademicTables({ analytics }: AcademicTablesProps) {
         <h3 id="grade-distribution-title">Grade Distribution</h3>
         <div className="table-scroll">
           <table>
+            <caption className="sr-only">
+              Grade distribution table with grade letters, course counts, and percentages.
+            </caption>
             <thead>
               <tr>
                 <th scope="col">Grade letter</th>
@@ -70,6 +76,9 @@ function AcademicTables({ analytics }: AcademicTablesProps) {
         <h3 id="course-performance-title">Course Performance</h3>
         <div className="table-scroll">
           <table>
+            <caption className="sr-only">
+              Course performance table with course names, credits, grades, and scores.
+            </caption>
             <thead>
               <tr>
                 <th scope="col">Course code</th>

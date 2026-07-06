@@ -84,7 +84,7 @@ describe("App", () => {
 
     await user.click(screen.getByRole("button", { name: "Load saved analyses" }));
     await screen.findByText("records.csv");
-    await user.click(screen.getByRole("button", { name: "Delete" }));
+    await user.click(screen.getByRole("button", { name: "Delete saved analysis records.csv" }));
 
     expect(fetchMock).toHaveBeenLastCalledWith("http://127.0.0.1:8000/analyses/analysis-001", {
       method: "DELETE",
@@ -104,7 +104,7 @@ describe("App", () => {
     await screen.findByText("records.csv");
     await user.click(screen.getByRole("button", { name: "Open detail" }));
     await screen.findByRole("heading", { name: "Saved analysis dashboard" });
-    await user.click(screen.getByRole("button", { name: "Delete" }));
+    await user.click(screen.getByRole("button", { name: "Delete saved analysis records.csv" }));
 
     expect(
       screen.queryByRole("heading", { name: "Saved analysis dashboard" }),
@@ -228,13 +228,17 @@ describe("App", () => {
     const user = userEvent.setup();
     render(<App />);
 
-    expect(screen.queryByRole("link", { name: "Download HTML Report" })).not.toBeInTheDocument();
+    expect(
+      screen.queryByRole("link", { name: /Download HTML report for saved analysis/i }),
+    ).not.toBeInTheDocument();
 
     await user.click(screen.getByRole("button", { name: "Load saved analyses" }));
     await screen.findByText("records.csv");
     await user.click(screen.getByRole("button", { name: "Open detail" }));
 
-    const reportLink = await screen.findByRole("link", { name: "Download HTML Report" });
+    const reportLink = await screen.findByRole("link", {
+      name: "Download HTML report for saved analysis analysis-001",
+    });
     expect(reportLink).toHaveAttribute(
       "href",
       "http://127.0.0.1:8000/analyses/analysis-001/report.html",
@@ -516,6 +520,7 @@ describe("App", () => {
     expect(screen.queryByText(/bad student/i)).not.toBeInTheDocument();
     expect(screen.queryByText(/guaranteed failure/i)).not.toBeInTheDocument();
     expect(screen.queryByText(/academic failure prediction/i)).not.toBeInTheDocument();
+    expect(screen.queryByText(/\bpredict\b/i)).not.toBeInTheDocument();
     expect(screen.queryByText(/\bAI\b/)).not.toBeInTheDocument();
     expect(screen.queryByText(/PDF export/i)).not.toBeInTheDocument();
   });

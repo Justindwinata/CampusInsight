@@ -165,6 +165,10 @@ describe("App", () => {
     expect(screen.getByText("Row 2")).toBeInTheDocument();
     expect(screen.getAllByText("score")).toHaveLength(2);
     expect(screen.getByText("score must be between 0 and 100.")).toBeInTheDocument();
+    expect(screen.queryByRole("heading", { name: "Analytics charts" })).not.toBeInTheDocument();
+    expect(
+      screen.queryByRole("heading", { name: "Semester Performance Chart" }),
+    ).not.toBeInTheDocument();
   });
 
   it("displays a safe backend 400 error", async () => {
@@ -195,6 +199,7 @@ describe("App", () => {
 
     expect(await screen.findByText("CSV upload could not be analyzed.")).toBeInTheDocument();
     expect(screen.getByText("Uploaded file must use a .csv extension.")).toBeInTheDocument();
+    expect(screen.queryByRole("heading", { name: "Analytics charts" })).not.toBeInTheDocument();
   });
 
   it("displays a safe network error", async () => {
@@ -254,6 +259,7 @@ describe("App", () => {
     expect(screen.queryByText(/bad student/i)).not.toBeInTheDocument();
     expect(screen.queryByText(/guaranteed failure/i)).not.toBeInTheDocument();
     expect(screen.queryByText(/academic failure prediction/i)).not.toBeInTheDocument();
+    expect(screen.queryByText(/\bAI\b/)).not.toBeInTheDocument();
   });
 });
 

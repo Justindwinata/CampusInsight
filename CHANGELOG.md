@@ -6,6 +6,7 @@ All notable changes to CampusInsight will be documented in this file.
 
 ### Added
 
+- Add accessible frontend charts for semester performance, grade distribution, and course score overview.
 - Add frontend analytics summary cards, tables, and course risk review for validated CSV analysis.
 - Add deterministic backend academic analytics contracts, services, and CSV analysis endpoint.
 - Add frontend academic records CSV validation UI and API client service.

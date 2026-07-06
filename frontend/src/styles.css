@@ -398,6 +398,15 @@ input[type="file"]:focus-visible,
   height: 320px;
 }
 
+.chart-canvas .recharts-wrapper,
+.chart-canvas .recharts-surface {
+  max-width: 100%;
+}
+
+.chart-canvas .recharts-legend-wrapper {
+  max-width: 100%;
+}
+
 .table-section {
   margin-top: 24px;
 }
@@ -536,5 +545,32 @@ tbody tr:last-child td {
 
   .error-item {
     grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 480px) {
+  .app-shell {
+    width: min(100% - 20px, 1120px);
+    padding: 28px 0;
+  }
+
+  .hero,
+  .upload-form,
+  .schema-hint,
+  .result-panel,
+  .chart-card {
+    padding: 18px;
+  }
+
+  .schema-hint ul {
+    grid-template-columns: 1fr;
+  }
+
+  .chart-canvas {
+    height: 280px;
+  }
+
+  .metric-card strong {
+    font-size: 1.12rem;
   }
 }

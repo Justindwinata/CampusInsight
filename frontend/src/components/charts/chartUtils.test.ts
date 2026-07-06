@@ -30,9 +30,7 @@ describe("chartUtils", () => {
   });
 
   it("shapes grade distribution data for charts", () => {
-    const data = toGradeDistributionChartData([
-      { grade_letter: "A", count: 3, percentage: 18.75 },
-    ]);
+    const data = toGradeDistributionChartData([{ grade_letter: "A", count: 3, percentage: 18.75 }]);
 
     expect(data).toEqual([{ grade: "A", count: 3, percentage: 18.75 }]);
   });

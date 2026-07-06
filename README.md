@@ -2,7 +2,7 @@
 
 CampusInsight is a full-stack portfolio project for a student performance analytics dashboard. The long-term goal is to help users upload academic records and explore GPA summaries, semester trends, grade distribution, course performance, credit summaries, at-risk courses, academic insights, and downloadable reports.
 
-The current repository includes the application foundation, CSV validation workflow, backend deterministic academic analytics foundation, and frontend analytics summary UI. It does not implement dashboard charts, database persistence, authentication, history, or reports yet.
+The current repository includes the application foundation, CSV validation workflow, backend deterministic academic analytics foundation, frontend analytics summary UI, and accessible frontend charts. It does not implement database persistence, authentication, history, or reports yet.
 
 ## Tech Stack
 
@@ -33,7 +33,9 @@ The analytics endpoint calculates GPA summary, semester performance, grade distr
 
 ## Current Frontend Capability
 
-The frontend includes a CSV validation and analytics section on the home page. Users can select an academic records CSV, submit it to the backend analytics endpoint, and review validation status, GPA summary, credit summary, semester performance, grade distribution, course performance, and course risk review. Results are displayed as cards and tables only.
+The frontend includes a CSV validation and analytics section on the home page. Users can select an academic records CSV, submit it to the backend analytics endpoint, and review validation status, GPA summary, credit summary, semester performance, grade distribution, course performance, and course risk review.
+
+Analytics visualizations now include semester performance, grade distribution, and course score overview charts. The charts are based only on deterministic backend analytics returned from validated CSV records, and the detailed tables remain available as an accessible fallback.
 
 ## Local Setup
 
@@ -86,7 +88,6 @@ See [docs/ROADMAP.md](docs/ROADMAP.md) for the phased roadmap.
 
 ## Limitations
 
-- No chart-based analytics dashboard is implemented yet.
 - No database persistence exists yet.
-- No charts or downloadable reports are implemented yet.
+- No downloadable reports are implemented yet.
 - Analytics are deterministic backend calculations only; no AI prediction exists.

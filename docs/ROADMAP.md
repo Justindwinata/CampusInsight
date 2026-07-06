@@ -25,7 +25,7 @@ Current status: the schema, CSV validation service, backend CSV validation endpo
 - Calculate GPA summary, semester trends, credit totals, grade distribution, course performance, and course risk indicators.
 - Design test coverage around academic metric rules.
 
-Current status: backend deterministic analytics endpoint and frontend analytics summary UI exist. Pandas expansion, charts, persistence, AI, and prediction are not implemented.
+Current status: backend deterministic analytics endpoint and frontend analytics summary UI exist. Pandas expansion, persistence, AI, and prediction are not implemented.
 
 ## 4. Dashboard Visualizations
 
@@ -33,7 +33,7 @@ Current status: backend deterministic analytics endpoint and frontend analytics 
 - Add accessible charts for GPA trends, grade mix, credits, and course performance.
 - Keep visualizations honest by displaying only user-provided or sample-derived data.
 
-Current status: frontend summary cards and tables exist. Charts remain future work.
+Current status: frontend summary cards, tables, and accessible charts exist for deterministic analytics results. Tables remain available as a fallback. Persistence, reports, AI, and prediction remain future work.
 
 ## 5. History and Reports
 

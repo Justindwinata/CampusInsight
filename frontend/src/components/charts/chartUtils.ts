@@ -24,9 +24,7 @@ export type CourseScoreChartDatum = {
   gradePoint: number;
 };
 
-export function toSemesterChartData(
-  semesters: SemesterPerformance[],
-): SemesterChartDatum[] {
+export function toSemesterChartData(semesters: SemesterPerformance[]): SemesterChartDatum[] {
   return semesters.map((semester) => ({
     label: `${semester.academic_year} S${semester.semester}`,
     gpa: semester.weighted_gpa,
@@ -35,9 +33,7 @@ export function toSemesterChartData(
   }));
 }
 
-export function toGradeDistributionChartData(
-  grades: GradeDistributionItem[],
-): GradeChartDatum[] {
+export function toGradeDistributionChartData(grades: GradeDistributionItem[]): GradeChartDatum[] {
   return grades.map((grade) => ({
     grade: grade.grade_letter,
     count: grade.count,

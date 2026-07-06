@@ -8,6 +8,7 @@ import AnalyticsDashboard from "./components/analytics/AnalyticsDashboard";
 import {
   deleteSavedAnalysis,
   getSavedAnalysis,
+  getSavedAnalysisReportUrl,
   listSavedAnalyses,
   SavedAnalysisSummary,
 } from "./services/savedAnalysesService";
@@ -411,6 +412,16 @@ function SavedAnalysisDetailShell({
           <button className="secondary-button" type="button" onClick={onClear}>
             Clear saved detail
           </button>
+          {detail.analysis_id ? (
+            <a
+              className="secondary-link-button"
+              href={getSavedAnalysisReportUrl(detail.analysis_id)}
+              rel="noreferrer"
+              target="_blank"
+            >
+              Download HTML Report
+            </a>
+          ) : null}
         </div>
       ) : null}
     </aside>

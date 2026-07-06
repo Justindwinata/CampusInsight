@@ -183,6 +183,7 @@ input[type="file"] {
 input[type="file"]:focus-visible,
 .primary-button:focus-visible,
 .secondary-button:focus-visible,
+.secondary-link-button:focus-visible,
 .danger-button:focus-visible {
   outline: 3px solid #25636f;
   outline-offset: 3px;
@@ -212,7 +213,8 @@ input[type="file"]:focus-visible,
 }
 
 .secondary-button,
-.danger-button {
+.danger-button,
+.secondary-link-button {
   width: fit-content;
   min-height: 40px;
   padding: 0 14px;
@@ -221,10 +223,17 @@ input[type="file"]:focus-visible,
   font-weight: 800;
 }
 
-.secondary-button {
+.secondary-button,
+.secondary-link-button {
   border: 1px solid #aeb8c8;
   background: #ffffff;
   color: #17494d;
+}
+
+.secondary-link-button {
+  display: inline-flex;
+  align-items: center;
+  text-decoration: none;
 }
 
 .secondary-button:disabled {
@@ -621,8 +630,10 @@ tbody tr:last-child td {
   background: #f3fbf7;
 }
 
-.saved-detail-status .secondary-button {
+.saved-detail-status .secondary-button,
+.saved-detail-status .secondary-link-button {
   margin-top: 12px;
+  margin-right: 10px;
 }
 
 .saved-history-controls {

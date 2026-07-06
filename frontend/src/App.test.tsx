@@ -221,6 +221,27 @@ describe("App", () => {
     ).toBeInTheDocument();
   });
 
+  it("shows html report action after saved detail loads", async () => {
+    fetchMock
+      .mockResolvedValueOnce(jsonResponse(savedHistoryResponse()))
+      .mockResolvedValueOnce(jsonResponse(savedDetailResponse()));
+    const user = userEvent.setup();
+    render(<App />);
+
+    expect(screen.queryByRole("link", { name: "Download HTML Report" })).not.toBeInTheDocument();
+
+    await user.click(screen.getByRole("button", { name: "Load saved analyses" }));
+    await screen.findByText("records.csv");
+    await user.click(screen.getByRole("button", { name: "Open detail" }));
+
+    const reportLink = await screen.findByRole("link", { name: "Download HTML Report" });
+    expect(reportLink).toHaveAttribute(
+      "href",
+      "http://127.0.0.1:8000/analyses/analysis-001/report.html",
+    );
+    expect(reportLink).toHaveAttribute("target", "_blank");
+  });
+
   it("does not call analyze endpoint when opening saved detail", async () => {
     fetchMock
       .mockResolvedValueOnce(jsonResponse(savedHistoryResponse()))
@@ -496,6 +517,7 @@ describe("App", () => {
     expect(screen.queryByText(/guaranteed failure/i)).not.toBeInTheDocument();
     expect(screen.queryByText(/academic failure prediction/i)).not.toBeInTheDocument();
     expect(screen.queryByText(/\bAI\b/)).not.toBeInTheDocument();
+    expect(screen.queryByText(/PDF export/i)).not.toBeInTheDocument();
   });
 });
 

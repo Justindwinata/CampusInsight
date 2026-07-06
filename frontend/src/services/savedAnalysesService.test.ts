@@ -1,6 +1,11 @@
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 
-import { deleteSavedAnalysis, getSavedAnalysis, listSavedAnalyses } from "./savedAnalysesService";
+import {
+  deleteSavedAnalysis,
+  getSavedAnalysis,
+  getSavedAnalysisReportUrl,
+  listSavedAnalyses,
+} from "./savedAnalysesService";
 
 const fetchMock = vi.fn();
 
@@ -67,6 +72,12 @@ describe("savedAnalysesService", () => {
       method: "DELETE",
     });
     expect(response.deleted).toBe(true);
+  });
+
+  it("builds a saved analysis report URL", () => {
+    expect(getSavedAnalysisReportUrl("analysis 001")).toBe(
+      "http://127.0.0.1:8000/analyses/analysis%20001/report.html",
+    );
   });
 
   it("throws safe errors for missing saved analyses", async () => {

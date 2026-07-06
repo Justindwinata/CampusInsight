@@ -58,6 +58,10 @@ export async function deleteSavedAnalysis(
   throw new Error("The CampusInsight API returned an unexpected delete response.");
 }
 
+export function getSavedAnalysisReportUrl(analysisId: string): string {
+  return `${API_BASE_URL}/analyses/${encodeURIComponent(analysisId)}/report.html`;
+}
+
 async function requestJson(url: string, init: RequestInit): Promise<unknown> {
   let response: Response;
   try {

@@ -12,11 +12,12 @@
 - Define the canonical academic record schema.
 - Add backend CSV validation for required columns, unknown columns, required values, and safe row-level errors.
 - Add backend CSV upload validation endpoint.
+- Add frontend CSV validation UI for selecting a file and displaying structured validation results.
 - Add CSV and Excel upload flow.
 - Return clear row-level validation errors.
 - Keep uploaded data local during development.
 
-Current status: the schema, CSV validation service, and backend CSV validation endpoint exist. Frontend upload UI, Excel handling, and analytics remain future work.
+Current status: the schema, CSV validation service, backend CSV validation endpoint, and frontend CSV validation UI exist. Excel handling, analytics, charts, and persistence remain future work.
 
 ## 3. Analytics Engine
 

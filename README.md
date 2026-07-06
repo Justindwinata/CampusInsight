@@ -2,7 +2,7 @@
 
 CampusInsight is a full-stack portfolio project for a student performance analytics dashboard. The long-term goal is to help users upload academic records and explore GPA summaries, semester trends, grade distribution, course performance, credit summaries, at-risk courses, academic insights, and downloadable reports.
 
-The current repository includes the application foundation plus a backend endpoint for academic record CSV validation. It does not implement analytics, frontend upload UI, database persistence, charts, authentication, or reports yet.
+The current repository includes the application foundation plus a frontend and backend workflow for academic record CSV validation. It does not implement analytics, database persistence, charts, authentication, or reports yet.
 
 ## Tech Stack
 
@@ -28,6 +28,10 @@ docs/       Roadmap, architecture, and decision log
 The backend defines a canonical academic record schema, a CSV validation service, and `POST /academic-records/validate` for validating uploaded academic record CSV files. The validator checks required columns, rejects unknown columns, validates required values and numeric ranges, verifies accepted grade letters, and returns structured user-safe validation errors.
 
 The endpoint accepts multipart form data with a `file` field. Valid CSV structure with invalid rows returns HTTP 200 and `is_valid: false`; missing, empty, unreadable, or non-CSV uploads return HTTP 400 with a safe validation response.
+
+## Current Frontend Capability
+
+The frontend includes a CSV validation section on the home page. Users can select an academic records CSV, submit it to the backend validation endpoint, and review row counts, accepted record counts, validation errors, or safe upload failure messages.
 
 ## Local Setup
 
@@ -81,7 +85,6 @@ See [docs/ROADMAP.md](docs/ROADMAP.md) for the phased roadmap.
 ## Limitations
 
 - No academic analytics are implemented yet.
-- No frontend upload flow is implemented yet.
 - No database persistence exists yet.
 - No charts or downloadable reports are implemented yet.
-- The frontend backend-status area is a placeholder until API integration is added.
+- CSV validation does not calculate GPA, trends, risk, or reports yet.

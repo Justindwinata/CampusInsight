@@ -82,6 +82,7 @@ export type AcademicAnalytics = {
 };
 
 export type AcademicRecordsAnalysisResult = {
+  analysis_id?: string;
   is_valid: boolean;
   validation: {
     row_count: number;

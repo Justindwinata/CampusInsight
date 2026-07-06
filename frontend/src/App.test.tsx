@@ -38,6 +38,88 @@ describe("App", () => {
     expect(screen.getByRole("button", { name: "Analyze CSV" })).toBeInTheDocument();
   });
 
+  it("renders the saved analyses section", () => {
+    render(<App />);
+
+    expect(screen.getByRole("heading", { name: "Saved analyses" })).toBeInTheDocument();
+    expect(screen.getByRole("button", { name: "Load saved analyses" })).toBeInTheDocument();
+    expect(screen.queryByText("records.csv")).not.toBeInTheDocument();
+  });
+
+  it("displays empty saved analyses state", async () => {
+    fetchMock.mockResolvedValueOnce(jsonResponse({ analyses: [], limit: 20 }));
+    const user = userEvent.setup();
+    render(<App />);
+
+    await user.click(screen.getByRole("button", { name: "Load saved analyses" }));
+
+    expect(await screen.findByText("No saved analyses yet.")).toBeInTheDocument();
+    expect(screen.getByText("Run a valid CSV analysis to save a local history entry.")).toBeInTheDocument();
+  });
+
+  it("loads and displays saved analysis summaries", async () => {
+    fetchMock.mockResolvedValueOnce(jsonResponse(savedHistoryResponse()));
+    const user = userEvent.setup();
+    render(<App />);
+
+    await user.click(screen.getByRole("button", { name: "Load saved analyses" }));
+
+    expect(fetchMock).toHaveBeenCalledWith("http://127.0.0.1:8000/analyses", {
+      method: "GET",
+    });
+    expect(await screen.findByText("records.csv")).toBeInTheDocument();
+    expect(screen.getByText("2026-07-06T08:00:00+00:00")).toBeInTheDocument();
+    expect(screen.getByText("Rows")).toBeInTheDocument();
+    expect(screen.getAllByText("16")).toHaveLength(2);
+  });
+
+  it("deletes a saved analysis item", async () => {
+    fetchMock
+      .mockResolvedValueOnce(jsonResponse(savedHistoryResponse()))
+      .mockResolvedValueOnce(jsonResponse({ deleted: true, analysis_id: "analysis-001" }));
+    const user = userEvent.setup();
+    render(<App />);
+
+    await user.click(screen.getByRole("button", { name: "Load saved analyses" }));
+    await screen.findByText("records.csv");
+    await user.click(screen.getByRole("button", { name: "Delete" }));
+
+    expect(fetchMock).toHaveBeenLastCalledWith("http://127.0.0.1:8000/analyses/analysis-001", {
+      method: "DELETE",
+    });
+    expect(screen.queryByText("records.csv")).not.toBeInTheDocument();
+  });
+
+  it("displays selected saved analysis metadata without full detail dashboard", async () => {
+    fetchMock.mockResolvedValueOnce(jsonResponse(savedHistoryResponse()));
+    const user = userEvent.setup();
+    render(<App />);
+
+    await user.click(screen.getByRole("button", { name: "Load saved analyses" }));
+    await screen.findByText("records.csv");
+    await user.click(screen.getByRole("button", { name: "Select metadata" }));
+
+    expect(screen.getByRole("heading", { name: "Selected metadata preview" })).toBeInTheDocument();
+    expect(screen.getByText("analysis-001")).toBeInTheDocument();
+    expect(screen.getByText("Source file")).toBeInTheDocument();
+    expect(screen.queryByRole("heading", { name: "Analytics charts" })).not.toBeInTheDocument();
+    expect(screen.queryByRole("heading", { name: "GPA and credit summary" })).not.toBeInTheDocument();
+  });
+
+  it("displays a safe saved analyses backend error", async () => {
+    fetchMock.mockRejectedValueOnce(new Error("stack trace detail"));
+    const user = userEvent.setup();
+    render(<App />);
+
+    await user.click(screen.getByRole("button", { name: "Load saved analyses" }));
+
+    expect(await screen.findByText("Saved analyses could not be loaded.")).toBeInTheDocument();
+    expect(
+      screen.getByText("Unable to reach the CampusInsight API. Confirm the backend is running."),
+    ).toBeInTheDocument();
+    expect(screen.queryByText(/stack trace detail/i)).not.toBeInTheDocument();
+  });
+
   it("displays success state and GPA summary for a valid analytics response", async () => {
     fetchMock.mockResolvedValueOnce(jsonResponse(validAnalysisResponse()));
     const user = userEvent.setup();
@@ -313,6 +395,23 @@ function validAnalysisResponse() {
         },
       ],
     },
+  };
+}
+
+function savedHistoryResponse() {
+  return {
+    analyses: [
+      {
+        analysis_id: "analysis-001",
+        created_at: "2026-07-06T08:00:00+00:00",
+        source_filename: "records.csv",
+        row_count: 16,
+        total_courses: 16,
+        weighted_gpa: 3.11,
+        average_score: 80,
+      },
+    ],
+    limit: 20,
   };
 }
 

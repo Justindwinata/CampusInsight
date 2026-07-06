@@ -7,6 +7,11 @@ import {
 import CourseScoreChart from "./components/charts/CourseScoreChart";
 import GradeDistributionChart from "./components/charts/GradeDistributionChart";
 import SemesterPerformanceChart from "./components/charts/SemesterPerformanceChart";
+import {
+  deleteSavedAnalysis,
+  listSavedAnalyses,
+  SavedAnalysisSummary,
+} from "./services/savedAnalysesService";
 
 const capabilities = [
   "Academic Analytics Dashboard",
@@ -138,6 +143,8 @@ function App() {
         <CourseRiskReview result={analysisResult} />
       </section>
 
+      <SavedAnalysesPanel />
+
       <section className="capability-section" aria-labelledby="capabilities-title">
         <div className="section-heading">
           <p className="eyebrow">Planned foundation</p>
@@ -154,6 +161,179 @@ function App() {
         </div>
       </section>
     </main>
+  );
+}
+
+function SavedAnalysesPanel() {
+  const [savedAnalyses, setSavedAnalyses] = useState<SavedAnalysisSummary[]>([]);
+  const [selectedAnalysis, setSelectedAnalysis] = useState<SavedAnalysisSummary | null>(null);
+  const [historyError, setHistoryError] = useState<string | null>(null);
+  const [hasLoadedHistory, setHasLoadedHistory] = useState(false);
+  const [isLoadingHistory, setIsLoadingHistory] = useState(false);
+
+  async function loadHistory() {
+    setIsLoadingHistory(true);
+    setHistoryError(null);
+
+    try {
+      const response = await listSavedAnalyses();
+      setSavedAnalyses(response.analyses);
+      setSelectedAnalysis((currentSelection) =>
+        response.analyses.find(
+          (analysis) => analysis.analysis_id === currentSelection?.analysis_id,
+        ) ?? null,
+      );
+      setHasLoadedHistory(true);
+    } catch (error) {
+      setHistoryError(
+        error instanceof Error
+          ? error.message
+          : "Saved analyses are currently unavailable. Please retry.",
+      );
+    } finally {
+      setIsLoadingHistory(false);
+    }
+  }
+
+  async function handleDelete(analysisId: string) {
+    setHistoryError(null);
+
+    try {
+      await deleteSavedAnalysis(analysisId);
+      setSavedAnalyses((currentAnalyses) =>
+        currentAnalyses.filter((analysis) => analysis.analysis_id !== analysisId),
+      );
+      setSelectedAnalysis((currentSelection) =>
+        currentSelection?.analysis_id === analysisId ? null : currentSelection,
+      );
+    } catch (error) {
+      setHistoryError(
+        error instanceof Error
+          ? error.message
+          : "Saved analysis could not be deleted. Please retry.",
+      );
+    }
+  }
+
+  return (
+    <section className="saved-analyses-section" aria-labelledby="saved-analyses-title">
+      <div className="section-heading">
+        <p className="eyebrow">Saved Analyses</p>
+        <h2 id="saved-analyses-title">Saved analyses</h2>
+        <p className="section-copy">
+          Review saved analysis metadata from local history. Full saved result detail remains future
+          work.
+        </p>
+      </div>
+
+      <div className="saved-history-actions">
+        <button
+          className="secondary-button"
+          type="button"
+          onClick={loadHistory}
+          disabled={isLoadingHistory}
+        >
+          {isLoadingHistory ? "Loading saved analyses..." : "Load saved analyses"}
+        </button>
+      </div>
+
+      {historyError ? (
+        <section className="result-panel result-panel-error" role="alert">
+          <h3>Saved analyses could not be loaded.</h3>
+          <p>{historyError}</p>
+        </section>
+      ) : null}
+
+      {hasLoadedHistory && savedAnalyses.length === 0 && !historyError ? (
+        <section className="result-panel result-panel-empty" aria-live="polite">
+          <h3>No saved analyses yet.</h3>
+          <p>Run a valid CSV analysis to save a local history entry.</p>
+        </section>
+      ) : null}
+
+      {savedAnalyses.length > 0 ? (
+        <div className="saved-history-layout">
+          <div className="saved-history-list" aria-label="Saved analysis summaries">
+            {savedAnalyses.map((analysis) => (
+              <article className="saved-history-item" key={analysis.analysis_id}>
+                <div>
+                  <h3>{analysis.source_filename}</h3>
+                  <p>{analysis.created_at}</p>
+                </div>
+                <dl>
+                  <div>
+                    <dt>Rows</dt>
+                    <dd>{analysis.row_count}</dd>
+                  </div>
+                  <div>
+                    <dt>Courses</dt>
+                    <dd>{analysis.total_courses}</dd>
+                  </div>
+                  <div>
+                    <dt>Weighted GPA</dt>
+                    <dd>{analysis.weighted_gpa}</dd>
+                  </div>
+                  <div>
+                    <dt>Average score</dt>
+                    <dd>{analysis.average_score}</dd>
+                  </div>
+                </dl>
+                <div className="saved-history-controls">
+                  <button
+                    className="secondary-button"
+                    type="button"
+                    onClick={() => setSelectedAnalysis(analysis)}
+                  >
+                    Select metadata
+                  </button>
+                  <button
+                    className="danger-button"
+                    type="button"
+                    onClick={() => void handleDelete(analysis.analysis_id)}
+                  >
+                    Delete
+                  </button>
+                </div>
+              </article>
+            ))}
+          </div>
+
+          <aside className="metadata-preview" aria-labelledby="metadata-preview-title">
+            <h3 id="metadata-preview-title">Selected metadata preview</h3>
+            {selectedAnalysis ? (
+              <dl className="metadata-list">
+                <div>
+                  <dt>Analysis ID</dt>
+                  <dd>{selectedAnalysis.analysis_id}</dd>
+                </div>
+                <div>
+                  <dt>Source file</dt>
+                  <dd>{selectedAnalysis.source_filename}</dd>
+                </div>
+                <div>
+                  <dt>Rows</dt>
+                  <dd>{selectedAnalysis.row_count}</dd>
+                </div>
+                <div>
+                  <dt>Total courses</dt>
+                  <dd>{selectedAnalysis.total_courses}</dd>
+                </div>
+                <div>
+                  <dt>Weighted GPA</dt>
+                  <dd>{selectedAnalysis.weighted_gpa}</dd>
+                </div>
+                <div>
+                  <dt>Average score</dt>
+                  <dd>{selectedAnalysis.average_score}</dd>
+                </div>
+              </dl>
+            ) : (
+              <p>Select a saved analysis to preview metadata only.</p>
+            )}
+          </aside>
+        </div>
+      ) : null}
+    </section>
   );
 }
 

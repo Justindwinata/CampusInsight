@@ -2,6 +2,7 @@ from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 
 from campusinsight_api.api.academic_records import router as academic_records_router
+from campusinsight_api.api.analyses import router as analyses_router
 
 app = FastAPI(
     title="CampusInsight API",
@@ -15,11 +16,12 @@ app.add_middleware(
         "http://localhost:5173",
         "http://127.0.0.1:5173",
     ],
-    allow_methods=["GET", "POST"],
+    allow_methods=["GET", "POST", "DELETE"],
     allow_headers=["*"],
 )
 
 app.include_router(academic_records_router)
+app.include_router(analyses_router)
 
 
 @app.get("/")

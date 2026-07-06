@@ -99,6 +99,28 @@ describe("App", () => {
     expect(screen.getByRole("heading", { name: "Semester Performance" })).toBeInTheDocument();
   });
 
+  it("displays grade distribution and course score charts after valid analysis", async () => {
+    fetchMock.mockResolvedValueOnce(jsonResponse(validAnalysisResponse()));
+    const user = userEvent.setup();
+    render(<App />);
+
+    await uploadCsv(user);
+    await user.click(screen.getByRole("button", { name: "Analyze CSV" }));
+
+    expect(
+      await screen.findByRole("heading", { name: "Grade Distribution Chart" }),
+    ).toBeInTheDocument();
+    expect(screen.getByRole("heading", { name: "Course Score Overview" })).toBeInTheDocument();
+    expect(
+      screen.getByLabelText("Grade distribution chart showing course counts by grade letter."),
+    ).toBeInTheDocument();
+    expect(
+      screen.getByLabelText("Course score overview chart showing scores by course code."),
+    ).toBeInTheDocument();
+    expect(screen.getByRole("heading", { name: "Grade Distribution" })).toBeInTheDocument();
+    expect(screen.getByRole("heading", { name: "Course Performance" })).toBeInTheDocument();
+  });
+
   it("displays course risk review with safe language", async () => {
     fetchMock.mockResolvedValueOnce(jsonResponse(validAnalysisResponse()));
     const user = userEvent.setup();

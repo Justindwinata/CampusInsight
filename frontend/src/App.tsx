@@ -4,6 +4,8 @@ import {
   AcademicRecordsAnalysisResult,
   analyzeAcademicRecordsCsv,
 } from "./services/academicRecordsService";
+import CourseScoreChart from "./components/charts/CourseScoreChart";
+import GradeDistributionChart from "./components/charts/GradeDistributionChart";
 import SemesterPerformanceChart from "./components/charts/SemesterPerformanceChart";
 
 const capabilities = [
@@ -307,6 +309,8 @@ function AcademicVisualizations({ result }: { result: AcademicRecordsAnalysisRes
 
       <div className="chart-grid">
         <SemesterPerformanceChart semesters={result.analytics.semester_performance} />
+        <GradeDistributionChart grades={result.analytics.grade_distribution} />
+        <CourseScoreChart courses={result.analytics.course_performance} />
       </div>
     </section>
   );

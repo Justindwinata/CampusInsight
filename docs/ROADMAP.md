@@ -33,7 +33,7 @@ Current status: backend deterministic analytics endpoint and frontend analytics 
 - Add accessible charts for GPA trends, grade mix, credits, and course performance.
 - Keep visualizations honest by displaying only user-provided or sample-derived data.
 
-Current status: frontend summary cards, tables, and accessible charts exist for deterministic analytics results. Tables remain available as a fallback. Reports, AI, and prediction remain future work.
+Current status: frontend summary cards, tables, and accessible charts exist for deterministic analytics results. Tables remain available as a fallback. PDF export, AI, and prediction remain future work.
 
 ## 5. History and Reports
 
@@ -52,3 +52,5 @@ Current status: local SQLite persistence, saved analysis history APIs, frontend 
 - Harden validation, errors, logging, and documentation.
 - Add deployment notes.
 - Prepare portfolio-ready screenshots and project narrative.
+
+Current status: the frontend has responsive layout polish, clearer state messaging, and local demo-ready interaction flow for upload, analytics, saved history, saved detail, and HTML reports. Deployment, authentication, cloud database persistence, PDF export, AI, and prediction remain future work.

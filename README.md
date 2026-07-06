@@ -2,7 +2,7 @@
 
 CampusInsight is a full-stack portfolio project for a student performance analytics dashboard. The long-term goal is to help users upload academic records and explore GPA summaries, semester trends, grade distribution, course performance, credit summaries, at-risk courses, academic insights, and downloadable reports.
 
-The current repository includes the application foundation, CSV validation workflow, backend deterministic academic analytics foundation, local SQLite saved-analysis persistence, history APIs, frontend analytics summary UI, accessible frontend charts, a saved analyses panel, a saved analysis detail dashboard, and standalone HTML reports for saved analyses. It does not implement authentication, cloud persistence, or PDF export yet.
+The current repository includes the application foundation, CSV validation workflow, backend deterministic academic analytics foundation, local SQLite saved-analysis persistence, history APIs, frontend analytics summary UI, accessible frontend charts, a saved analyses panel, a saved analysis detail dashboard, standalone HTML reports for saved analyses, and responsive local demo polish. It does not implement authentication, cloud persistence, deployment, or PDF export yet.
 
 ## Tech Stack
 
@@ -40,6 +40,8 @@ The frontend includes a CSV validation and analytics section on the home page. U
 Analytics visualizations now include semester performance, grade distribution, and course score overview charts. The charts are based only on deterministic backend analytics returned from validated CSV records, and the detailed tables remain available as an accessible fallback.
 
 The frontend also includes a Saved Analyses panel that can load local history summaries, show an empty state, show safe backend error messages, delete saved items, open saved detail, render the full analytics dashboard from stored canonical JSON, and open a standalone HTML report. Saved detail viewing and report generation do not require CSV re-upload and do not recalculate metrics in the frontend.
+
+The current UI has been polished for local portfolio demos with consistent spacing, responsive dashboard behavior, readable table overflow, accessible state messaging, and clear saved-history actions.
 
 ## Local Setup
 
@@ -95,5 +97,6 @@ See [docs/ROADMAP.md](docs/ROADMAP.md) for the phased roadmap.
 - Local persistence is SQLite-only and intended for local portfolio development.
 - No cloud database exists yet.
 - No authentication exists yet.
+- Deployment is not configured yet.
 - Standalone HTML reports exist for saved analyses; PDF export is not implemented yet.
 - Analytics are deterministic backend calculations only; no AI or prediction exists.

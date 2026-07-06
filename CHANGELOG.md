@@ -6,6 +6,7 @@ All notable changes to CampusInsight will be documented in this file.
 
 ### Added
 
+- Polish the product layout, responsive dashboard behavior, and accessible user-facing states for local demos.
 - Add standalone HTML report generation and report action for saved academic analyses.
 - Add saved analysis detail dashboard that renders stored canonical analytics JSON without CSV re-upload.
 - Add local SQLite saved-analysis persistence, backend history APIs, and frontend saved analyses foundation.

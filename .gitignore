@@ -18,6 +18,11 @@ frontend/.vite/
 frontend/*.tsbuildinfo
 frontend/node_modules/
 
+# Local database files
+data/database/*.db
+data/database/*.sqlite
+data/database/*.sqlite3
+
 # Environment
 .env
 .env.*

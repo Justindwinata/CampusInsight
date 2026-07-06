@@ -46,7 +46,12 @@ def test_report_handles_missing_optional_fields_safely() -> None:
             weighted_gpa=3.0,
             average_score=80.0,
         ),
-        analysis={"analysis_id": "analysis-001", "is_valid": True, "validation": {}, "analytics": {}},
+        analysis={
+            "analysis_id": "analysis-001",
+            "is_valid": True,
+            "validation": {},
+            "analytics": {},
+        },
     )
 
     html = render_saved_analysis_html_report(saved_analysis)

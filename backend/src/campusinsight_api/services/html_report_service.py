@@ -123,7 +123,12 @@ def render_saved_analysis_html_report(
         {_metadata_card("Generated", generated_at.isoformat())}
         {_metadata_card("Analysis ID", saved_analysis.summary.analysis_id)}
         {_metadata_card("Source file", saved_analysis.summary.source_filename)}
-        {_metadata_card("Rows checked", validation.get("row_count", saved_analysis.summary.row_count))}
+        {
+        _metadata_card(
+            "Rows checked",
+            validation.get("row_count", saved_analysis.summary.row_count),
+        )
+    }
       </div>
     </section>
 
@@ -215,7 +220,10 @@ def _grade_distribution_section(rows: list[dict[str, Any]]) -> str:
         "grade-distribution-title",
         "Grade Distribution",
         ["Grade letter", "Count", "Percentage"],
-        [[row.get("grade_letter", ""), row.get("count", ""), row.get("percentage", "")] for row in rows],
+        [
+            [row.get("grade_letter", ""), row.get("count", ""), row.get("percentage", "")]
+            for row in rows
+        ],
     )
 
 
@@ -277,8 +285,7 @@ def _table_section(
 ) -> str:
     body = (
         "".join(
-            "<tr>" + "".join(f"<td>{_escape(cell)}</td>" for cell in row) + "</tr>"
-            for row in rows
+            "<tr>" + "".join(f"<td>{_escape(cell)}</td>" for cell in row) + "</tr>" for row in rows
         )
         or f'<tr><td colspan="{len(headers)}">No saved records available.</td></tr>'
     )

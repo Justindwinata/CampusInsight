@@ -9,7 +9,8 @@
 - Use SQLite for local saved analysis persistence so the portfolio project can support history without introducing cloud infrastructure.
 - Store canonical analysis response JSON, not uploaded CSV files, to preserve the computed result while avoiding raw file retention.
 - Reuse stored canonical analysis JSON for saved detail dashboards so saved history does not require CSV re-upload or analytics recalculation.
+- Generate standalone HTML reports on the backend from stored canonical JSON to avoid frontend-side report generation and avoid PDF complexity at this stage.
 - Ignore local database files under `data/database/` so personal local history is not committed to Git.
 - Do not add Docker initially to keep the first bootstrap simple for local development.
 - Do not add authentication initially because the first portfolio version is focused on local academic analytics workflows.
-- Do not add cloud database persistence, AI, prediction logic, or report generation during the local history foundation.
+- Do not add cloud database persistence, AI, prediction logic, authentication, or PDF export during the HTML report foundation.

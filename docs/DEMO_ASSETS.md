@@ -71,7 +71,13 @@ Desktop screenshots captured from the local app after CI-0011 UX stabilization:
 - `assets/screenshots/saved-detail-desktop.png`
 - `assets/screenshots/html-report-desktop.png`
 
-Mobile screenshots will be added in a later CI-0012 commit.
+Mobile screenshots captured from the local app after CI-0011 UX stabilization:
+
+- `assets/screenshots/home-mobile.png`
+- `assets/screenshots/dashboard-mobile.png`
+- `assets/screenshots/saved-detail-mobile.png`
+
+The README product preview uses selected files from this inventory.
 
 ## Safety Boundaries
 

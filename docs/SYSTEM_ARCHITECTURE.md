@@ -12,6 +12,8 @@ CampusInsight currently contains two independent application foundations:
 
 Local SQLite persistence exists for saved analysis results, and standalone HTML reports exist for saved analyses. The app is demo-ready for local portfolio walkthroughs, but deployment, authentication, cloud database persistence, AI, prediction logic, and PDF export are not implemented.
 
+Demo screenshots under `assets/screenshots/` are captured from the actual local application after CI-0011 UX stabilization. They use the fictional sample dataset and do not include raw CSV contents, local database paths, terminal windows, or browser developer tools.
+
 ## Intended Future Pipeline
 
 ```text

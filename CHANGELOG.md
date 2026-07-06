@@ -6,6 +6,8 @@ All notable changes to CampusInsight will be documented in this file.
 
 ### Added
 
+- Add verified desktop and mobile demo screenshots plus a portfolio-ready README preview.
+- Add demo asset policy for fictional data, screenshot capture, privacy precautions, and recommended demo flow.
 - Polish the product layout, responsive dashboard behavior, and accessible user-facing states for local demos.
 - Add standalone HTML report generation and report action for saved academic analyses.
 - Add saved analysis detail dashboard that renders stored canonical analytics JSON without CSV re-upload.

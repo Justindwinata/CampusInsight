@@ -11,6 +11,7 @@
 - Reuse stored canonical analysis JSON for saved detail dashboards so saved history does not require CSV re-upload or analytics recalculation.
 - Generate standalone HTML reports on the backend from stored canonical JSON to avoid frontend-side report generation and avoid PDF complexity at this stage.
 - Polish the frontend for local portfolio demos with responsive layout, accessible state messaging, visible focus behavior, and table fallbacks for charted data.
+- Commit verified demo screenshots and README preview assets from the running local application, using fictional sample data only.
 - Ignore local database files under `data/database/` so personal local history is not committed to Git.
 - Do not add Docker initially to keep the first bootstrap simple for local development.
 - Do not add authentication initially because the first portfolio version is focused on local academic analytics workflows.

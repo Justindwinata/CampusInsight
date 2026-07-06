@@ -54,3 +54,5 @@ Current status: local SQLite persistence, saved analysis history APIs, frontend 
 - Prepare portfolio-ready screenshots and project narrative.
 
 Current status: the frontend has responsive layout polish, clearer state messaging, and local demo-ready interaction flow for upload, analytics, saved history, saved detail, and HTML reports. Deployment, authentication, cloud database persistence, PDF export, AI, and prediction remain future work.
+
+Portfolio presentation status: verified desktop and mobile screenshots now exist, the README includes product preview images, and demo documentation identifies the fictional sample dataset and screenshot safety policy.

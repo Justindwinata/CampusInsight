@@ -55,7 +55,7 @@ function App() {
 
   return (
     <main className="app-shell">
-      <section className="hero" aria-labelledby="page-title">
+      <section className="hero product-intro" aria-labelledby="page-title">
         <div className="hero-content">
           <p className="eyebrow">Student Performance Analytics Dashboard</p>
           <h1 id="page-title">CampusInsight</h1>
@@ -73,7 +73,7 @@ function App() {
         </aside>
       </section>
 
-      <section className="upload-section" aria-labelledby="upload-title">
+      <section className="upload-section page-section" aria-labelledby="upload-title">
         <div className="section-heading">
           <p className="eyebrow">CSV validation</p>
           <h2 id="upload-title">Validate academic records</h2>
@@ -144,7 +144,7 @@ function App() {
 
       <SavedAnalysesPanel />
 
-      <section className="capability-section" aria-labelledby="capabilities-title">
+      <section className="capability-section page-section" aria-labelledby="capabilities-title">
         <div className="section-heading">
           <p className="eyebrow">Planned foundation</p>
           <h2 id="capabilities-title">Future analytics capabilities</h2>
@@ -257,13 +257,13 @@ function SavedAnalysesPanel() {
   }
 
   return (
-    <section className="saved-analyses-section" aria-labelledby="saved-analyses-title">
+    <section className="saved-analyses-section page-section" aria-labelledby="saved-analyses-title">
       <div className="section-heading">
         <p className="eyebrow">Saved Analyses</p>
         <h2 id="saved-analyses-title">Saved analyses</h2>
         <p className="section-copy">
-          Review saved analysis metadata from local history. Full saved result detail remains future
-          work.
+          Review locally saved analysis history, open the stored dashboard, and download a
+          standalone HTML report.
         </p>
       </div>
 
@@ -297,7 +297,7 @@ function SavedAnalysesPanel() {
           <div className="saved-history-list" aria-label="Saved analysis summaries">
             {savedAnalyses.map((analysis) => (
               <article className="saved-history-item" key={analysis.analysis_id}>
-                <div>
+                <div className="saved-history-item-heading">
                   <h3>{analysis.source_filename}</h3>
                   <p>{analysis.created_at}</p>
                 </div>
@@ -404,24 +404,28 @@ function SavedAnalysisDetailShell({
 
       {detail && !isLoading && !error ? (
         <div className="saved-detail-status saved-detail-status-success" aria-live="polite">
-          <strong>Saved detail loaded.</strong>
-          <p>
-            Validation status: {detail.is_valid ? "valid" : "invalid"}. The saved dashboard is
-            displayed below when analytics data is available.
-          </p>
-          <button className="secondary-button" type="button" onClick={onClear}>
-            Clear saved detail
-          </button>
-          {detail.analysis_id ? (
-            <a
-              className="secondary-link-button"
-              href={getSavedAnalysisReportUrl(detail.analysis_id)}
-              rel="noreferrer"
-              target="_blank"
-            >
-              Download HTML Report
-            </a>
-          ) : null}
+          <div>
+            <strong>Saved detail loaded.</strong>
+            <p>
+              Validation status: {detail.is_valid ? "valid" : "invalid"}. The saved dashboard is
+              displayed below when analytics data is available.
+            </p>
+          </div>
+          <div className="saved-detail-actions">
+            <button className="secondary-button" type="button" onClick={onClear}>
+              Clear saved detail
+            </button>
+            {detail.analysis_id ? (
+              <a
+                className="secondary-link-button"
+                href={getSavedAnalysisReportUrl(detail.analysis_id)}
+                rel="noreferrer"
+                target="_blank"
+              >
+                Download HTML Report
+              </a>
+            ) : null}
+          </div>
         </div>
       ) : null}
     </aside>

@@ -1,5 +1,14 @@
+from decimal import ROUND_HALF_UP, Decimal
+
 from campusinsight_api.domain.academic_records import AcademicRecord
-from campusinsight_api.domain.analytics import GpaSummary
+from campusinsight_api.domain.analytics import (
+    CreditSummary,
+    GpaSummary,
+    GradeDistributionItem,
+    SemesterPerformance,
+)
+
+GRADE_ORDER = ("A", "A-", "B+", "B", "B-", "C+", "C", "D", "E")
 
 
 def calculate_gpa_summary(records: list[AcademicRecord]) -> GpaSummary:
@@ -33,9 +42,69 @@ def calculate_gpa_summary(records: list[AcademicRecord]) -> GpaSummary:
     )
 
 
+def calculate_semester_performance(records: list[AcademicRecord]) -> list[SemesterPerformance]:
+    grouped_records: dict[tuple[str, int], list[AcademicRecord]] = {}
+    for record in records:
+        grouped_records.setdefault((record.academic_year, record.semester), []).append(record)
+
+    performance: list[SemesterPerformance] = []
+    for academic_year, semester in sorted(grouped_records):
+        semester_records = grouped_records[(academic_year, semester)]
+        total_credits = sum(record.credits for record in semester_records)
+        weighted_points = sum(record.grade_point * record.credits for record in semester_records)
+        average_score = sum(record.score for record in semester_records) / len(semester_records)
+
+        performance.append(
+            SemesterPerformance(
+                semester=semester,
+                academic_year=academic_year,
+                course_count=len(semester_records),
+                credits=_round_metric(total_credits),
+                weighted_gpa=_round_metric(weighted_points / total_credits),
+                average_score=_round_metric(average_score),
+            )
+        )
+
+    return performance
+
+
+def calculate_grade_distribution(records: list[AcademicRecord]) -> list[GradeDistributionItem]:
+    if not records:
+        return []
+
+    total_records = len(records)
+    distribution: list[GradeDistributionItem] = []
+    for grade_letter in GRADE_ORDER:
+        count = sum(1 for record in records if record.grade_letter == grade_letter)
+        if count == 0:
+            continue
+
+        distribution.append(
+            GradeDistributionItem(
+                grade_letter=grade_letter,
+                count=count,
+                percentage=_round_metric((count / total_records) * 100),
+            )
+        )
+
+    return distribution
+
+
+def calculate_credit_summary(records: list[AcademicRecord]) -> CreditSummary:
+    if not records:
+        return CreditSummary(total_credits=0.0, attempted_courses=0, average_credits_per_course=0.0)
+
+    total_credits = sum(record.credits for record in records)
+    return CreditSummary(
+        total_credits=_round_metric(total_credits),
+        attempted_courses=len(records),
+        average_credits_per_course=_round_metric(total_credits / len(records)),
+    )
+
+
 def _format_course(record: AcademicRecord) -> str:
     return f"{record.course_code} - {record.course_name}"
 
 
 def _round_metric(value: float) -> float:
-    return round(value, 2)
+    return float(Decimal(str(value)).quantize(Decimal("0.01"), rounding=ROUND_HALF_UP))

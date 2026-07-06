@@ -92,6 +92,26 @@ describe("App", () => {
     expect(screen.queryByText("records.csv")).not.toBeInTheDocument();
   });
 
+  it("clears saved detail when deleting the selected saved analysis", async () => {
+    fetchMock
+      .mockResolvedValueOnce(jsonResponse(savedHistoryResponse()))
+      .mockResolvedValueOnce(jsonResponse(savedDetailResponse()))
+      .mockResolvedValueOnce(jsonResponse({ deleted: true, analysis_id: "analysis-001" }));
+    const user = userEvent.setup();
+    render(<App />);
+
+    await user.click(screen.getByRole("button", { name: "Load saved analyses" }));
+    await screen.findByText("records.csv");
+    await user.click(screen.getByRole("button", { name: "Open detail" }));
+    await screen.findByRole("heading", { name: "Saved analysis dashboard" });
+    await user.click(screen.getByRole("button", { name: "Delete" }));
+
+    expect(
+      screen.queryByRole("heading", { name: "Saved analysis dashboard" }),
+    ).not.toBeInTheDocument();
+    expect(screen.queryByText("analysis-001")).not.toBeInTheDocument();
+  });
+
   it("loads saved analysis detail and displays metadata shell", async () => {
     fetchMock
       .mockResolvedValueOnce(jsonResponse(savedHistoryResponse()))
@@ -106,7 +126,9 @@ describe("App", () => {
     expect(fetchMock).toHaveBeenLastCalledWith("http://127.0.0.1:8000/analyses/analysis-001", {
       method: "GET",
     });
-    expect(await screen.findByRole("heading", { name: "Saved Analysis Detail" })).toBeInTheDocument();
+    expect(
+      await screen.findByRole("heading", { name: "Saved Analysis Detail" }),
+    ).toBeInTheDocument();
     expect(screen.getByText("analysis-001")).toBeInTheDocument();
     expect(screen.getByText("Source file")).toBeInTheDocument();
     expect(screen.getByText("Created at")).toBeInTheDocument();
@@ -116,13 +138,11 @@ describe("App", () => {
 
   it("shows loading state while saved detail loads", async () => {
     let resolveDetail: (response: Response) => void = () => undefined;
-    fetchMock
-      .mockResolvedValueOnce(jsonResponse(savedHistoryResponse()))
-      .mockReturnValueOnce(
-        new Promise<Response>((resolve) => {
-          resolveDetail = resolve;
-        }),
-      );
+    fetchMock.mockResolvedValueOnce(jsonResponse(savedHistoryResponse())).mockReturnValueOnce(
+      new Promise<Response>((resolve) => {
+        resolveDetail = resolve;
+      }),
+    );
     const user = userEvent.setup();
     render(<App />);
 
@@ -186,7 +206,9 @@ describe("App", () => {
     await screen.findByText("records.csv");
     await user.click(screen.getByRole("button", { name: "Open detail" }));
 
-    expect(await screen.findByRole("heading", { name: "Saved analysis dashboard" })).toBeInTheDocument();
+    expect(
+      await screen.findByRole("heading", { name: "Saved analysis dashboard" }),
+    ).toBeInTheDocument();
     expect(screen.getByText("Viewing saved analysis")).toBeInTheDocument();
     expect(screen.getByText("CSV validation passed.")).toBeInTheDocument();
     expect(screen.getByRole("heading", { name: "GPA and credit summary" })).toBeInTheDocument();
@@ -217,16 +239,14 @@ describe("App", () => {
   });
 
   it("shows safe fallback for saved detail without displayable analytics", async () => {
-    fetchMock
-      .mockResolvedValueOnce(jsonResponse(savedHistoryResponse()))
-      .mockResolvedValueOnce(
-        jsonResponse({
-          analysis_id: "analysis-001",
-          is_valid: false,
-          validation: { row_count: 1, errors: [] },
-          analytics: null,
-        }),
-      );
+    fetchMock.mockResolvedValueOnce(jsonResponse(savedHistoryResponse())).mockResolvedValueOnce(
+      jsonResponse({
+        analysis_id: "analysis-001",
+        is_valid: false,
+        validation: { row_count: 1, errors: [] },
+        analytics: null,
+      }),
+    );
     const user = userEvent.setup();
     render(<App />);
 
@@ -235,7 +255,9 @@ describe("App", () => {
     await user.click(screen.getByRole("button", { name: "Open detail" }));
 
     expect(await screen.findByText("Saved analysis cannot be displayed.")).toBeInTheDocument();
-    expect(screen.getByText("The stored response does not include displayable analytics data.")).toBeInTheDocument();
+    expect(
+      screen.getByText("The stored response does not include displayable analytics data."),
+    ).toBeInTheDocument();
   });
 
   it("displays a safe saved analyses backend error", async () => {

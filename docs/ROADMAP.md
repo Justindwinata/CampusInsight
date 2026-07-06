@@ -40,10 +40,11 @@ Current status: frontend summary cards, tables, and accessible charts exist for 
 - Add SQLite persistence for local project history.
 - Add backend APIs for listing, retrieving, and deleting saved analyses.
 - Add minimal frontend saved analyses panel.
+- Add saved analysis detail dashboard from stored canonical JSON.
 - Generate downloadable academic insight reports.
 - Track analysis runs and report metadata.
 
-Current status: local SQLite persistence, saved analysis history APIs, and a minimal frontend saved analyses foundation exist. Uploaded CSV files are not stored, local database files are ignored by Git, and full saved result detail pages remain future work.
+Current status: local SQLite persistence, saved analysis history APIs, frontend saved analyses foundation, and saved analysis detail dashboard exist. Saved detail uses stored canonical analysis JSON, not CSV recalculation. Uploaded CSV files are not stored, local database files are ignored by Git, and reports remain future work.
 
 ## 6. Release Readiness
 

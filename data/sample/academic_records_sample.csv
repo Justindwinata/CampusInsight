@@ -1,0 +1,17 @@
+student_id,student_name,semester,academic_year,course_code,course_name,credits,grade_letter,grade_point,score
+S1001,Alya Prameswari,1,2024/2025,CS101,Introduction to Programming,3,A,4.0,91
+S1001,Alya Prameswari,1,2024/2025,MTH101,Discrete Mathematics,3,B+,3.5,84
+S1001,Alya Prameswari,2,2024/2025,CS102,Data Structures,3,A-,3.7,88
+S1001,Alya Prameswari,2,2024/2025,ENG101,Technical Writing,2,B,3.0,79
+S1002,Bima Santoso,1,2024/2025,CS101,Introduction to Programming,3,B,3.0,78
+S1002,Bima Santoso,1,2024/2025,MTH101,Discrete Mathematics,3,C+,2.5,71
+S1002,Bima Santoso,2,2024/2025,CS102,Data Structures,3,B-,2.7,74
+S1002,Bima Santoso,2,2024/2025,STA101,Statistics for Computing,3,B,3.0,80
+S1003,Citra Lestari,1,2024/2025,CS101,Introduction to Programming,3,A-,3.7,87
+S1003,Citra Lestari,1,2024/2025,MTH101,Discrete Mathematics,3,A,4.0,92
+S1003,Citra Lestari,2,2024/2025,CS102,Data Structures,3,A,4.0,94
+S1003,Citra Lestari,2,2024/2025,ENG101,Technical Writing,2,B+,3.5,85
+S1004,Damar Wijaya,1,2024/2025,CS101,Introduction to Programming,3,C,2.0,66
+S1004,Damar Wijaya,1,2024/2025,MTH101,Discrete Mathematics,3,C+,2.5,70
+S1004,Damar Wijaya,2,2024/2025,CS102,Data Structures,3,B-,2.7,73
+S1004,Damar Wijaya,2,2024/2025,STA101,Statistics for Computing,3,C,2.0,68

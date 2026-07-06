@@ -1,0 +1,24 @@
+.DS_Store
+
+# Python
+.venv/
+__pycache__/
+*.py[cod]
+.pytest_cache/
+.ruff_cache/
+*.egg-info/
+dist/
+build/
+
+# Node
+node_modules/
+frontend/dist/
+frontend/coverage/
+frontend/.vite/
+frontend/*.tsbuildinfo
+frontend/node_modules/
+
+# Environment
+.env
+.env.*
+!.env.example

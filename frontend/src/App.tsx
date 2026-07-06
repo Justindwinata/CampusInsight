@@ -4,9 +4,7 @@ import {
   AcademicRecordsAnalysisResult,
   analyzeAcademicRecordsCsv,
 } from "./services/academicRecordsService";
-import CourseScoreChart from "./components/charts/CourseScoreChart";
-import GradeDistributionChart from "./components/charts/GradeDistributionChart";
-import SemesterPerformanceChart from "./components/charts/SemesterPerformanceChart";
+import AnalyticsDashboard from "./components/analytics/AnalyticsDashboard";
 import {
   deleteSavedAnalysis,
   listSavedAnalyses,
@@ -137,10 +135,9 @@ function App() {
           result={analysisResult}
           uploadError={uploadError}
         />
-        <AnalyticsSummary result={analysisResult} />
-        <AcademicVisualizations result={analysisResult} />
-        <AnalyticsTables result={analysisResult} />
-        <CourseRiskReview result={analysisResult} />
+        {analysisResult?.is_valid && analysisResult.analytics ? (
+          <AnalyticsDashboard analytics={analysisResult.analytics} />
+        ) : null}
       </section>
 
       <SavedAnalysesPanel />
@@ -431,212 +428,6 @@ function ValidationResultPanel({
           </article>
         ))}
       </div>
-    </section>
-  );
-}
-
-function AnalyticsSummary({ result }: { result: AcademicRecordsAnalysisResult | null }) {
-  if (!result?.is_valid || !result.analytics) {
-    return null;
-  }
-
-  const { gpa_summary: gpaSummary, credit_summary: creditSummary } = result.analytics;
-  const cards = [
-    ["Total courses", gpaSummary.total_courses],
-    ["Total credits", gpaSummary.total_credits],
-    ["Weighted GPA", gpaSummary.weighted_gpa],
-    ["Average score", gpaSummary.average_score],
-    ["Highest score", gpaSummary.highest_score],
-    ["Lowest score", gpaSummary.lowest_score],
-    ["Best course", gpaSummary.best_course ?? "Not available"],
-    ["Weakest course", gpaSummary.weakest_course ?? "Not available"],
-    ["Attempted courses", creditSummary.attempted_courses],
-    ["Average credits", creditSummary.average_credits_per_course],
-  ];
-
-  return (
-    <section className="analytics-section" aria-labelledby="academic-summary-title">
-      <div className="section-heading">
-        <p className="eyebrow">Academic Summary</p>
-        <h2 id="academic-summary-title">GPA and credit summary</h2>
-      </div>
-
-      <div className="metric-grid">
-        {cards.map(([label, value]) => (
-          <article className="metric-card" key={label}>
-            <span>{label}</span>
-            <strong>{value}</strong>
-          </article>
-        ))}
-      </div>
-    </section>
-  );
-}
-
-function AcademicVisualizations({ result }: { result: AcademicRecordsAnalysisResult | null }) {
-  if (!result?.is_valid || !result.analytics) {
-    return null;
-  }
-
-  return (
-    <section className="analytics-section" aria-labelledby="visualizations-title">
-      <div className="section-heading">
-        <p className="eyebrow">Academic Visualizations</p>
-        <h2 id="visualizations-title">Analytics charts</h2>
-        <p className="section-copy">
-          Visual summaries use the same deterministic backend analytics shown in the tables below.
-        </p>
-      </div>
-
-      <div className="chart-grid">
-        <SemesterPerformanceChart semesters={result.analytics.semester_performance} />
-        <GradeDistributionChart grades={result.analytics.grade_distribution} />
-        <CourseScoreChart courses={result.analytics.course_performance} />
-      </div>
-    </section>
-  );
-}
-
-function AnalyticsTables({ result }: { result: AcademicRecordsAnalysisResult | null }) {
-  if (!result?.is_valid || !result.analytics) {
-    return null;
-  }
-
-  const { semester_performance, grade_distribution, course_performance } = result.analytics;
-
-  return (
-    <section className="analytics-section" aria-labelledby="analytics-tables-title">
-      <div className="section-heading">
-        <p className="eyebrow">Detailed Analytics</p>
-        <h2 id="analytics-tables-title">Academic analytics tables</h2>
-      </div>
-
-      <div className="table-section" aria-labelledby="semester-performance-title">
-        <h3 id="semester-performance-title">Semester Performance</h3>
-        <div className="table-scroll">
-          <table>
-            <thead>
-              <tr>
-                <th scope="col">Semester</th>
-                <th scope="col">Academic year</th>
-                <th scope="col">GPA</th>
-                <th scope="col">Average score</th>
-                <th scope="col">Credits</th>
-              </tr>
-            </thead>
-            <tbody>
-              {semester_performance.map((semester) => (
-                <tr key={`${semester.academic_year}-${semester.semester}`}>
-                  <td>{semester.semester}</td>
-                  <td>{semester.academic_year}</td>
-                  <td>{semester.weighted_gpa}</td>
-                  <td>{semester.average_score}</td>
-                  <td>{semester.credits}</td>
-                </tr>
-              ))}
-            </tbody>
-          </table>
-        </div>
-      </div>
-
-      <div className="table-section" aria-labelledby="grade-distribution-title">
-        <h3 id="grade-distribution-title">Grade Distribution</h3>
-        <div className="table-scroll">
-          <table>
-            <thead>
-              <tr>
-                <th scope="col">Grade letter</th>
-                <th scope="col">Count</th>
-                <th scope="col">Percentage</th>
-              </tr>
-            </thead>
-            <tbody>
-              {grade_distribution.map((grade) => (
-                <tr key={grade.grade_letter}>
-                  <td>{grade.grade_letter}</td>
-                  <td>{grade.count}</td>
-                  <td>{grade.percentage}%</td>
-                </tr>
-              ))}
-            </tbody>
-          </table>
-        </div>
-      </div>
-
-      <div className="table-section" aria-labelledby="course-performance-title">
-        <h3 id="course-performance-title">Course Performance</h3>
-        <div className="table-scroll">
-          <table>
-            <thead>
-              <tr>
-                <th scope="col">Course code</th>
-                <th scope="col">Course name</th>
-                <th scope="col">Credits</th>
-                <th scope="col">Grade letter</th>
-                <th scope="col">Grade point</th>
-                <th scope="col">Score</th>
-              </tr>
-            </thead>
-            <tbody>
-              {course_performance.map((course, index) => (
-                <tr key={`${course.course_code}-${index}`}>
-                  <td>{course.course_code}</td>
-                  <td>{course.course_name}</td>
-                  <td>{course.credits}</td>
-                  <td>{course.grade_letter}</td>
-                  <td>{course.grade_point}</td>
-                  <td>{course.score}</td>
-                </tr>
-              ))}
-            </tbody>
-          </table>
-        </div>
-      </div>
-    </section>
-  );
-}
-
-function CourseRiskReview({ result }: { result: AcademicRecordsAnalysisResult | null }) {
-  if (!result?.is_valid || !result.analytics) {
-    return null;
-  }
-
-  const risks = result.analytics.course_risks;
-
-  return (
-    <section className="analytics-section" aria-labelledby="risk-review-title">
-      <div className="section-heading">
-        <p className="eyebrow">Course Risk Review</p>
-        <h2 id="risk-review-title">Courses that may need attention</h2>
-        <p className="section-copy">
-          These deterministic indicators highlight lower performance signals for review. They do not
-          predict outcomes.
-        </p>
-      </div>
-
-      {risks.length === 0 ? (
-        <div className="result-panel result-panel-success">
-          <h3>No at-risk courses detected.</h3>
-          <p>No lower performance signals were returned by the analytics service.</p>
-        </div>
-      ) : (
-        <div className="risk-grid">
-          {risks.map((risk, index) => (
-            <article className="risk-card" key={`${risk.course_code}-${index}`}>
-              <span className="risk-level">Risk level: {risk.risk_level}</span>
-              <h3>{risk.course_name}</h3>
-              <p className="risk-code">{risk.course_code}</p>
-              <strong>Review recommended</strong>
-              <ul>
-                {risk.reasons.map((reason) => (
-                  <li key={reason}>{reason}</li>
-                ))}
-              </ul>
-              <p className="attention-note">This course may need attention.</p>
-            </article>
-          ))}
-        </div>
-      )}
     </section>
   );
 }

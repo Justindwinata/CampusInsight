@@ -228,6 +228,13 @@ function SavedAnalysesPanel() {
     }
   }
 
+  function clearSavedDetail() {
+    setSelectedAnalysis(null);
+    setSavedDetail(null);
+    setSavedDetailError(null);
+    setIsLoadingSavedDetail(false);
+  }
+
   async function openSavedAnalysisDetail(analysis: SavedAnalysisSummary) {
     setSelectedAnalysis(analysis);
     setSavedDetail(null);
@@ -335,6 +342,7 @@ function SavedAnalysesPanel() {
             detail={savedDetail}
             error={savedDetailError}
             isLoading={isLoadingSavedDetail}
+            onClear={clearSavedDetail}
             onRetry={() => {
               if (selectedAnalysis) {
                 void openSavedAnalysisDetail(selectedAnalysis);
@@ -344,6 +352,10 @@ function SavedAnalysesPanel() {
           />
         </div>
       ) : null}
+
+      {selectedAnalysis && savedDetail && !isLoadingSavedDetail && !savedDetailError ? (
+        <SavedAnalysisDashboardSection detail={savedDetail} onClear={clearSavedDetail} />
+      ) : null}
     </section>
   );
 }
@@ -352,6 +364,7 @@ type SavedAnalysisDetailShellProps = {
   detail: AcademicRecordsAnalysisResult | null;
   error: string | null;
   isLoading: boolean;
+  onClear: () => void;
   onRetry: () => void;
   selectedAnalysis: SavedAnalysisSummary | null;
 };
@@ -360,6 +373,7 @@ function SavedAnalysisDetailShell({
   detail,
   error,
   isLoading,
+  onClear,
   onRetry,
   selectedAnalysis,
 }: SavedAnalysisDetailShellProps) {
@@ -391,12 +405,61 @@ function SavedAnalysisDetailShell({
         <div className="saved-detail-status saved-detail-status-success" aria-live="polite">
           <strong>Saved detail loaded.</strong>
           <p>
-            Validation status: {detail.is_valid ? "valid" : "invalid"}. Full saved dashboard
-            rendering is planned for the next step.
+            Validation status: {detail.is_valid ? "valid" : "invalid"}. The saved dashboard is
+            displayed below when analytics data is available.
           </p>
+          <button className="secondary-button" type="button" onClick={onClear}>
+            Clear saved detail
+          </button>
         </div>
       ) : null}
     </aside>
+  );
+}
+
+function SavedAnalysisDashboardSection({
+  detail,
+  onClear,
+}: {
+  detail: AcademicRecordsAnalysisResult;
+  onClear: () => void;
+}) {
+  if (!detail.is_valid || !detail.analytics) {
+    return (
+      <section className="saved-dashboard-section" aria-labelledby="saved-dashboard-title">
+        <div className="result-panel result-panel-warning">
+          <h3 id="saved-dashboard-title">Saved analysis cannot be displayed.</h3>
+          <p>The stored response does not include displayable analytics data.</p>
+          <button className="secondary-button" type="button" onClick={onClear}>
+            Return to saved analyses
+          </button>
+        </div>
+      </section>
+    );
+  }
+
+  return (
+    <section className="saved-dashboard-section" aria-labelledby="saved-dashboard-title">
+      <div className="section-heading">
+        <p className="eyebrow">Viewing saved analysis</p>
+        <h2 id="saved-dashboard-title">Saved analysis dashboard</h2>
+        <p className="section-copy">
+          This dashboard uses the stored canonical analysis JSON from local history.
+        </p>
+      </div>
+      <div className="saved-dashboard-actions">
+        <button className="secondary-button" type="button" onClick={onClear}>
+          Return to saved analyses
+        </button>
+      </div>
+      <ValidationResultPanel
+        fileName="Saved analysis"
+        isLoading={false}
+        result={detail}
+        uploadError={null}
+      />
+      <AnalyticsDashboard analytics={detail.analytics} />
+    </section>
   );
 }
 

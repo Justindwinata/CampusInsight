@@ -123,6 +123,7 @@ h1 {
 .upload-section,
 .analytics-section,
 .saved-analyses-section,
+.saved-dashboard-section,
 .capability-section {
   padding: 56px 0 0;
 }
@@ -528,6 +529,10 @@ tbody tr:last-child td {
 
 .saved-history-actions {
   margin-top: 24px;
+}
+
+.saved-dashboard-actions {
+  margin-top: 18px;
 }
 
 .saved-history-layout {

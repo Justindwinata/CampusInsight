@@ -111,11 +111,7 @@ describe("App", () => {
     expect(screen.getByText("Source file")).toBeInTheDocument();
     expect(screen.getByText("Created at")).toBeInTheDocument();
     expect(screen.getByText("Saved detail loaded.")).toBeInTheDocument();
-    expect(screen.getByText(/Full saved dashboard rendering is planned/)).toBeInTheDocument();
-    expect(screen.queryByRole("heading", { name: "Analytics charts" })).not.toBeInTheDocument();
-    expect(
-      screen.queryByRole("heading", { name: "GPA and credit summary" }),
-    ).not.toBeInTheDocument();
+    expect(screen.getByText(/saved dashboard is displayed below/)).toBeInTheDocument();
   });
 
   it("shows loading state while saved detail loads", async () => {
@@ -177,6 +173,69 @@ describe("App", () => {
     await user.click(screen.getByRole("button", { name: "Retry saved detail" }));
 
     expect(await screen.findByText("Saved detail loaded.")).toBeInTheDocument();
+  });
+
+  it("renders full saved analytics dashboard from stored detail", async () => {
+    fetchMock
+      .mockResolvedValueOnce(jsonResponse(savedHistoryResponse()))
+      .mockResolvedValueOnce(jsonResponse(savedDetailResponse()));
+    const user = userEvent.setup();
+    render(<App />);
+
+    await user.click(screen.getByRole("button", { name: "Load saved analyses" }));
+    await screen.findByText("records.csv");
+    await user.click(screen.getByRole("button", { name: "Open detail" }));
+
+    expect(await screen.findByRole("heading", { name: "Saved analysis dashboard" })).toBeInTheDocument();
+    expect(screen.getByText("Viewing saved analysis")).toBeInTheDocument();
+    expect(screen.getByText("CSV validation passed.")).toBeInTheDocument();
+    expect(screen.getByRole("heading", { name: "GPA and credit summary" })).toBeInTheDocument();
+    expect(screen.getByRole("heading", { name: "Analytics charts" })).toBeInTheDocument();
+    expect(screen.getByRole("heading", { name: "Semester Performance" })).toBeInTheDocument();
+    expect(screen.getByRole("heading", { name: "Grade Distribution" })).toBeInTheDocument();
+    expect(screen.getByRole("heading", { name: "Course Performance" })).toBeInTheDocument();
+    expect(
+      screen.getByRole("heading", { name: "Courses that may need attention" }),
+    ).toBeInTheDocument();
+  });
+
+  it("does not call analyze endpoint when opening saved detail", async () => {
+    fetchMock
+      .mockResolvedValueOnce(jsonResponse(savedHistoryResponse()))
+      .mockResolvedValueOnce(jsonResponse(savedDetailResponse()));
+    const user = userEvent.setup();
+    render(<App />);
+
+    await user.click(screen.getByRole("button", { name: "Load saved analyses" }));
+    await screen.findByText("records.csv");
+    await user.click(screen.getByRole("button", { name: "Open detail" }));
+    await screen.findByRole("heading", { name: "Saved analysis dashboard" });
+
+    expect(
+      fetchMock.mock.calls.some(([url]) => String(url).includes("/academic-records/analyze")),
+    ).toBe(false);
+  });
+
+  it("shows safe fallback for saved detail without displayable analytics", async () => {
+    fetchMock
+      .mockResolvedValueOnce(jsonResponse(savedHistoryResponse()))
+      .mockResolvedValueOnce(
+        jsonResponse({
+          analysis_id: "analysis-001",
+          is_valid: false,
+          validation: { row_count: 1, errors: [] },
+          analytics: null,
+        }),
+      );
+    const user = userEvent.setup();
+    render(<App />);
+
+    await user.click(screen.getByRole("button", { name: "Load saved analyses" }));
+    await screen.findByText("records.csv");
+    await user.click(screen.getByRole("button", { name: "Open detail" }));
+
+    expect(await screen.findByText("Saved analysis cannot be displayed.")).toBeInTheDocument();
+    expect(screen.getByText("The stored response does not include displayable analytics data.")).toBeInTheDocument();
   });
 
   it("displays a safe saved analyses backend error", async () => {

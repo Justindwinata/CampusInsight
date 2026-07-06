@@ -1,49 +1,67 @@
 # CampusInsight
 
-CampusInsight is a full-stack portfolio project for a student performance analytics dashboard. The long-term goal is to help users upload academic records and explore GPA summaries, semester trends, grade distribution, course performance, credit summaries, at-risk courses, academic insights, and downloadable reports.
+CampusInsight is a full-stack student performance analytics dashboard built as a portfolio project. It validates academic record CSV files, calculates deterministic academic metrics, displays responsive analytics dashboards, saves analysis history locally, and generates standalone HTML reports from saved results.
 
-The current repository includes the application foundation, CSV validation workflow, backend deterministic academic analytics foundation, local SQLite saved-analysis persistence, history APIs, frontend analytics summary UI, accessible frontend charts, a saved analyses panel, a saved analysis detail dashboard, standalone HTML reports for saved analyses, and responsive local demo polish. It does not implement authentication, cloud persistence, deployment, or PDF export yet.
+The project is designed for local demos and GitHub review. It uses fictional sample data only and does not implement authentication, cloud persistence, deployment, PDF export, AI, or prediction logic.
+
+## Product Preview
+
+### Desktop
+
+![CampusInsight desktop home](assets/screenshots/home-desktop.png)
+
+![CampusInsight desktop dashboard charts](assets/screenshots/dashboard-charts-desktop.png)
+
+![CampusInsight standalone HTML report](assets/screenshots/html-report-desktop.png)
+
+### Mobile
+
+![CampusInsight mobile home](assets/screenshots/home-mobile.png)
+
+![CampusInsight mobile dashboard](assets/screenshots/dashboard-mobile.png)
+
+## Core Features
+
+- Strict academic record CSV validation with safe structured errors.
+- Deterministic GPA, credit, semester, grade, course, and course-risk analytics.
+- Responsive React dashboard with summary cards, charts, and accessible tables.
+- Local SQLite saved-analysis history.
+- Saved analysis detail view rendered from stored canonical JSON.
+- Standalone HTML report generation for saved analyses.
+- Fictional sample dataset for local demo and screenshots.
 
 ## Tech Stack
 
-- Frontend: React, TypeScript, Vite
+- Frontend: React, TypeScript, Vite, Recharts
 - Backend: FastAPI, Python
-- Future analytics: Pandas
-- Backend testing: pytest
-- Frontend testing: Vitest, React Testing Library
-- Formatting and linting: ruff, eslint, prettier
-- Package managers: Python venv, npm
+- Persistence: local SQLite
+- Testing: pytest, Vitest, React Testing Library
+- Quality: ruff, eslint, prettier
 
-## Project Structure
+## Architecture Summary
 
 ```text
-backend/    FastAPI application and backend tests
-frontend/   React + TypeScript + Vite application
-data/       Fictional sample datasets
-docs/       Roadmap, architecture, and decision log
+Academic CSV
+  -> FastAPI upload validation
+  -> deterministic analytics service
+  -> canonical analysis JSON
+  -> local SQLite saved history
+  -> React dashboard and HTML report
 ```
 
-## Current Backend Capability
+Uploaded CSV files are not stored. Successful analyses are saved as canonical JSON responses in local SQLite so saved details and reports do not require CSV re-upload or frontend recalculation.
 
-The backend defines a canonical academic record schema, a CSV validation service, `POST /academic-records/validate` for validating uploaded academic record CSV files, and `POST /academic-records/analyze` for deterministic analytics from validated CSV records. The validator checks required columns, rejects unknown columns, validates required values and numeric ranges, verifies accepted grade letters, and returns structured user-safe validation errors.
+## Demo Data
 
-The endpoint accepts multipart form data with a `file` field. Valid CSV structure with invalid rows returns HTTP 200 and `is_valid: false`; missing, empty, unreadable, or non-CSV uploads return HTTP 400 with a safe validation response.
+Use the fictional sample CSV:
 
-The analytics endpoint calculates GPA summary, semester performance, grade distribution, course performance, credit summary, and deterministic course risk indicators. Successful analyses are saved to a local SQLite database at `data/database/campusinsight.sqlite3`; invalid CSV analyses are not saved. Uploaded CSV files and absolute local paths are not stored.
+```text
+data/sample/academic_records_sample.csv
+```
 
-Saved analysis history is available through `GET /analyses`, `GET /analyses/{analysis_id}`, `DELETE /analyses/{analysis_id}`, and `GET /analyses/{analysis_id}/report.html`. Saved detail and HTML report responses use the canonical JSON originally produced by the analytics endpoint. The backend does not use AI, does not predict failure, and does not calculate analytics from invalid CSV records.
+The sample data contains synthetic student identifiers and fictional names. Do not use real student records in screenshots, commits, or public demos.
 
-## Current Frontend Capability
-
-The frontend includes a CSV validation and analytics section on the home page. Users can select an academic records CSV, submit it to the backend analytics endpoint, and review validation status, GPA summary, credit summary, semester performance, grade distribution, course performance, and course risk review.
-
-Analytics visualizations now include semester performance, grade distribution, and course score overview charts. The charts are based only on deterministic backend analytics returned from validated CSV records, and the detailed tables remain available as an accessible fallback.
-
-The frontend also includes a Saved Analyses panel that can load local history summaries, show an empty state, show safe backend error messages, delete saved items, open saved detail, render the full analytics dashboard from stored canonical JSON, and open a standalone HTML report. Saved detail viewing and report generation do not require CSV re-upload and do not recalculate metrics in the frontend.
-
-The current UI has been polished for local portfolio demos with consistent spacing, responsive dashboard behavior, readable table overflow, accessible state messaging, and clear saved-history actions.
-
-## Local Setup
+## Quick Start
 
 ### Backend
 
@@ -54,7 +72,11 @@ python -m pip install -e "backend[dev]"
 uvicorn campusinsight_api.main:app --app-dir backend/src --reload
 ```
 
-The API health endpoint is available at `http://127.0.0.1:8000/health`.
+Backend health check:
+
+```text
+http://127.0.0.1:8000/health
+```
 
 ### Frontend
 
@@ -64,7 +86,7 @@ npm install
 npm run dev
 ```
 
-The Vite development server prints the local application URL.
+The Vite dev server prints the local frontend URL.
 
 ## Developer Commands
 
@@ -76,27 +98,37 @@ make frontend-test
 make test
 make lint
 make format-check
+make frontend-build
 make check
 ```
 
-`make check` runs backend tests, frontend tests, linting, formatting checks, and the frontend production build.
+`make check` runs backend tests, frontend tests, linting, formatting checks, and the production frontend build.
 
-## Roadmap Summary
+## API Overview
 
-1. Foundation
-2. Data upload and validation
-3. Analytics engine
-4. Dashboard visualizations
-5. History and reports
-6. Release readiness
+- `GET /health`
+- `GET /`
+- `POST /academic-records/validate`
+- `POST /academic-records/analyze`
+- `GET /analyses`
+- `GET /analyses/{analysis_id}`
+- `DELETE /analyses/{analysis_id}`
+- `GET /analyses/{analysis_id}/report.html`
 
-See [docs/ROADMAP.md](docs/ROADMAP.md) for the phased roadmap.
+## Documentation
 
-## Limitations
+- [Roadmap](docs/ROADMAP.md)
+- [System Architecture](docs/SYSTEM_ARCHITECTURE.md)
+- [Decision Log](docs/DECISION_LOG.md)
+- [Demo Assets](docs/DEMO_ASSETS.md)
 
-- Local persistence is SQLite-only and intended for local portfolio development.
-- No cloud database exists yet.
-- No authentication exists yet.
-- Deployment is not configured yet.
-- Standalone HTML reports exist for saved analyses; PDF export is not implemented yet.
-- Analytics are deterministic backend calculations only; no AI or prediction exists.
+## Limitations and Safety Boundaries
+
+- Local SQLite persistence only.
+- No cloud database.
+- No authentication.
+- No deployment configuration.
+- No PDF export.
+- No AI or prediction logic.
+- No academic failure prediction or guaranteed outcome claims.
+- Not positioned as production-ready software.

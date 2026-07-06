@@ -2,7 +2,7 @@
 
 CampusInsight is a full-stack portfolio project for a student performance analytics dashboard. The long-term goal is to help users upload academic records and explore GPA summaries, semester trends, grade distribution, course performance, credit summaries, at-risk courses, academic insights, and downloadable reports.
 
-The current repository includes the application foundation, CSV validation workflow, backend deterministic academic analytics foundation, frontend analytics summary UI, and accessible frontend charts. It does not implement database persistence, authentication, history, or reports yet.
+The current repository includes the application foundation, CSV validation workflow, backend deterministic academic analytics foundation, local SQLite saved-analysis persistence, history APIs, frontend analytics summary UI, accessible frontend charts, and a minimal saved analyses panel. It does not implement authentication, cloud persistence, full saved result detail pages, or reports yet.
 
 ## Tech Stack
 
@@ -29,13 +29,17 @@ The backend defines a canonical academic record schema, a CSV validation service
 
 The endpoint accepts multipart form data with a `file` field. Valid CSV structure with invalid rows returns HTTP 200 and `is_valid: false`; missing, empty, unreadable, or non-CSV uploads return HTTP 400 with a safe validation response.
 
-The analytics endpoint calculates GPA summary, semester performance, grade distribution, course performance, credit summary, and deterministic course risk indicators. It does not use AI, does not predict failure, and does not calculate analytics from invalid CSV records.
+The analytics endpoint calculates GPA summary, semester performance, grade distribution, course performance, credit summary, and deterministic course risk indicators. Successful analyses are saved to a local SQLite database at `data/database/campusinsight.sqlite3`; invalid CSV analyses are not saved. Uploaded CSV files and absolute local paths are not stored.
+
+Saved analysis history is available through `GET /analyses`, `GET /analyses/{analysis_id}`, and `DELETE /analyses/{analysis_id}`. The backend does not use AI, does not predict failure, and does not calculate analytics from invalid CSV records.
 
 ## Current Frontend Capability
 
 The frontend includes a CSV validation and analytics section on the home page. Users can select an academic records CSV, submit it to the backend analytics endpoint, and review validation status, GPA summary, credit summary, semester performance, grade distribution, course performance, and course risk review.
 
 Analytics visualizations now include semester performance, grade distribution, and course score overview charts. The charts are based only on deterministic backend analytics returned from validated CSV records, and the detailed tables remain available as an accessible fallback.
+
+The frontend also includes a minimal Saved Analyses panel that can load local history summaries, show an empty state, show safe backend error messages, delete saved items, and display selected metadata. It does not render the full saved result dashboard from history yet.
 
 ## Local Setup
 
@@ -88,6 +92,9 @@ See [docs/ROADMAP.md](docs/ROADMAP.md) for the phased roadmap.
 
 ## Limitations
 
-- No database persistence exists yet.
+- Local persistence is SQLite-only and intended for local portfolio development.
+- No cloud database exists yet.
+- No authentication exists yet.
+- No full saved result detail page is implemented yet.
 - No downloadable reports are implemented yet.
-- Analytics are deterministic backend calculations only; no AI prediction exists.
+- Analytics are deterministic backend calculations only; no AI or prediction exists.

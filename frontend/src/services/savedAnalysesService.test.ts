@@ -1,10 +1,6 @@
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 
-import {
-  deleteSavedAnalysis,
-  getSavedAnalysis,
-  listSavedAnalyses,
-} from "./savedAnalysesService";
+import { deleteSavedAnalysis, getSavedAnalysis, listSavedAnalyses } from "./savedAnalysesService";
 
 const fetchMock = vi.fn();
 
@@ -63,9 +59,7 @@ describe("savedAnalysesService", () => {
   });
 
   it("deletes a saved analysis", async () => {
-    fetchMock.mockResolvedValueOnce(
-      jsonResponse({ deleted: true, analysis_id: "analysis-001" }),
-    );
+    fetchMock.mockResolvedValueOnce(jsonResponse({ deleted: true, analysis_id: "analysis-001" }));
 
     const response = await deleteSavedAnalysis("analysis-001");
 
@@ -76,9 +70,7 @@ describe("savedAnalysesService", () => {
   });
 
   it("throws safe errors for missing saved analyses", async () => {
-    fetchMock.mockResolvedValueOnce(
-      jsonResponse({ detail: "Saved analysis was not found." }, 404),
-    );
+    fetchMock.mockResolvedValueOnce(jsonResponse({ detail: "Saved analysis was not found." }, 404));
 
     await expect(getSavedAnalysis("missing")).rejects.toThrow("Saved analysis was not found.");
   });

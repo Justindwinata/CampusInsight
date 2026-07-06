@@ -25,7 +25,7 @@ Current status: the schema, CSV validation service, backend CSV validation endpo
 - Calculate GPA summary, semester trends, credit totals, grade distribution, course performance, and course risk indicators.
 - Design test coverage around academic metric rules.
 
-Current status: backend deterministic analytics endpoint and frontend analytics summary UI exist. Pandas expansion, persistence, AI, and prediction are not implemented.
+Current status: backend deterministic analytics endpoint and frontend analytics summary UI exist. Pandas expansion, AI, and prediction are not implemented.
 
 ## 4. Dashboard Visualizations
 
@@ -33,13 +33,17 @@ Current status: backend deterministic analytics endpoint and frontend analytics 
 - Add accessible charts for GPA trends, grade mix, credits, and course performance.
 - Keep visualizations honest by displaying only user-provided or sample-derived data.
 
-Current status: frontend summary cards, tables, and accessible charts exist for deterministic analytics results. Tables remain available as a fallback. Persistence, reports, AI, and prediction remain future work.
+Current status: frontend summary cards, tables, and accessible charts exist for deterministic analytics results. Tables remain available as a fallback. Reports, AI, and prediction remain future work.
 
 ## 5. History and Reports
 
 - Add SQLite persistence for local project history.
+- Add backend APIs for listing, retrieving, and deleting saved analyses.
+- Add minimal frontend saved analyses panel.
 - Generate downloadable academic insight reports.
 - Track analysis runs and report metadata.
+
+Current status: local SQLite persistence, saved analysis history APIs, and a minimal frontend saved analyses foundation exist. Uploaded CSV files are not stored, local database files are ignored by Git, and full saved result detail pages remain future work.
 
 ## 6. Release Readiness
 

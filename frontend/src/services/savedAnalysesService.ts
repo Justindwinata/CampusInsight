@@ -129,5 +129,9 @@ function isDeleteSavedAnalysisResponse(value: unknown): value is DeleteSavedAnal
 }
 
 function isDetailResponse(value: unknown): value is { detail: string } {
-  return !!value && typeof value === "object" && typeof (value as { detail?: unknown }).detail === "string";
+  return (
+    !!value &&
+    typeof value === "object" &&
+    typeof (value as { detail?: unknown }).detail === "string"
+  );
 }

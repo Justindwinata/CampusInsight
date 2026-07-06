@@ -6,7 +6,9 @@
 - Use Vite for fast local frontend development and production builds.
 - Use FastAPI for the backend because it provides clear API contracts, Python ergonomics, and simple testability.
 - Plan Pandas for future analytics because academic records are naturally tabular.
-- Plan SQLite later for local persistence once history and saved analysis runs are needed.
+- Use SQLite for local saved analysis persistence so the portfolio project can support history without introducing cloud infrastructure.
+- Store canonical analysis response JSON, not uploaded CSV files, to preserve the computed result while avoiding raw file retention.
+- Ignore local database files under `data/database/` so personal local history is not committed to Git.
 - Do not add Docker initially to keep the first bootstrap simple for local development.
 - Do not add authentication initially because the first portfolio version is focused on local academic analytics workflows.
-- Do not implement analytics, upload, charts, reports, or database persistence during this bootstrap.
+- Do not add cloud database persistence, AI, prediction logic, or report generation during the local history foundation.

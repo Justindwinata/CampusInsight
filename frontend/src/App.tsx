@@ -178,10 +178,11 @@ function SavedAnalysesPanel() {
     try {
       const response = await listSavedAnalyses();
       setSavedAnalyses(response.analyses);
-      setSelectedAnalysis((currentSelection) =>
-        response.analyses.find(
-          (analysis) => analysis.analysis_id === currentSelection?.analysis_id,
-        ) ?? null,
+      setSelectedAnalysis(
+        (currentSelection) =>
+          response.analyses.find(
+            (analysis) => analysis.analysis_id === currentSelection?.analysis_id,
+          ) ?? null,
       );
       setHasLoadedHistory(true);
     } catch (error) {

@@ -54,7 +54,9 @@ describe("App", () => {
     await user.click(screen.getByRole("button", { name: "Load saved analyses" }));
 
     expect(await screen.findByText("No saved analyses yet.")).toBeInTheDocument();
-    expect(screen.getByText("Run a valid CSV analysis to save a local history entry.")).toBeInTheDocument();
+    expect(
+      screen.getByText("Run a valid CSV analysis to save a local history entry."),
+    ).toBeInTheDocument();
   });
 
   it("loads and displays saved analysis summaries", async () => {
@@ -103,7 +105,9 @@ describe("App", () => {
     expect(screen.getByText("analysis-001")).toBeInTheDocument();
     expect(screen.getByText("Source file")).toBeInTheDocument();
     expect(screen.queryByRole("heading", { name: "Analytics charts" })).not.toBeInTheDocument();
-    expect(screen.queryByRole("heading", { name: "GPA and credit summary" })).not.toBeInTheDocument();
+    expect(
+      screen.queryByRole("heading", { name: "GPA and credit summary" }),
+    ).not.toBeInTheDocument();
   });
 
   it("displays a safe saved analyses backend error", async () => {

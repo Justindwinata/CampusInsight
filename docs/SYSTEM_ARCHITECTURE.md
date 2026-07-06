@@ -5,11 +5,12 @@
 CampusInsight currently contains two independent application foundations:
 
 - `backend/`: FastAPI service with health and root status endpoints.
+- `backend/src/campusinsight_api/api/`: API routes, including CSV upload validation.
 - `backend/src/campusinsight_api/domain/`: academic record schema definitions.
 - `backend/src/campusinsight_api/services/`: CSV validation service for academic records.
 - `frontend/`: React + TypeScript + Vite application shell.
 
-No analytics, file upload endpoint, frontend upload UI, chart rendering, database persistence, authentication, or report generation is implemented yet.
+No analytics, frontend upload UI, chart rendering, database persistence, authentication, or report generation is implemented yet.
 
 ## Intended Future Pipeline
 
@@ -25,7 +26,7 @@ CSV/Excel Upload
 
 ## Backend Boundary
 
-The backend owns API contracts, validation, academic metric computation, and future persistence. The current implementation includes service-layer CSV validation, but it is not exposed through an upload endpoint yet.
+The backend owns API contracts, validation, academic metric computation, and future persistence. The current implementation includes service-layer CSV validation and `POST /academic-records/validate`, which accepts one CSV upload and returns the structured validation result without storing records.
 
 ## Frontend Boundary
 
@@ -33,7 +34,7 @@ The frontend will own the user workflow for upload, analysis review, dashboard e
 
 ## Future Work Markers
 
-- Upload handling is future work.
+- Frontend-to-backend upload workflow is future work.
 - Frontend upload UI is future work.
 - Pandas data cleaning and academic metric computation are future work.
 - SQLite local persistence is future work.

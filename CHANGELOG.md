@@ -6,6 +6,7 @@ All notable changes to CampusInsight will be documented in this file.
 
 ### Added
 
+- Add `POST /academic-records/validate` backend endpoint for multipart CSV validation.
 - Add canonical academic record schema and backend CSV validation service.
 - Add backend tests and invalid CSV fixtures for schema validation rules.
 - Bootstrap FastAPI backend foundation with root and health endpoints.

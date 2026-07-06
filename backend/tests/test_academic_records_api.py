@@ -1,14 +1,25 @@
 from pathlib import Path
 
+import pytest
 from fastapi.testclient import TestClient
 
+from campusinsight_api.api.academic_records import get_saved_analysis_repository
 from campusinsight_api.main import app
+from campusinsight_api.services.saved_analysis_repository import SavedAnalysisRepository
 
 client = TestClient(app)
 
 ROOT_DIR = Path(__file__).resolve().parents[2]
 SAMPLE_CSV = ROOT_DIR / "data" / "sample" / "academic_records_sample.csv"
 FIXTURES_DIR = Path(__file__).parent / "fixtures"
+
+
+@pytest.fixture()
+def saved_analysis_repository(tmp_path: Path):
+    repository = SavedAnalysisRepository(tmp_path / "campusinsight.sqlite3")
+    app.dependency_overrides[get_saved_analysis_repository] = lambda: repository
+    yield repository
+    app.dependency_overrides.clear()
 
 
 def test_valid_csv_upload_returns_valid_result() -> None:
@@ -112,11 +123,14 @@ def test_upload_response_does_not_expose_stack_traces() -> None:
     assert str(ROOT_DIR) not in response_body
 
 
-def test_analyze_valid_csv_returns_analytics_result() -> None:
+def test_analyze_valid_csv_returns_analytics_result(
+    saved_analysis_repository: SavedAnalysisRepository,
+) -> None:
     response = _post_file("/academic-records/analyze", SAMPLE_CSV)
 
     payload = response.json()
     assert response.status_code == 200
+    assert payload["analysis_id"]
     assert payload["is_valid"] is True
     assert payload["validation"]["row_count"] == 16
     assert payload["validation"]["errors"] == []
@@ -126,18 +140,51 @@ def test_analyze_valid_csv_returns_analytics_result() -> None:
     assert len(payload["analytics"]["course_performance"]) == 16
     assert payload["analytics"]["credit_summary"]["total_credits"] == 46.0
     assert payload["analytics"]["course_risks"]
+    assert saved_analysis_repository.get(payload["analysis_id"]) is not None
 
 
-def test_analyze_invalid_csv_returns_validation_errors_without_analytics() -> None:
+def test_analyze_invalid_csv_returns_validation_errors_without_analytics(
+    saved_analysis_repository: SavedAnalysisRepository,
+) -> None:
     response = _post_file("/academic-records/analyze", FIXTURES_DIR / "invalid_bad_values.csv")
 
     payload = response.json()
     assert response.status_code == 200
+    assert "analysis_id" not in payload
     assert payload["is_valid"] is False
     assert payload["validation"]["row_count"] == 3
     assert payload["validation"]["errors"][0]["row_number"] == 2
     assert payload["validation"]["errors"][0]["field"] == "semester"
     assert payload["analytics"] is None
+    assert saved_analysis_repository.list() == []
+
+
+def test_analyze_valid_csv_saves_canonical_response_json(
+    saved_analysis_repository: SavedAnalysisRepository,
+) -> None:
+    response = _post_file("/academic-records/analyze", SAMPLE_CSV)
+
+    payload = response.json()
+    saved_analysis = saved_analysis_repository.get(payload["analysis_id"])
+
+    assert saved_analysis is not None
+    assert saved_analysis.analysis == payload
+    assert saved_analysis.summary.source_filename == "academic_records_sample.csv"
+    assert saved_analysis.summary.row_count == 16
+    assert saved_analysis.summary.total_courses == 16
+    assert saved_analysis.summary.weighted_gpa == 3.11
+    assert saved_analysis.summary.average_score == 80.0
+
+
+def test_analyze_valid_csv_does_not_store_uploaded_csv_file(
+    saved_analysis_repository: SavedAnalysisRepository,
+) -> None:
+    response = _post_file("/academic-records/analyze", SAMPLE_CSV)
+
+    saved_analysis = saved_analysis_repository.get(response.json()["analysis_id"])
+
+    assert saved_analysis is not None
+    assert "student_id,student_name" not in str(saved_analysis.analysis)
 
 
 def test_analyze_upload_error_response_does_not_expose_stack_traces() -> None:

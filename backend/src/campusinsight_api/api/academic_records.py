@@ -1,6 +1,7 @@
 from typing import Annotated
+from uuid import uuid4
 
-from fastapi import APIRouter, File, UploadFile
+from fastapi import APIRouter, Depends, File, UploadFile
 from fastapi.encoders import jsonable_encoder
 from starlette.responses import JSONResponse
 
@@ -10,6 +11,7 @@ from campusinsight_api.services.csv_validation import (
     ValidationError,
     validate_academic_records_csv_content,
 )
+from campusinsight_api.services.saved_analysis_repository import SavedAnalysisRepository
 
 router = APIRouter(prefix="/academic-records", tags=["academic-records"])
 
@@ -18,6 +20,10 @@ SUPPORTED_CSV_CONTENT_TYPES = {
     "application/csv",
     "application/vnd.ms-excel",
 }
+
+
+def get_saved_analysis_repository() -> SavedAnalysisRepository:
+    return SavedAnalysisRepository()
 
 
 @router.post("/validate", response_model=None)
@@ -33,6 +39,7 @@ async def validate_academic_records_upload(
 
 @router.post("/analyze", response_model=None)
 async def analyze_academic_records_upload(
+    repository: Annotated[SavedAnalysisRepository, Depends(get_saved_analysis_repository)],
     file: Annotated[UploadFile | None, File()] = None,
 ) -> JSONResponse:
     csv_content, error_message = await _read_csv_upload_content(file)
@@ -55,18 +62,30 @@ async def analyze_academic_records_upload(
         )
 
     analytics = calculate_academic_analytics(validation_result.records)
-    return JSONResponse(
-        content=jsonable_encoder(
-            {
-                "is_valid": True,
-                "validation": {
-                    "row_count": validation_result.row_count,
-                    "errors": validation_result.errors,
-                },
-                "analytics": analytics,
-            }
-        )
+    analysis_id = str(uuid4())
+    response_content = jsonable_encoder(
+        {
+            "analysis_id": analysis_id,
+            "is_valid": True,
+            "validation": {
+                "row_count": validation_result.row_count,
+                "errors": validation_result.errors,
+            },
+            "analytics": analytics,
+        }
     )
+    gpa_summary = response_content["analytics"]["gpa_summary"]
+    repository.save(
+        analysis_id=analysis_id,
+        source_filename=file.filename if file else "uploaded.csv",
+        row_count=validation_result.row_count,
+        total_courses=gpa_summary["total_courses"],
+        weighted_gpa=gpa_summary["weighted_gpa"],
+        average_score=gpa_summary["average_score"],
+        analysis=response_content,
+    )
+
+    return JSONResponse(content=response_content)
 
 
 async def _read_csv_upload_content(file: UploadFile | None) -> tuple[str | None, str | None]:

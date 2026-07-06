@@ -57,6 +57,30 @@ describe("App", () => {
     expect(screen.getByText("46")).toBeInTheDocument();
   });
 
+  it("displays semester, grade distribution, and course performance tables", async () => {
+    fetchMock.mockResolvedValueOnce(jsonResponse(validAnalysisResponse()));
+    const user = userEvent.setup();
+    render(<App />);
+
+    await uploadCsv(user);
+    await user.click(screen.getByRole("button", { name: "Analyze CSV" }));
+
+    expect(
+      await screen.findByRole("heading", { name: "Semester Performance" }),
+    ).toBeInTheDocument();
+    expect(screen.getByRole("columnheader", { name: "Academic year" })).toBeInTheDocument();
+    expect(screen.getByText("2024/2025")).toBeInTheDocument();
+
+    expect(screen.getByRole("heading", { name: "Grade Distribution" })).toBeInTheDocument();
+    expect(screen.getAllByRole("columnheader", { name: "Grade letter" })).toHaveLength(2);
+    expect(screen.getByText("18.75%")).toBeInTheDocument();
+
+    expect(screen.getByRole("heading", { name: "Course Performance" })).toBeInTheDocument();
+    expect(screen.getByRole("columnheader", { name: "Course code" })).toBeInTheDocument();
+    expect(screen.getByText("CS101")).toBeInTheDocument();
+    expect(screen.getByText("Introduction to Programming")).toBeInTheDocument();
+  });
+
   it("displays validation errors for an invalid CSV response", async () => {
     fetchMock.mockResolvedValueOnce(
       jsonResponse({
@@ -179,9 +203,27 @@ function validAnalysisResponse() {
         best_course: "CS102 - Data Structures",
         weakest_course: "CS101 - Introduction to Programming",
       },
-      semester_performance: [],
-      grade_distribution: [],
-      course_performance: [],
+      semester_performance: [
+        {
+          semester: 1,
+          academic_year: "2024/2025",
+          course_count: 8,
+          credits: 24,
+          weighted_gpa: 3.15,
+          average_score: 79.88,
+        },
+      ],
+      grade_distribution: [{ grade_letter: "A", count: 3, percentage: 18.75 }],
+      course_performance: [
+        {
+          course_code: "CS101",
+          course_name: "Introduction to Programming",
+          credits: 3,
+          grade_letter: "A",
+          grade_point: 4,
+          score: 91,
+        },
+      ],
       credit_summary: {
         total_credits: 46,
         attempted_courses: 16,

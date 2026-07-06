@@ -358,6 +358,52 @@ input[type="file"]:focus-visible,
   line-height: 1.25;
 }
 
+.table-section {
+  margin-top: 24px;
+}
+
+.table-section h3 {
+  margin: 0 0 12px;
+  color: #111827;
+}
+
+.table-scroll {
+  overflow-x: auto;
+  border: 1px solid #dfe5ee;
+  border-radius: 8px;
+  background: #ffffff;
+}
+
+table {
+  width: 100%;
+  min-width: 680px;
+  border-collapse: collapse;
+}
+
+th,
+td {
+  padding: 14px 16px;
+  border-bottom: 1px solid #e6ebf2;
+  text-align: left;
+  vertical-align: top;
+}
+
+th {
+  color: #334155;
+  background: #f4f7fa;
+  font-size: 0.86rem;
+  font-weight: 900;
+}
+
+td {
+  color: #475569;
+  line-height: 1.45;
+}
+
+tbody tr:last-child td {
+  border-bottom: 0;
+}
+
 .capability-grid {
   display: grid;
   grid-template-columns: repeat(5, minmax(0, 1fr));

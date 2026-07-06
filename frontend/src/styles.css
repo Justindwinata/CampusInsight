@@ -23,6 +23,7 @@ body {
   margin: 0;
   min-width: 320px;
   min-height: 100vh;
+  overflow-x: clip;
 }
 
 .app-shell {
@@ -221,6 +222,9 @@ input[type="file"]:focus-visible,
   color: #ffffff;
   cursor: pointer;
   font-weight: 800;
+  line-height: 1.2;
+  text-align: center;
+  white-space: normal;
 }
 
 .primary-button:disabled {
@@ -238,6 +242,9 @@ input[type="file"]:focus-visible,
   border-radius: 8px;
   cursor: pointer;
   font-weight: 800;
+  line-height: 1.2;
+  text-align: center;
+  white-space: normal;
 }
 
 .secondary-button,
@@ -450,6 +457,8 @@ input[type="file"]:focus-visible,
 
 .chart-frame {
   margin-top: 18px;
+  min-width: 0;
+  overflow: hidden;
 }
 
 .chart-canvas {
@@ -477,7 +486,9 @@ input[type="file"]:focus-visible,
 }
 
 .table-scroll {
+  max-width: 100%;
   overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
   border: 1px solid #dfe5ee;
   border-radius: 8px;
   background: #ffffff;
@@ -507,6 +518,7 @@ th {
 td {
   color: #475569;
   line-height: 1.45;
+  overflow-wrap: anywhere;
 }
 
 tbody tr:last-child td {
@@ -730,6 +742,10 @@ tbody tr:last-child td {
     padding: 28px;
   }
 
+  .status-panel {
+    min-height: auto;
+  }
+
   .error-item {
     grid-template-columns: 1fr;
   }
@@ -745,6 +761,18 @@ tbody tr:last-child td {
     padding: 28px 0;
   }
 
+  .upload-section,
+  .analytics-section,
+  .saved-analyses-section,
+  .saved-dashboard-section,
+  .capability-section {
+    padding-top: 40px;
+  }
+
+  .page-section {
+    margin-top: 40px;
+  }
+
   .hero,
   .upload-form,
   .schema-hint,
@@ -755,12 +783,20 @@ tbody tr:last-child td {
     padding: 18px;
   }
 
+  h1 {
+    font-size: 2.4rem;
+  }
+
+  .intro {
+    font-size: 1rem;
+  }
+
   .schema-hint ul {
     grid-template-columns: 1fr;
   }
 
   .chart-canvas {
-    height: 280px;
+    height: 260px;
   }
 
   .metric-card strong {
@@ -769,5 +805,51 @@ tbody tr:last-child td {
 
   .saved-history-item dl {
     grid-template-columns: 1fr;
+  }
+
+  .saved-detail-actions,
+  .saved-history-controls {
+    align-items: stretch;
+    flex-direction: column;
+  }
+
+  .primary-button,
+  .secondary-button,
+  .danger-button,
+  .secondary-link-button {
+    width: 100%;
+  }
+}
+
+@media (max-width: 360px) {
+  .app-shell {
+    width: min(100% - 16px, 1120px);
+  }
+
+  .hero,
+  .upload-form,
+  .schema-hint,
+  .result-panel,
+  .chart-card,
+  .saved-history-item,
+  .metadata-preview,
+  .risk-card,
+  .capability-card {
+    padding: 16px;
+  }
+
+  .result-summary,
+  .metric-grid,
+  .risk-grid {
+    gap: 12px;
+  }
+
+  table {
+    min-width: 560px;
+  }
+
+  th,
+  td {
+    padding: 12px;
   }
 }

@@ -81,6 +81,24 @@ describe("App", () => {
     expect(screen.getAllByText("Introduction to Programming")).toHaveLength(2);
   });
 
+  it("displays the semester performance chart after valid analysis", async () => {
+    fetchMock.mockResolvedValueOnce(jsonResponse(validAnalysisResponse()));
+    const user = userEvent.setup();
+    render(<App />);
+
+    await uploadCsv(user);
+    await user.click(screen.getByRole("button", { name: "Analyze CSV" }));
+
+    expect(await screen.findByRole("heading", { name: "Analytics charts" })).toBeInTheDocument();
+    expect(screen.getByRole("heading", { name: "Semester Performance Chart" })).toBeInTheDocument();
+    expect(
+      screen.getByLabelText(
+        "Semester performance chart comparing GPA, average score, and credits.",
+      ),
+    ).toBeInTheDocument();
+    expect(screen.getByRole("heading", { name: "Semester Performance" })).toBeInTheDocument();
+  });
+
   it("displays course risk review with safe language", async () => {
     fetchMock.mockResolvedValueOnce(jsonResponse(validAnalysisResponse()));
     const user = userEvent.setup();
@@ -204,11 +222,12 @@ describe("App", () => {
     expect(screen.queryByText("4.0 GPA")).not.toBeInTheDocument();
   });
 
-  it("does not render charts or failure prediction wording", () => {
+  it("does not render charts before analysis or failure prediction wording", () => {
     const { container } = render(<App />);
 
     expect(container.querySelector("canvas")).not.toBeInTheDocument();
     expect(container.querySelector("svg")).not.toBeInTheDocument();
+    expect(screen.queryByRole("heading", { name: "Analytics charts" })).not.toBeInTheDocument();
     expect(screen.queryByText(/student will fail/i)).not.toBeInTheDocument();
     expect(screen.queryByText(/bad student/i)).not.toBeInTheDocument();
     expect(screen.queryByText(/guaranteed failure/i)).not.toBeInTheDocument();

@@ -4,6 +4,7 @@ import {
   AcademicRecordsAnalysisResult,
   analyzeAcademicRecordsCsv,
 } from "./services/academicRecordsService";
+import SemesterPerformanceChart from "./components/charts/SemesterPerformanceChart";
 
 const capabilities = [
   "Academic Analytics Dashboard",
@@ -130,6 +131,7 @@ function App() {
           uploadError={uploadError}
         />
         <AnalyticsSummary result={analysisResult} />
+        <AcademicVisualizations result={analysisResult} />
         <AnalyticsTables result={analysisResult} />
         <CourseRiskReview result={analysisResult} />
       </section>
@@ -283,6 +285,28 @@ function AnalyticsSummary({ result }: { result: AcademicRecordsAnalysisResult | 
             <strong>{value}</strong>
           </article>
         ))}
+      </div>
+    </section>
+  );
+}
+
+function AcademicVisualizations({ result }: { result: AcademicRecordsAnalysisResult | null }) {
+  if (!result?.is_valid || !result.analytics) {
+    return null;
+  }
+
+  return (
+    <section className="analytics-section" aria-labelledby="visualizations-title">
+      <div className="section-heading">
+        <p className="eyebrow">Academic Visualizations</p>
+        <h2 id="visualizations-title">Analytics charts</h2>
+        <p className="section-copy">
+          Visual summaries use the same deterministic backend analytics shown in the tables below.
+        </p>
+      </div>
+
+      <div className="chart-grid">
+        <SemesterPerformanceChart semesters={result.analytics.semester_performance} />
       </div>
     </section>
   );

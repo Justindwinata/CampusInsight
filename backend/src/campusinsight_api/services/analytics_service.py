@@ -2,6 +2,8 @@ from decimal import ROUND_HALF_UP, Decimal
 
 from campusinsight_api.domain.academic_records import AcademicRecord
 from campusinsight_api.domain.analytics import (
+    CoursePerformanceItem,
+    CourseRiskItem,
     CreditSummary,
     GpaSummary,
     GradeDistributionItem,
@@ -100,6 +102,60 @@ def calculate_credit_summary(records: list[AcademicRecord]) -> CreditSummary:
         attempted_courses=len(records),
         average_credits_per_course=_round_metric(total_credits / len(records)),
     )
+
+
+def calculate_course_performance(records: list[AcademicRecord]) -> list[CoursePerformanceItem]:
+    return [
+        CoursePerformanceItem(
+            course_code=record.course_code,
+            course_name=record.course_name,
+            credits=_round_metric(record.credits),
+            grade_letter=record.grade_letter,
+            grade_point=_round_metric(record.grade_point),
+            score=_round_metric(record.score),
+        )
+        for record in records
+    ]
+
+
+def detect_course_risks(records: list[AcademicRecord]) -> list[CourseRiskItem]:
+    risks: list[CourseRiskItem] = []
+    for record in records:
+        reasons = _risk_reasons(record)
+        if not reasons:
+            continue
+
+        risks.append(
+            CourseRiskItem(
+                course_code=record.course_code,
+                course_name=record.course_name,
+                risk_level=_risk_level(record, reasons),
+                reasons=reasons,
+            )
+        )
+
+    return risks
+
+
+def _risk_reasons(record: AcademicRecord) -> list[str]:
+    reasons: list[str] = []
+    if record.score < 70:
+        reasons.append("Score is below 70.")
+    if record.grade_point < 2.5:
+        reasons.append("Grade point is below 2.5.")
+    if record.grade_letter in {"C", "D", "E"}:
+        reasons.append("Grade letter is C, D, or E.")
+    if record.credits >= 3 and (record.score < 75 or record.grade_point <= 2.7):
+        reasons.append("High-credit course has weak performance indicators.")
+    return reasons
+
+
+def _risk_level(record: AcademicRecord, reasons: list[str]) -> str:
+    if record.score < 70 or record.grade_letter in {"D", "E"} or len(reasons) >= 3:
+        return "high"
+    if record.grade_point < 2.5 or record.grade_letter == "C" or len(reasons) >= 1:
+        return "medium"
+    return "low"
 
 
 def _format_course(record: AcademicRecord) -> str:

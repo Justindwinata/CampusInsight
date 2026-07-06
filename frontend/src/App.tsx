@@ -1,8 +1,8 @@
 import { FormEvent, useId, useState } from "react";
 
 import {
-  AcademicRecordsValidationResult,
-  validateAcademicRecordsCsv,
+  AcademicRecordsAnalysisResult,
+  analyzeAcademicRecordsCsv,
 } from "./services/academicRecordsService";
 
 const capabilities = [
@@ -16,34 +16,32 @@ const capabilities = [
 function App() {
   const fileInputId = useId();
   const [selectedFile, setSelectedFile] = useState<File | null>(null);
-  const [validationResult, setValidationResult] = useState<AcademicRecordsValidationResult | null>(
-    null,
-  );
+  const [analysisResult, setAnalysisResult] = useState<AcademicRecordsAnalysisResult | null>(null);
   const [uploadError, setUploadError] = useState<string | null>(null);
-  const [isValidating, setIsValidating] = useState(false);
+  const [isAnalyzing, setIsAnalyzing] = useState(false);
 
   async function handleSubmit(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
-    setValidationResult(null);
+    setAnalysisResult(null);
     setUploadError(null);
 
     if (!selectedFile) {
-      setUploadError("Choose an academic records CSV file before validating.");
+      setUploadError("Choose an academic records CSV file before analyzing.");
       return;
     }
 
-    setIsValidating(true);
+    setIsAnalyzing(true);
     try {
-      const result = await validateAcademicRecordsCsv(selectedFile);
-      setValidationResult(result);
+      const result = await analyzeAcademicRecordsCsv(selectedFile);
+      setAnalysisResult(result);
     } catch (error) {
       setUploadError(
         error instanceof Error
           ? error.message
-          : "The CSV file could not be validated. Please retry.",
+          : "The CSV file could not be analyzed. Please retry.",
       );
     } finally {
-      setIsValidating(false);
+      setIsAnalyzing(false);
     }
   }
 
@@ -63,7 +61,7 @@ function App() {
         <aside className="status-panel" aria-label="Backend status">
           <span className="status-label">Backend status</span>
           <strong>CSV validation API ready</strong>
-          <p>Academic record CSV files can now be validated through the backend endpoint.</p>
+          <p>Academic record CSV files can now be validated and analyzed through the backend.</p>
         </aside>
       </section>
 
@@ -87,7 +85,7 @@ function App() {
               accept=".csv,text/csv"
               onChange={(event) => {
                 setSelectedFile(event.target.files?.[0] ?? null);
-                setValidationResult(null);
+                setAnalysisResult(null);
                 setUploadError(null);
               }}
             />
@@ -99,9 +97,9 @@ function App() {
             <button
               className="primary-button"
               type="submit"
-              disabled={!selectedFile || isValidating}
+              disabled={!selectedFile || isAnalyzing}
             >
-              {isValidating ? "Validating CSV..." : "Validate CSV"}
+              {isAnalyzing ? "Analyzing CSV..." : "Analyze CSV"}
             </button>
           </form>
 
@@ -127,10 +125,11 @@ function App() {
 
         <ValidationResultPanel
           fileName={selectedFile?.name}
-          isLoading={isValidating}
-          result={validationResult}
+          isLoading={isAnalyzing}
+          result={analysisResult}
           uploadError={uploadError}
         />
+        <AnalyticsSummary result={analysisResult} />
       </section>
 
       <section className="capability-section" aria-labelledby="capabilities-title">
@@ -155,7 +154,7 @@ function App() {
 type ValidationResultPanelProps = {
   fileName?: string;
   isLoading: boolean;
-  result: AcademicRecordsValidationResult | null;
+  result: AcademicRecordsAnalysisResult | null;
   uploadError: string | null;
 };
 
@@ -168,8 +167,8 @@ function ValidationResultPanel({
   if (isLoading) {
     return (
       <section className="result-panel" aria-live="polite" aria-busy="true">
-        <h3>Validating CSV...</h3>
-        <p>CampusInsight is checking the selected file against the academic record schema.</p>
+        <h3>Analyzing CSV...</h3>
+        <p>CampusInsight is validating the selected file and preparing deterministic analytics.</p>
       </section>
     );
   }
@@ -177,7 +176,7 @@ function ValidationResultPanel({
   if (uploadError) {
     return (
       <section className="result-panel result-panel-error" role="alert">
-        <h3>CSV upload could not be validated.</h3>
+        <h3>CSV upload could not be analyzed.</h3>
         <p>{uploadError}</p>
       </section>
     );
@@ -187,7 +186,9 @@ function ValidationResultPanel({
     return (
       <section className="result-panel result-panel-empty" aria-live="polite">
         <h3>Validation result</h3>
-        <p>Select a CSV file and submit it to see schema and row-level validation results.</p>
+        <p>
+          Select a CSV file and submit it to see validation status and academic summary metrics.
+        </p>
       </section>
     );
   }
@@ -203,11 +204,11 @@ function ValidationResultPanel({
           </div>
           <div>
             <dt>Rows checked</dt>
-            <dd>{result.row_count}</dd>
+            <dd>{result.validation.row_count}</dd>
           </div>
           <div>
-            <dt>Records accepted</dt>
-            <dd>{result.records.length}</dd>
+            <dt>Analytics status</dt>
+            <dd>Ready</dd>
           </div>
         </dl>
       </section>
@@ -224,20 +225,58 @@ function ValidationResultPanel({
         </div>
         <div>
           <dt>Rows checked</dt>
-          <dd>{result.row_count}</dd>
+          <dd>{result.validation.row_count}</dd>
         </div>
         <div>
           <dt>Error count</dt>
-          <dd>{result.errors.length}</dd>
+          <dd>{result.validation.errors.length}</dd>
         </div>
       </dl>
 
       <div className="error-list" aria-label="Validation errors">
-        {result.errors.map((error, index) => (
+        {result.validation.errors.map((error, index) => (
           <article className="error-item" key={`${error.row_number}-${error.field}-${index}`}>
             <span>Row {error.row_number ?? "file"}</span>
             <strong>{error.field ?? "file"}</strong>
             <p>{error.message}</p>
+          </article>
+        ))}
+      </div>
+    </section>
+  );
+}
+
+function AnalyticsSummary({ result }: { result: AcademicRecordsAnalysisResult | null }) {
+  if (!result?.is_valid || !result.analytics) {
+    return null;
+  }
+
+  const { gpa_summary: gpaSummary, credit_summary: creditSummary } = result.analytics;
+  const cards = [
+    ["Total courses", gpaSummary.total_courses],
+    ["Total credits", gpaSummary.total_credits],
+    ["Weighted GPA", gpaSummary.weighted_gpa],
+    ["Average score", gpaSummary.average_score],
+    ["Highest score", gpaSummary.highest_score],
+    ["Lowest score", gpaSummary.lowest_score],
+    ["Best course", gpaSummary.best_course ?? "Not available"],
+    ["Weakest course", gpaSummary.weakest_course ?? "Not available"],
+    ["Attempted courses", creditSummary.attempted_courses],
+    ["Average credits", creditSummary.average_credits_per_course],
+  ];
+
+  return (
+    <section className="analytics-section" aria-labelledby="academic-summary-title">
+      <div className="section-heading">
+        <p className="eyebrow">Academic Summary</p>
+        <h2 id="academic-summary-title">GPA and credit summary</h2>
+      </div>
+
+      <div className="metric-grid">
+        {cards.map(([label, value]) => (
+          <article className="metric-card" key={label}>
+            <span>{label}</span>
+            <strong>{value}</strong>
           </article>
         ))}
       </div>

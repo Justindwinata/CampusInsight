@@ -35,63 +35,50 @@ describe("App", () => {
     render(<App />);
 
     expect(screen.getByLabelText("Academic records CSV file")).toBeInTheDocument();
-    expect(screen.getByRole("button", { name: "Validate CSV" })).toBeInTheDocument();
+    expect(screen.getByRole("button", { name: "Analyze CSV" })).toBeInTheDocument();
   });
 
-  it("displays success state for a valid CSV response", async () => {
-    fetchMock.mockResolvedValueOnce(
-      jsonResponse({
-        is_valid: true,
-        records: [
-          {
-            student_id: "S1001",
-            student_name: "Alya Prameswari",
-            semester: 1,
-            academic_year: "2024/2025",
-            course_code: "CS101",
-            course_name: "Introduction to Programming",
-            credits: 3,
-            grade_letter: "A",
-            grade_point: 4,
-            score: 91,
-          },
-        ],
-        errors: [],
-        row_count: 1,
-      }),
-    );
+  it("displays success state and GPA summary for a valid analytics response", async () => {
+    fetchMock.mockResolvedValueOnce(jsonResponse(validAnalysisResponse()));
     const user = userEvent.setup();
     render(<App />);
 
     await uploadCsv(user);
-    await user.click(screen.getByRole("button", { name: "Validate CSV" }));
+    await user.click(screen.getByRole("button", { name: "Analyze CSV" }));
 
     expect(await screen.findByText("CSV validation passed.")).toBeInTheDocument();
     expect(screen.getAllByText("sample.csv")).toHaveLength(2);
     expect(screen.getByText("Rows checked")).toBeInTheDocument();
-    expect(screen.getByText("Records accepted")).toBeInTheDocument();
+    expect(screen.getByText("Analytics status")).toBeInTheDocument();
+    expect(screen.getByRole("heading", { name: "GPA and credit summary" })).toBeInTheDocument();
+    expect(screen.getByText("Weighted GPA")).toBeInTheDocument();
+    expect(screen.getByText("3.11")).toBeInTheDocument();
+    expect(screen.getByText("Total credits")).toBeInTheDocument();
+    expect(screen.getByText("46")).toBeInTheDocument();
   });
 
   it("displays validation errors for an invalid CSV response", async () => {
     fetchMock.mockResolvedValueOnce(
       jsonResponse({
         is_valid: false,
-        records: [],
-        errors: [
-          {
-            row_number: 2,
-            field: "score",
-            message: "score must be between 0 and 100.",
-          },
-        ],
-        row_count: 1,
+        validation: {
+          row_count: 1,
+          errors: [
+            {
+              row_number: 2,
+              field: "score",
+              message: "score must be between 0 and 100.",
+            },
+          ],
+        },
+        analytics: null,
       }),
     );
     const user = userEvent.setup();
     render(<App />);
 
     await uploadCsv(user);
-    await user.click(screen.getByRole("button", { name: "Validate CSV" }));
+    await user.click(screen.getByRole("button", { name: "Analyze CSV" }));
 
     expect(await screen.findByText("CSV validation found issues.")).toBeInTheDocument();
     expect(screen.getByText("Row 2")).toBeInTheDocument();
@@ -104,15 +91,17 @@ describe("App", () => {
       jsonResponse(
         {
           is_valid: false,
-          records: [],
-          errors: [
-            {
-              row_number: null,
-              field: "file",
-              message: "Uploaded file must use a .csv extension.",
-            },
-          ],
-          row_count: 0,
+          validation: {
+            row_count: 0,
+            errors: [
+              {
+                row_number: null,
+                field: "file",
+                message: "Uploaded file must use a .csv extension.",
+              },
+            ],
+          },
+          analytics: null,
         },
         400,
       ),
@@ -121,9 +110,9 @@ describe("App", () => {
     render(<App />);
 
     await uploadCsv(user);
-    await user.click(screen.getByRole("button", { name: "Validate CSV" }));
+    await user.click(screen.getByRole("button", { name: "Analyze CSV" }));
 
-    expect(await screen.findByText("CSV upload could not be validated.")).toBeInTheDocument();
+    expect(await screen.findByText("CSV upload could not be analyzed.")).toBeInTheDocument();
     expect(screen.getByText("Uploaded file must use a .csv extension.")).toBeInTheDocument();
   });
 
@@ -133,9 +122,9 @@ describe("App", () => {
     render(<App />);
 
     await uploadCsv(user);
-    await user.click(screen.getByRole("button", { name: "Validate CSV" }));
+    await user.click(screen.getByRole("button", { name: "Analyze CSV" }));
 
-    expect(await screen.findByText("CSV upload could not be validated.")).toBeInTheDocument();
+    expect(await screen.findByText("CSV upload could not be analyzed.")).toBeInTheDocument();
     expect(
       screen.getByText("Unable to reach the CampusInsight API. Confirm the backend is running."),
     ).toBeInTheDocument();
@@ -153,16 +142,15 @@ describe("App", () => {
     render(<App />);
 
     await uploadCsv(user);
-    await user.click(screen.getByRole("button", { name: "Validate CSV" }));
+    await user.click(screen.getByRole("button", { name: "Analyze CSV" }));
 
-    expect(screen.getAllByText("Validating CSV...")).toHaveLength(2);
+    expect(screen.getAllByText("Analyzing CSV...")).toHaveLength(2);
 
     resolveResponse(
       jsonResponse({
         is_valid: true,
-        records: [],
-        errors: [],
-        row_count: 0,
+        validation: { row_count: 0, errors: [] },
+        analytics: null,
       }),
     );
   });
@@ -175,6 +163,34 @@ describe("App", () => {
     expect(screen.queryByText("4.0 GPA")).not.toBeInTheDocument();
   });
 });
+
+function validAnalysisResponse() {
+  return {
+    is_valid: true,
+    validation: { row_count: 16, errors: [] },
+    analytics: {
+      gpa_summary: {
+        total_courses: 16,
+        total_credits: 46,
+        weighted_gpa: 3.11,
+        average_score: 80,
+        highest_score: 94,
+        lowest_score: 66,
+        best_course: "CS102 - Data Structures",
+        weakest_course: "CS101 - Introduction to Programming",
+      },
+      semester_performance: [],
+      grade_distribution: [],
+      course_performance: [],
+      credit_summary: {
+        total_credits: 46,
+        attempted_courses: 16,
+        average_credits_per_course: 2.88,
+      },
+      course_risks: [],
+    },
+  };
+}
 
 async function uploadCsv(user: ReturnType<typeof userEvent.setup>) {
   const file = new File(["student_id\nS1001\n"], "sample.csv", { type: "text/csv" });

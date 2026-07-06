@@ -121,6 +121,7 @@ h1 {
 }
 
 .upload-section,
+.analytics-section,
 .capability-section {
   padding: 56px 0 0;
 }
@@ -327,6 +328,36 @@ input[type="file"]:focus-visible,
   color: #4b5563;
 }
 
+.metric-grid {
+  display: grid;
+  grid-template-columns: repeat(5, minmax(0, 1fr));
+  gap: 16px;
+  margin-top: 24px;
+}
+
+.metric-card {
+  min-height: 118px;
+  padding: 18px;
+  border: 1px solid #dfe5ee;
+  border-radius: 8px;
+  background: #ffffff;
+}
+
+.metric-card span {
+  display: block;
+  color: #687386;
+  font-size: 0.82rem;
+  font-weight: 800;
+}
+
+.metric-card strong {
+  display: block;
+  margin-top: 12px;
+  color: #111827;
+  font-size: 1.35rem;
+  line-height: 1.25;
+}
+
 .capability-grid {
   display: grid;
   grid-template-columns: repeat(5, minmax(0, 1fr));
@@ -359,6 +390,7 @@ input[type="file"]:focus-visible,
   .hero,
   .upload-layout,
   .result-summary,
+  .metric-grid,
   .capability-grid {
     grid-template-columns: 1fr;
   }

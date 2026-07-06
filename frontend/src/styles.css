@@ -404,6 +404,49 @@ tbody tr:last-child td {
   border-bottom: 0;
 }
 
+.risk-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 16px;
+  margin-top: 24px;
+}
+
+.risk-card {
+  min-width: 0;
+  padding: 20px;
+  border: 1px solid #e6c36f;
+  border-radius: 8px;
+  background: #fff9e8;
+}
+
+.risk-card h3 {
+  margin: 12px 0 0;
+  color: #111827;
+  font-size: 1.05rem;
+}
+
+.risk-card strong,
+.risk-level {
+  display: block;
+  color: #6f4c00;
+  font-weight: 900;
+}
+
+.risk-code,
+.attention-note {
+  margin: 8px 0 0;
+  color: #5d6878;
+}
+
+.risk-card ul {
+  display: grid;
+  gap: 8px;
+  margin: 14px 0 0;
+  padding-left: 18px;
+  color: #4b5563;
+  line-height: 1.45;
+}
+
 .capability-grid {
   display: grid;
   grid-template-columns: repeat(5, minmax(0, 1fr));
@@ -437,6 +480,7 @@ tbody tr:last-child td {
   .upload-layout,
   .result-summary,
   .metric-grid,
+  .risk-grid,
   .capability-grid {
     grid-template-columns: 1fr;
   }

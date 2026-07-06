@@ -77,8 +77,25 @@ describe("App", () => {
 
     expect(screen.getByRole("heading", { name: "Course Performance" })).toBeInTheDocument();
     expect(screen.getByRole("columnheader", { name: "Course code" })).toBeInTheDocument();
-    expect(screen.getByText("CS101")).toBeInTheDocument();
-    expect(screen.getByText("Introduction to Programming")).toBeInTheDocument();
+    expect(screen.getAllByText("CS101")).toHaveLength(2);
+    expect(screen.getAllByText("Introduction to Programming")).toHaveLength(2);
+  });
+
+  it("displays course risk review with safe language", async () => {
+    fetchMock.mockResolvedValueOnce(jsonResponse(validAnalysisResponse()));
+    const user = userEvent.setup();
+    render(<App />);
+
+    await uploadCsv(user);
+    await user.click(screen.getByRole("button", { name: "Analyze CSV" }));
+
+    expect(
+      await screen.findByRole("heading", { name: "Courses that may need attention" }),
+    ).toBeInTheDocument();
+    expect(screen.getByText("Risk level: high")).toBeInTheDocument();
+    expect(screen.getByText("Review recommended")).toBeInTheDocument();
+    expect(screen.getByText("Score is below 70.")).toBeInTheDocument();
+    expect(screen.getByText("This course may need attention.")).toBeInTheDocument();
   });
 
   it("displays validation errors for an invalid CSV response", async () => {
@@ -186,6 +203,17 @@ describe("App", () => {
     expect(screen.queryByText("92%")).not.toBeInTheDocument();
     expect(screen.queryByText("4.0 GPA")).not.toBeInTheDocument();
   });
+
+  it("does not render charts or failure prediction wording", () => {
+    const { container } = render(<App />);
+
+    expect(container.querySelector("canvas")).not.toBeInTheDocument();
+    expect(container.querySelector("svg")).not.toBeInTheDocument();
+    expect(screen.queryByText(/student will fail/i)).not.toBeInTheDocument();
+    expect(screen.queryByText(/bad student/i)).not.toBeInTheDocument();
+    expect(screen.queryByText(/guaranteed failure/i)).not.toBeInTheDocument();
+    expect(screen.queryByText(/academic failure prediction/i)).not.toBeInTheDocument();
+  });
 });
 
 function validAnalysisResponse() {
@@ -229,7 +257,14 @@ function validAnalysisResponse() {
         attempted_courses: 16,
         average_credits_per_course: 2.88,
       },
-      course_risks: [],
+      course_risks: [
+        {
+          course_code: "CS101",
+          course_name: "Introduction to Programming",
+          risk_level: "high",
+          reasons: ["Score is below 70.", "Grade point is below 2.5."],
+        },
+      ],
     },
   };
 }

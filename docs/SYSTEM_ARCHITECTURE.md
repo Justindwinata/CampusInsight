@@ -8,7 +8,7 @@ CampusInsight currently contains two independent application foundations:
 - `backend/src/campusinsight_api/api/`: API routes, including CSV upload validation and analysis.
 - `backend/src/campusinsight_api/domain/`: academic record schema and analytics contract definitions.
 - `backend/src/campusinsight_api/services/`: CSV validation and deterministic analytics services.
-- `frontend/`: React + TypeScript + Vite application shell with CSV validation UI.
+- `frontend/`: React + TypeScript + Vite application shell with CSV validation and analytics summary UI.
 
 No chart rendering, database persistence, authentication, AI prediction, or report generation is implemented yet.
 
@@ -30,11 +30,11 @@ The backend owns API contracts, validation, academic metric computation, and fut
 
 ## Frontend Boundary
 
-The frontend owns the current CSV selection and validation workflow. It displays validation summaries and row-level errors returned by the backend, while analytics review, dashboard charts, and report actions remain future work.
+The frontend owns the current CSV selection, validation, and analytics summary workflow. It displays validation status, GPA and credit summary cards, semester and course tables, grade distribution, and safe course risk review. Dashboard charts, history, persistence, and report actions remain future work.
 
 ## Future Work Markers
 
-- Full frontend-to-backend analytics workflow is future work.
+- Chart-based analytics dashboard is future work.
 - Pandas-based expansion is future work.
 - SQLite local persistence is future work.
 - Dashboard charts are future work.

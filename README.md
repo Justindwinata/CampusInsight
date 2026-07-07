@@ -137,6 +137,7 @@ The current Vite production build may print a chunk-size warning because chartin
 - [System Architecture](docs/SYSTEM_ARCHITECTURE.md)
 - [Decision Log](docs/DECISION_LOG.md)
 - [Demo Assets](docs/DEMO_ASSETS.md)
+- [Showcase Checklist](docs/SHOWCASE_CHECKLIST.md)
 
 ## Limitations and Safety Boundaries
 

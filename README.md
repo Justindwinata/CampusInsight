@@ -63,6 +63,8 @@ The sample data contains synthetic student identifiers and fictional names. Do n
 
 ## Quick Start
 
+Run these commands from a fresh clone before using the Makefile targets.
+
 ### Backend
 
 ```bash
@@ -88,6 +90,8 @@ npm run dev
 
 The Vite dev server prints the local frontend URL.
 
+The app creates `data/database/campusinsight.sqlite3` automatically after the first successful saved analysis. Local database files are ignored by Git.
+
 ## Developer Commands
 
 From the repository root:
@@ -103,6 +107,18 @@ make check
 ```
 
 `make check` runs backend tests, frontend tests, linting, formatting checks, and the production frontend build.
+
+The current Vite production build may print a chunk-size warning because charting dependencies are bundled into the demo app. The warning is non-blocking; the build still succeeds.
+
+## Local Demo Flow
+
+1. Start the backend.
+2. Start the frontend.
+3. Upload `data/sample/academic_records_sample.csv`.
+4. Review validation status, summary cards, charts, tables, and course risk review.
+5. Load saved analyses.
+6. Open a saved analysis detail dashboard.
+7. Open the standalone HTML report.
 
 ## API Overview
 

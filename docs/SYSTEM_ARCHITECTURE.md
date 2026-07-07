@@ -2,7 +2,7 @@
 
 ## Current Foundation
 
-CampusInsight currently contains two independent application foundations:
+CampusInsight currently contains a local full-stack application with separate backend and frontend layers:
 
 - `backend/`: FastAPI service with health and root status endpoints.
 - `backend/src/campusinsight_api/api/`: API routes, including CSV upload validation, analysis, and saved analysis history.
@@ -17,7 +17,7 @@ Demo screenshots under `assets/screenshots/` are captured from the actual local 
 ## Intended Future Pipeline
 
 ```text
-CSV/Excel Upload
+CSV Upload (Excel future)
   -> Validation
   -> Cleaning
   -> Academic Metrics

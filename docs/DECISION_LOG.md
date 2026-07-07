@@ -15,4 +15,4 @@
 - Ignore local database files under `data/database/` so personal local history is not committed to Git.
 - Do not add Docker initially to keep the first bootstrap simple for local development.
 - Do not add authentication initially because the first portfolio version is focused on local academic analytics workflows.
-- Do not add cloud database persistence, deployment, AI, prediction logic, authentication, or PDF export during the UX stabilization milestone.
+- Do not add cloud database persistence, deployment, AI, prediction logic, authentication, or PDF export during the current portfolio-ready scope.

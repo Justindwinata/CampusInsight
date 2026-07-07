@@ -13,7 +13,8 @@
 - Add backend CSV validation for required columns, unknown columns, required values, and safe row-level errors.
 - Add backend CSV upload validation endpoint.
 - Add frontend CSV validation UI for selecting a file and displaying structured validation results.
-- Add CSV and Excel upload flow.
+- Add CSV upload flow.
+- Add Excel upload handling.
 - Return clear row-level validation errors.
 - Keep uploaded data local during development.
 
@@ -42,10 +43,10 @@ Current status: frontend summary cards, tables, and accessible charts exist for 
 - Add minimal frontend saved analyses panel.
 - Add saved analysis detail dashboard from stored canonical JSON.
 - Add standalone HTML reports generated from saved canonical JSON.
-- Generate downloadable academic insight reports.
+- Add PDF export or additional downloadable report formats beyond standalone HTML.
 - Track analysis runs and report metadata.
 
-Current status: local SQLite persistence, saved analysis history APIs, frontend saved analyses foundation, saved analysis detail dashboard, and standalone HTML reports exist. Saved detail and reports use stored canonical analysis JSON, not CSV recalculation. Uploaded CSV files are not stored, local database files are ignored by Git, and PDF export remains future work.
+Current status: local SQLite persistence, saved analysis history APIs, frontend saved analyses foundation, saved analysis detail dashboard, and standalone HTML reports exist. Saved detail and HTML reports use stored canonical analysis JSON, not CSV recalculation. Uploaded CSV files are not stored, local database files are ignored by Git, and PDF export or additional report formats remain future work.
 
 ## 6. Release Readiness
 

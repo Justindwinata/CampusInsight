@@ -10,6 +10,9 @@
 - Store canonical analysis response JSON, not uploaded CSV files, to preserve the computed result while avoiding raw file retention.
 - Reuse stored canonical analysis JSON for saved detail dashboards so saved history does not require CSV re-upload or analytics recalculation.
 - Generate standalone HTML reports on the backend from stored canonical JSON to avoid frontend-side report generation and avoid PDF complexity at this stage.
+- Add PDF transcript input support with `pypdf` text extraction and deterministic rule-based parsing. The PDF pipeline normalizes parsed transcript records into the existing `AcademicRecord` schema so the analytics engine, saved analyses, dashboard, and reports do not need source-specific formulas.
+- Do not add OCR yet; scanned PDFs remain future work.
+- For PDF transcripts without raw score columns, derive a deterministic normalized score from grade point for compatibility with the existing analytics schema.
 - Polish the frontend for local portfolio demos with responsive layout, accessible state messaging, visible focus behavior, and table fallbacks for charted data.
 - Redesign the frontend presentation around a professional SaaS-style app shell, clear navigation, consistent design tokens, polished dashboard cards, and clearer saved-analysis report actions without adding backend capability.
 - Commit verified demo screenshots and README preview assets from the running local application, using fictional sample data only.

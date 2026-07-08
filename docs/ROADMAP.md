@@ -14,11 +14,13 @@
 - Add backend CSV upload validation endpoint.
 - Add frontend CSV validation UI for selecting a file and displaying structured validation results.
 - Add CSV upload flow.
+- Add rule-based PDF transcript text extraction, transcript metadata parsing, course parsing, and normalization into the academic analytics schema.
 - Add Excel upload handling.
+- Add OCR for scanned transcript PDFs.
 - Return clear row-level validation errors.
 - Keep uploaded data local during development.
 
-Current status: the schema, CSV validation service, backend CSV validation endpoint, and frontend CSV validation UI exist. Excel handling remains future work.
+Current status: the schema, CSV validation service, backend CSV validation endpoint, frontend upload UI, and supported text-based PDF transcript analysis flow exist. PDF parsing is deterministic and rule-based for recognizable transcript text. Excel handling and OCR for scanned PDFs remain future work.
 
 ## 3. Analytics Engine
 
@@ -26,7 +28,7 @@ Current status: the schema, CSV validation service, backend CSV validation endpo
 - Calculate GPA summary, semester trends, credit totals, grade distribution, course performance, and course risk indicators.
 - Design test coverage around academic metric rules.
 
-Current status: backend deterministic analytics endpoint and frontend analytics summary UI exist. Pandas expansion, AI, and prediction are not implemented.
+Current status: backend deterministic analytics endpoints and frontend analytics summary UI exist for CSV records and normalized supported PDF transcript records. Pandas expansion, AI, and prediction are not implemented.
 
 ## 4. Dashboard Visualizations
 

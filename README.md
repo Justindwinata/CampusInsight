@@ -1,6 +1,6 @@
 # CampusInsight
 
-CampusInsight is a full-stack student performance analytics dashboard built as a portfolio project. It validates academic record CSV files, calculates deterministic academic metrics, displays responsive analytics dashboards, saves analysis history locally, and generates standalone HTML reports from saved results.
+CampusInsight is a full-stack student performance analytics dashboard built as a portfolio project. It validates academic record CSV files, extracts supported academic transcript PDFs, calculates deterministic academic metrics, displays responsive analytics dashboards, saves analysis history locally, and generates standalone HTML reports from saved results.
 
 The project is designed for local demos and GitHub review. It uses fictional sample data only and does not implement authentication, cloud persistence, deployment, PDF export, AI, or prediction logic.
 
@@ -27,6 +27,7 @@ The screenshots below show the demo flow. They may need to be refreshed after ma
 ## Core Features
 
 - Strict academic record CSV validation with safe structured errors.
+- Rule-based academic transcript PDF text extraction, metadata parsing, course parsing, and normalization into the same analytics schema.
 - Deterministic GPA, credit, semester, grade, course, and course-risk analytics.
 - Responsive React dashboard with summary cards, charts, and accessible tables.
 - Local SQLite saved-analysis history.
@@ -37,7 +38,7 @@ The screenshots below show the demo flow. They may need to be refreshed after ma
 ## Tech Stack
 
 - Frontend: React, TypeScript, Vite, Recharts
-- Backend: FastAPI, Python
+- Backend: FastAPI, Python, pypdf
 - Persistence: local SQLite
 - Testing: pytest, Vitest, React Testing Library
 - Quality: ruff, eslint, prettier
@@ -45,15 +46,16 @@ The screenshots below show the demo flow. They may need to be refreshed after ma
 ## Architecture Summary
 
 ```text
-Academic CSV
-  -> FastAPI upload validation
+Academic CSV or supported transcript PDF
+  -> FastAPI upload validation or PDF text extraction
+  -> normalized academic record schema
   -> deterministic analytics service
   -> canonical analysis JSON
   -> local SQLite saved history
   -> React dashboard and HTML report
 ```
 
-Uploaded CSV files are not stored. Successful analyses are saved as canonical JSON responses in local SQLite so saved details and reports do not require CSV re-upload or frontend recalculation.
+Uploaded CSV and PDF files are not stored. Successful analyses are saved as canonical JSON responses in local SQLite so saved details and reports do not require file re-upload or frontend recalculation.
 
 ## Demo Data
 
@@ -119,10 +121,11 @@ The current Vite production build may print a chunk-size warning because chartin
 1. Start the backend.
 2. Start the frontend.
 3. Upload `data/sample/academic_records_sample.csv`.
-4. Review validation status, summary cards, charts, tables, and course risk review.
-5. Load saved analyses.
-6. Open a saved analysis detail dashboard.
-7. Open the standalone HTML report.
+4. Optionally upload a supported text-based academic transcript PDF.
+5. Review validation status, summary cards, charts, tables, and course risk review.
+6. Load saved analyses.
+7. Open a saved analysis detail dashboard.
+8. Open the standalone HTML report.
 
 ## API Overview
 
@@ -130,6 +133,7 @@ The current Vite production build may print a chunk-size warning because chartin
 - `GET /`
 - `POST /academic-records/validate`
 - `POST /academic-records/analyze`
+- `POST /academic-records/analyze-pdf`
 - `GET /analyses`
 - `GET /analyses/{analysis_id}`
 - `DELETE /analyses/{analysis_id}`
@@ -146,6 +150,8 @@ The current Vite production build may print a chunk-size warning because chartin
 ## Limitations and Safety Boundaries
 
 - Local SQLite persistence only.
+- PDF transcript processing supports text-based transcript PDFs with recognizable student metadata and course rows; OCR is not implemented.
+- PDF-derived score values are normalized deterministically from grade points because transcript PDFs may not include raw score columns.
 - No cloud database.
 - No authentication.
 - No deployment configuration.

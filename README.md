@@ -4,11 +4,11 @@ CampusInsight is a full-stack student performance analytics dashboard built as a
 
 The project is designed for local demos and GitHub review. It uses fictional sample data only and does not implement authentication, cloud persistence, deployment, PDF export, AI, or prediction logic.
 
-The frontend now uses a professional SaaS-style app shell with top navigation, structured dashboard sections, polished analytics cards, clearer saved-analysis flow, and responsive layouts for local demos. The UI redesign was guided by modern SaaS product structure and spacing discipline without copying third-party branding, assets, colors, or text.
+The frontend now uses a professional multi-page SaaS-style app shell with distinct Home, Analyze, Dashboard, Saved Analyses, and Report views. The home page includes a polished hero cover from `assets/thumbnail.png`, structured product messaging, clearer saved-analysis flow, hardened chart rendering, and subtle reduced-motion-aware interactions. The UI redesign was guided by modern SaaS product structure and spacing discipline without copying third-party branding, assets, colors, or text.
 
 ## Product Preview
 
-The screenshots below show the refreshed local demo flow after the CI-0016 SaaS UI redesign. They use fictional CSV records and a privacy-safe synthetic text-based transcript PDF to demonstrate CSV/PDF analysis, deterministic dashboards, saved history, and standalone HTML reports.
+The screenshots below show the local demo flow from the current portfolio documentation set. They use fictional CSV records and a privacy-safe synthetic text-based transcript PDF to demonstrate CSV/PDF analysis, deterministic dashboards, saved history, and standalone HTML reports. Screenshots should be refreshed again after major UI changes.
 
 ### Desktop
 
@@ -37,7 +37,8 @@ The screenshots below show the refreshed local demo flow after the CI-0016 SaaS 
 - Academic record CSV upload and validation with safe structured errors.
 - Text-based academic transcript PDF upload with rule-based extraction, metadata parsing, course parsing, and normalization into the same analytics schema.
 - Deterministic GPA, credit, semester, grade, course, and course-risk analytics.
-- Responsive React dashboard with summary cards, charts, and accessible tables.
+- Multi-view React product shell with Home, Analyze, Dashboard, Saved Analyses, and Report workspaces.
+- Responsive React dashboard with summary cards, non-blank chart empty states, charts, and accessible tables.
 - Local SQLite saved-analysis history.
 - Saved analysis history and detail views rendered from stored canonical JSON.
 - Standalone HTML report generation for saved analyses.

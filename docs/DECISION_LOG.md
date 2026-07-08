@@ -19,6 +19,9 @@
 - Commit verified demo screenshots and README preview assets from the running local application, using fictional sample data only.
 - Refresh demo screenshots after PDF support using fictional CSV data and a synthetic text-based PDF transcript; real transcript PDFs remain ignored and must not be committed.
 - Refresh desktop and mobile screenshots again after the CI-0016 SaaS UI redesign so the README preview matches the current app shell, dashboard, saved detail, and report experience.
+- Move the frontend from a long single-page feel into explicit Home, Analyze, Dashboard, Saved Analyses, and Report views while keeping a lightweight React state navigation approach instead of adding routing complexity.
+- Use `assets/thumbnail.png` as the home hero cover image and layer it with original CampusInsight copy, internal visual accents, and subtle reduced-motion-aware interactions.
+- Harden chart rendering by keeping Recharts fed from processed analytics data only, adding explicit empty states, and disabling chart animation for more reliable demo and screenshot rendering.
 - Ignore local database files under `data/database/` so personal local history is not committed to Git.
 - Do not add Docker initially to keep the first bootstrap simple for local development.
 - Do not add authentication initially because the first portfolio version is focused on local academic analytics workflows.

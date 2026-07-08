@@ -60,7 +60,8 @@ Expected result: all commands pass. The frontend build may print a non-blocking 
 Desktop:
 
 - `assets/screenshots/home-desktop.png`
-- `assets/screenshots/upload-analysis-desktop.png`
+- `assets/screenshots/upload-csv-pdf-desktop.png`
+- `assets/screenshots/pdf-analysis-dashboard-desktop.png`
 - `assets/screenshots/dashboard-charts-desktop.png`
 - `assets/screenshots/saved-analyses-desktop.png`
 - `assets/screenshots/saved-detail-desktop.png`
@@ -69,6 +70,7 @@ Desktop:
 Mobile:
 
 - `assets/screenshots/home-mobile.png`
+- `assets/screenshots/upload-csv-pdf-mobile.png`
 - `assets/screenshots/dashboard-mobile.png`
 - `assets/screenshots/saved-detail-mobile.png`
 

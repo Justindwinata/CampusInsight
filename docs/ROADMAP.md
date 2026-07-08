@@ -58,4 +58,4 @@ Current status: local SQLite persistence, saved analysis history APIs, frontend 
 
 Current status: the frontend has a professional SaaS-style app shell, responsive layout polish, clearer state messaging, and local demo-ready interaction flow for upload, analytics, saved history, saved detail, and HTML reports. Deployment, authentication, cloud database persistence, PDF export, AI, and prediction remain future work.
 
-Portfolio presentation status: verified desktop and mobile screenshots exist, the README includes product preview images, and demo documentation identifies the fictional sample dataset and screenshot safety policy. Screenshots should be refreshed after the CI-0014 professional UI redesign when a new visual baseline is needed.
+Portfolio presentation status: verified desktop and mobile screenshots exist after PDF transcript support, the README includes product preview images, and demo documentation identifies the fictional CSV sample, privacy-safe PDF demo policy, and screenshot safety rules.

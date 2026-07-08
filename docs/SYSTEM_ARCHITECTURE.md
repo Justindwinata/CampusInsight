@@ -12,7 +12,7 @@ CampusInsight currently contains a local full-stack application with separate ba
 
 Local SQLite persistence exists for saved analysis results, and standalone HTML reports exist for saved analyses. The app is demo-ready for local portfolio walkthroughs, but deployment, authentication, cloud database persistence, AI, prediction logic, OCR, and PDF export are not implemented.
 
-Demo screenshots under `assets/screenshots/` are captured from the actual local application using the fictional sample dataset. They do not include raw CSV contents, local database paths, terminal windows, or browser developer tools. Screenshots may need refresh after major UI redesign work.
+Demo screenshots under `assets/screenshots/` are captured from the actual local application using fictional CSV data and a synthetic text-based transcript PDF. They do not include raw CSV contents, real transcript data, local database paths, terminal windows, or browser developer tools.
 
 ## Intended Future Pipeline
 

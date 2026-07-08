@@ -16,6 +16,7 @@
 - Polish the frontend for local portfolio demos with responsive layout, accessible state messaging, visible focus behavior, and table fallbacks for charted data.
 - Redesign the frontend presentation around a professional SaaS-style app shell, clear navigation, consistent design tokens, polished dashboard cards, and clearer saved-analysis report actions without adding backend capability.
 - Commit verified demo screenshots and README preview assets from the running local application, using fictional sample data only.
+- Refresh demo screenshots after PDF support using fictional CSV data and a synthetic text-based PDF transcript; real transcript PDFs remain ignored and must not be committed.
 - Ignore local database files under `data/database/` so personal local history is not committed to Git.
 - Do not add Docker initially to keep the first bootstrap simple for local development.
 - Do not add authentication initially because the first portfolio version is focused on local academic analytics workflows.

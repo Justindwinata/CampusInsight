@@ -102,7 +102,7 @@ Mobile screenshots captured from the local app after PDF transcript support:
 
 The README product preview uses selected files from this inventory.
 
-CI-0014 introduced a professional UI redesign and CI-0015 refreshes screenshots after PDF support. Screenshots should continue to use fictional or privacy-safe data only.
+CI-0015 refreshed the screenshot baseline after professional UI polish and PDF transcript support. Screenshots should continue to use fictional or privacy-safe data only.
 
 ## Safety Boundaries
 

@@ -9,8 +9,8 @@ function CourseRiskReview({ analytics }: CourseRiskReviewProps) {
 
   return (
     <section className="analytics-section" aria-labelledby="risk-review-title">
-      <div className="section-heading">
-        <p className="eyebrow">Course Risk Review</p>
+      <div className="section-heading dashboard-heading">
+        <p className="eyebrow">Course Review</p>
         <h2 id="risk-review-title">Courses that may need attention</h2>
         <p className="section-copy">
           These deterministic indicators highlight lower performance signals for review and should

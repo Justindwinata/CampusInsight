@@ -9,13 +9,19 @@ function AcademicTables({ analytics }: AcademicTablesProps) {
 
   return (
     <section className="analytics-section" aria-labelledby="analytics-tables-title">
-      <div className="section-heading">
-        <p className="eyebrow">Detailed Analytics</p>
+      <div className="section-heading dashboard-heading">
+        <p className="eyebrow">Detailed Records</p>
         <h2 id="analytics-tables-title">Academic analytics tables</h2>
+        <p className="section-copy">
+          Tables provide the full accessible record view behind the summary cards and charts.
+        </p>
       </div>
 
       <div className="table-section" aria-labelledby="semester-performance-title">
-        <h3 id="semester-performance-title">Semester Performance</h3>
+        <div className="table-section-heading">
+          <span>Performance Trends</span>
+          <h3 id="semester-performance-title">Semester Performance</h3>
+        </div>
         <div className="table-scroll">
           <table>
             <caption className="sr-only">
@@ -46,7 +52,10 @@ function AcademicTables({ analytics }: AcademicTablesProps) {
       </div>
 
       <div className="table-section" aria-labelledby="grade-distribution-title">
-        <h3 id="grade-distribution-title">Grade Distribution</h3>
+        <div className="table-section-heading">
+          <span>Grade Distribution</span>
+          <h3 id="grade-distribution-title">Grade Distribution</h3>
+        </div>
         <div className="table-scroll">
           <table>
             <caption className="sr-only">
@@ -73,7 +82,10 @@ function AcademicTables({ analytics }: AcademicTablesProps) {
       </div>
 
       <div className="table-section" aria-labelledby="course-performance-title">
-        <h3 id="course-performance-title">Course Performance</h3>
+        <div className="table-section-heading">
+          <span>Course Performance</span>
+          <h3 id="course-performance-title">Course Performance</h3>
+        </div>
         <div className="table-scroll">
           <table>
             <caption className="sr-only">

@@ -386,6 +386,10 @@ h1 {
   line-height: 1.7;
 }
 
+.dashboard-heading {
+  max-width: 820px;
+}
+
 .upload-layout {
   display: grid;
   grid-template-columns: minmax(0, 1fr) 360px;
@@ -744,30 +748,31 @@ input[type="file"]:focus-visible,
 }
 
 .metric-card {
-  min-height: 118px;
+  min-height: 132px;
   position: relative;
   overflow: hidden;
-  padding: 20px;
+  padding: 22px;
   border: 1px solid var(--color-border);
-  border-radius: var(--radius-md);
+  border-radius: var(--radius-lg);
   background: var(--color-surface);
-  box-shadow: var(--shadow-soft);
+  box-shadow: var(--shadow-soft), var(--shadow-inset);
 }
 
 .metric-card::after {
   position: absolute;
   right: 18px;
   bottom: 16px;
-  width: 44px;
-  height: 44px;
+  width: 54px;
+  height: 54px;
   border-radius: 999px;
   background: rgb(15 118 110 / 8%);
   content: "";
 }
 
 .metric-card-featured {
+  grid-column: span 2;
   border-color: rgb(23 59 99 / 34%);
-  background: linear-gradient(135deg, #173b63 0%, #24517f 100%);
+  background: linear-gradient(135deg, var(--color-primary) 0%, #284f72 100%);
   color: #ffffff;
 }
 
@@ -790,13 +795,13 @@ input[type="file"]:focus-visible,
   display: block;
   margin-top: 12px;
   color: var(--color-heading);
-  font-size: 1.35rem;
+  font-size: 1.42rem;
   line-height: 1.25;
 }
 
 .metric-card-featured strong {
   color: #ffffff;
-  font-size: 1.7rem;
+  font-size: 2.4rem;
 }
 
 .chart-grid {
@@ -812,17 +817,17 @@ input[type="file"]:focus-visible,
 
 .chart-card {
   min-width: 0;
-  padding: 22px;
+  padding: 24px;
   border: 1px solid var(--color-border);
-  border-radius: var(--radius-md);
+  border-radius: var(--radius-lg);
   background: var(--color-surface);
-  box-shadow: var(--shadow-soft);
+  box-shadow: var(--shadow-soft), var(--shadow-inset);
 }
 
 .chart-card-heading h3 {
   margin: 0;
   color: var(--color-heading);
-  font-size: 1.08rem;
+  font-size: 1.16rem;
 }
 
 .chart-card-heading p {
@@ -835,8 +840,9 @@ input[type="file"]:focus-visible,
   margin-top: 18px;
   min-width: 0;
   overflow: hidden;
-  border-radius: var(--radius-sm);
-  background: linear-gradient(180deg, #ffffff 0%, #f8fbff 100%);
+  border: 1px solid rgb(222 214 202 / 70%);
+  border-radius: var(--radius-md);
+  background: linear-gradient(180deg, #ffffff 0%, #fbf8f2 100%);
 }
 
 .chart-canvas {
@@ -855,13 +861,27 @@ input[type="file"]:focus-visible,
 }
 
 .table-section {
-  margin-top: 28px;
+  margin-top: 30px;
 }
 
 .table-section h3 {
-  margin: 0 0 14px;
+  margin: 0;
   color: var(--color-heading);
-  font-size: 1.1rem;
+  font-size: 1.22rem;
+}
+
+.table-section-heading {
+  display: grid;
+  gap: 6px;
+  margin-bottom: 14px;
+}
+
+.table-section-heading span {
+  color: var(--color-accent);
+  font-size: 0.74rem;
+  font-weight: 950;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
 }
 
 .table-scroll {
@@ -869,9 +889,9 @@ input[type="file"]:focus-visible,
   overflow-x: auto;
   -webkit-overflow-scrolling: touch;
   border: 1px solid var(--color-border);
-  border-radius: var(--radius-md);
+  border-radius: var(--radius-lg);
   background: var(--color-surface);
-  box-shadow: var(--shadow-soft);
+  box-shadow: var(--shadow-soft), var(--shadow-inset);
 }
 
 table {
@@ -882,7 +902,7 @@ table {
 
 th,
 td {
-  padding: 14px 16px;
+  padding: 15px 18px;
   border-bottom: 1px solid var(--color-border);
   text-align: left;
   vertical-align: top;
@@ -890,7 +910,7 @@ td {
 
 th {
   color: var(--color-heading);
-  background: var(--color-surface-muted);
+  background: #f4efe7;
   font-size: 0.86rem;
   font-weight: 900;
   text-transform: uppercase;
@@ -907,7 +927,7 @@ tbody tr:last-child td {
 }
 
 tbody tr:hover td {
-  background: #fbfdff;
+  background: #fffaf3;
 }
 
 .risk-grid {
@@ -919,10 +939,11 @@ tbody tr:hover td {
 
 .risk-card {
   min-width: 0;
-  padding: 22px;
+  padding: 24px;
   border: 1px solid #ead08b;
-  border-radius: var(--radius-md);
-  background: var(--color-warning-soft);
+  border-radius: var(--radius-lg);
+  background: linear-gradient(180deg, #fffaf0 0%, var(--color-warning-soft) 100%);
+  box-shadow: var(--shadow-soft);
 }
 
 .risk-card h3 {
@@ -1186,6 +1207,10 @@ tbody tr:hover td {
   }
 
   .chart-grid .chart-card:first-child {
+    grid-column: auto;
+  }
+
+  .metric-card-featured {
     grid-column: auto;
   }
 

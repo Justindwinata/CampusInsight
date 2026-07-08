@@ -10,11 +10,12 @@ type AcademicChartsProps = {
 function AcademicCharts({ analytics }: AcademicChartsProps) {
   return (
     <section className="analytics-section" aria-labelledby="visualizations-title">
-      <div className="section-heading">
-        <p className="eyebrow">Academic Visualizations</p>
+      <div className="section-heading dashboard-heading">
+        <p className="eyebrow">Performance Trends</p>
         <h2 id="visualizations-title">Analytics charts</h2>
         <p className="section-copy">
-          Visual summaries use the same deterministic backend analytics shown in the tables below.
+          Visual summaries use the same deterministic backend analytics shown in the accessible
+          tables below.
         </p>
       </div>
 

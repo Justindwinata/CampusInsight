@@ -21,9 +21,12 @@ function AcademicSummaryCards({ analytics }: AcademicSummaryCardsProps) {
 
   return (
     <section className="analytics-section" aria-labelledby="academic-summary-title">
-      <div className="section-heading">
-        <p className="eyebrow">Academic Summary</p>
+      <div className="section-heading dashboard-heading">
+        <p className="eyebrow">Academic Overview</p>
         <h2 id="academic-summary-title">GPA and credit summary</h2>
+        <p className="section-copy">
+          High-level indicators from the validated academic records currently in view.
+        </p>
       </div>
 
       <div className="metric-grid">

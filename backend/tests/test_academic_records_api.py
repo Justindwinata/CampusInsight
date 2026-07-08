@@ -203,6 +203,106 @@ def test_analyze_upload_error_response_does_not_expose_stack_traces() -> None:
     assert str(ROOT_DIR) not in response_body
 
 
+def test_analyze_valid_pdf_returns_analytics_result(
+    saved_analysis_repository: SavedAnalysisRepository,
+) -> None:
+    response = client.post(
+        "/academic-records/analyze-pdf",
+        files={
+            "file": (
+                "transcript.pdf",
+                _minimal_pdf(_sample_transcript_text()),
+                "application/pdf",
+            )
+        },
+    )
+
+    payload = response.json()
+    assert response.status_code == 200
+    assert payload["analysis_id"]
+    assert payload["is_valid"] is True
+    assert payload["validation"]["row_count"] == 3
+    assert payload["validation"]["errors"] == []
+    assert payload["analytics"]["gpa_summary"]["total_courses"] == 3
+    assert payload["analytics"]["gpa_summary"]["weighted_gpa"] == 3.83
+    assert saved_analysis_repository.get(payload["analysis_id"]) is not None
+
+
+def test_analyze_pdf_invalid_transcript_returns_validation_errors_without_analytics(
+    saved_analysis_repository: SavedAnalysisRepository,
+) -> None:
+    response = client.post(
+        "/academic-records/analyze-pdf",
+        files={"file": ("transcript.pdf", _minimal_pdf("TRANSKRIP SEMENTARA"), "application/pdf")},
+    )
+
+    payload = response.json()
+    assert response.status_code == 200
+    assert payload["is_valid"] is False
+    assert payload["analytics"] is None
+    assert payload["validation"]["errors"]
+    assert saved_analysis_repository.list() == []
+
+
+def test_analyze_pdf_missing_file_returns_400() -> None:
+    response = client.post("/academic-records/analyze-pdf")
+
+    payload = response.json()
+    assert response.status_code == 400
+    assert payload["is_valid"] is False
+    assert payload["validation"]["errors"][0]["field"] == "file"
+
+
+def test_analyze_pdf_non_pdf_filename_returns_400() -> None:
+    response = client.post(
+        "/academic-records/analyze-pdf",
+        files={"file": ("transcript.txt", b"not pdf", "application/pdf")},
+    )
+
+    payload = response.json()
+    assert response.status_code == 400
+    assert payload["is_valid"] is False
+    assert ".pdf" in payload["validation"]["errors"][0]["message"]
+
+
+def test_analyze_pdf_invalid_content_type_returns_400() -> None:
+    response = client.post(
+        "/academic-records/analyze-pdf",
+        files={"file": ("transcript.pdf", b"not pdf", "text/plain")},
+    )
+
+    payload = response.json()
+    assert response.status_code == 400
+    assert payload["is_valid"] is False
+    assert "PDF file" in payload["validation"]["errors"][0]["message"]
+
+
+def test_analyze_pdf_corrupted_file_returns_safe_error() -> None:
+    response = client.post(
+        "/academic-records/analyze-pdf",
+        files={"file": ("transcript.pdf", b"not pdf", "application/pdf")},
+    )
+
+    payload = response.json()
+    assert response.status_code == 200
+    assert payload["is_valid"] is False
+    assert payload["analytics"] is None
+    assert payload["validation"]["errors"][0]["message"] == "PDF file could not be parsed."
+
+
+def test_analyze_pdf_response_does_not_expose_stack_traces() -> None:
+    response = client.post(
+        "/academic-records/analyze-pdf",
+        files={"file": ("transcript.pdf", b"not pdf", "application/pdf")},
+    )
+
+    response_body = response.text
+    assert "Traceback" not in response_body
+    assert "PdfReadError" not in response_body
+    assert "FileNotFoundError" not in response_body
+    assert str(ROOT_DIR) not in response_body
+
+
 def test_validation_endpoint_still_returns_validation_result() -> None:
     response = _upload_file(SAMPLE_CSV)
 
@@ -222,3 +322,46 @@ def _post_file(url: str, path: Path):
         url,
         files={"file": (path.name, path.read_bytes(), "text/csv")},
     )
+
+
+def _sample_transcript_text() -> str:
+    return """
+TRANSKRIP SEMENTARA
+NIM: TST23010001 FAKULTAS : Ilmu Komputer
+NAMA: ALEX PRATAMA (Lapor BAP, Ijazah) PROGRAM STUDI: Teknik Informatika
+NOSMTKODE MATA KULIAH SKSNHNB(SKSxNB)
+1 I F062100001DASAR KEAMANAN KOMPUTER  3 A 4.00 12.00
+2 II W152100004MATEMATIKA DISKRIT  3 B+3.50 10.50
+3 II W152100011SISTEM OPERASI  3 A 4.00 12.00
+"""
+
+
+def _minimal_pdf(text: str) -> bytes:
+    escaped_text = (
+        text.replace("\\", "\\\\").replace("(", "\\(").replace(")", "\\)").replace("\n", "\\n")
+    )
+    stream = f"BT /F1 12 Tf 72 720 Td ({escaped_text}) Tj ET".encode()
+    objects = [
+        b"<< /Type /Catalog /Pages 2 0 R >>",
+        b"<< /Type /Pages /Kids [3 0 R] /Count 1 >>",
+        b"<< /Type /Page /Parent 2 0 R /Resources << /Font << /F1 4 0 R >> >> "
+        b"/MediaBox [0 0 612 792] /Contents 5 0 R >>",
+        b"<< /Type /Font /Subtype /Type1 /BaseFont /Helvetica >>",
+        b"<< /Length %d >>\nstream\n" % len(stream) + stream + b"\nendstream",
+    ]
+
+    pdf = bytearray(b"%PDF-1.4\n")
+    offsets = [0]
+    for index, pdf_object in enumerate(objects, start=1):
+        offsets.append(len(pdf))
+        pdf += f"{index} 0 obj\n".encode() + pdf_object + b"\nendobj\n"
+
+    xref_offset = len(pdf)
+    pdf += f"xref\n0 {len(objects) + 1}\n0000000000 65535 f \n".encode()
+    for offset in offsets[1:]:
+        pdf += f"{offset:010d} 00000 n \n".encode()
+
+    pdf += (
+        f"trailer\n<< /Size {len(objects) + 1} /Root 1 0 R >>\nstartxref\n{xref_offset}\n%%EOF\n"
+    ).encode()
+    return bytes(pdf)

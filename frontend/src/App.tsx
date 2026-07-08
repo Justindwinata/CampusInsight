@@ -325,10 +325,20 @@ function SavedAnalysesPanel() {
         <div className="saved-history-layout">
           <div className="saved-history-list" aria-label="Saved analysis summaries">
             {savedAnalyses.map((analysis) => (
-              <article className="saved-history-item" key={analysis.analysis_id}>
+              <article
+                className={
+                  selectedAnalysis?.analysis_id === analysis.analysis_id
+                    ? "saved-history-item saved-history-item-active"
+                    : "saved-history-item"
+                }
+                key={analysis.analysis_id}
+              >
                 <div className="saved-history-item-heading">
                   <h3>{analysis.source_filename}</h3>
                   <p>{analysis.created_at}</p>
+                  {selectedAnalysis?.analysis_id === analysis.analysis_id ? (
+                    <span className="selected-analysis-badge">Selected</span>
+                  ) : null}
                 </div>
                 <dl>
                   <div>
@@ -447,7 +457,7 @@ function SavedAnalysisDetailShell({
             </button>
             {detail.analysis_id ? (
               <a
-                className="secondary-link-button"
+                className="secondary-link-button report-link-button"
                 aria-label={`Download HTML report for saved analysis ${detail.analysis_id}`}
                 href={getSavedAnalysisReportUrl(detail.analysis_id)}
                 rel="noreferrer"

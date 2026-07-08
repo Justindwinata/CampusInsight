@@ -93,9 +93,10 @@ Desktop screenshots captured from the local app after PDF transcript support:
 - `assets/screenshots/saved-detail-desktop.png`
 - `assets/screenshots/html-report-desktop.png`
 
-Mobile screenshots captured from the local app after CI-0011 UX stabilization:
+Mobile screenshots captured from the local app after PDF transcript support:
 
 - `assets/screenshots/home-mobile.png`
+- `assets/screenshots/upload-csv-pdf-mobile.png`
 - `assets/screenshots/dashboard-mobile.png`
 - `assets/screenshots/saved-detail-mobile.png`
 

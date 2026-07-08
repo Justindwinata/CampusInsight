@@ -1,6 +1,6 @@
 # CampusInsight
 
-CampusInsight is a full-stack student performance analytics dashboard built as a portfolio project. It validates academic record CSV files, extracts supported academic transcript PDFs, calculates deterministic academic metrics, displays responsive analytics dashboards, saves analysis history locally, and generates standalone HTML reports from saved results.
+CampusInsight is a full-stack student performance analytics dashboard built as a portfolio project. It analyzes academic record CSV files and supported text-based academic transcript PDFs, calculates deterministic academic metrics, displays responsive dashboards, saves analysis history locally, and generates standalone HTML reports from saved results.
 
 The project is designed for local demos and GitHub review. It uses fictional sample data only and does not implement authentication, cloud persistence, deployment, PDF export, AI, or prediction logic.
 
@@ -8,11 +8,15 @@ The frontend now uses a professional SaaS-style app shell with top navigation, s
 
 ## Product Preview
 
-The screenshots below show the demo flow. They may need to be refreshed after major UI polish work.
+The screenshots below show the current local demo flow after the professional UI redesign and PDF transcript support.
 
 ### Desktop
 
 ![CampusInsight desktop home](assets/screenshots/home-desktop.png)
+
+![CampusInsight CSV and PDF upload](assets/screenshots/upload-csv-pdf-desktop.png)
+
+![CampusInsight PDF analysis dashboard](assets/screenshots/pdf-analysis-dashboard-desktop.png)
 
 ![CampusInsight desktop dashboard charts](assets/screenshots/dashboard-charts-desktop.png)
 
@@ -22,16 +26,18 @@ The screenshots below show the demo flow. They may need to be refreshed after ma
 
 ![CampusInsight mobile home](assets/screenshots/home-mobile.png)
 
+![CampusInsight mobile CSV and PDF upload](assets/screenshots/upload-csv-pdf-mobile.png)
+
 ![CampusInsight mobile dashboard](assets/screenshots/dashboard-mobile.png)
 
 ## Core Features
 
-- Strict academic record CSV validation with safe structured errors.
-- Rule-based academic transcript PDF text extraction, metadata parsing, course parsing, and normalization into the same analytics schema.
+- Academic record CSV upload and validation with safe structured errors.
+- Text-based academic transcript PDF upload with rule-based extraction, metadata parsing, course parsing, and normalization into the same analytics schema.
 - Deterministic GPA, credit, semester, grade, course, and course-risk analytics.
 - Responsive React dashboard with summary cards, charts, and accessible tables.
 - Local SQLite saved-analysis history.
-- Saved analysis detail view rendered from stored canonical JSON.
+- Saved analysis history and detail views rendered from stored canonical JSON.
 - Standalone HTML report generation for saved analyses.
 - Fictional sample dataset for local demo and screenshots.
 

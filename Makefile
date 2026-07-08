@@ -1,4 +1,4 @@
-.PHONY: backend-test frontend-test test check format format-check lint frontend-build
+.PHONY: backend-test frontend-test test check format format-check lint frontend-build pre-commit
 
 backend-test:
 	cd backend && ../.venv/bin/python -m pytest
@@ -25,3 +25,5 @@ frontend-build:
 	cd frontend && npm run build
 
 check: test lint format-check frontend-build
+
+pre-commit: check

@@ -23,6 +23,9 @@ data/database/*.db
 data/database/*.sqlite
 data/database/*.sqlite3
 
+# Local transcript PDFs may contain private student data.
+data/sample/*.pdf
+
 # Environment
 .env
 .env.*

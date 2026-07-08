@@ -137,12 +137,36 @@ export async function validateAcademicRecordsCsv(
 export async function analyzeAcademicRecordsCsv(
   file: File,
 ): Promise<AcademicRecordsAnalysisResult> {
+  return postAcademicRecordsAnalysis(file, "/academic-records/analyze", "CSV");
+}
+
+export async function analyzeAcademicRecordsPdf(
+  file: File,
+): Promise<AcademicRecordsAnalysisResult> {
+  return postAcademicRecordsAnalysis(file, "/academic-records/analyze-pdf", "PDF");
+}
+
+export async function analyzeAcademicRecordsFile(
+  file: File,
+): Promise<AcademicRecordsAnalysisResult> {
+  if (file.name.toLowerCase().endsWith(".pdf") || file.type === "application/pdf") {
+    return analyzeAcademicRecordsPdf(file);
+  }
+
+  return analyzeAcademicRecordsCsv(file);
+}
+
+async function postAcademicRecordsAnalysis(
+  file: File,
+  endpoint: string,
+  fileTypeLabel: "CSV" | "PDF",
+): Promise<AcademicRecordsAnalysisResult> {
   const formData = new FormData();
   formData.append("file", file);
 
   let response: Response;
   try {
-    response = await fetch(`${API_BASE_URL}/academic-records/analyze`, {
+    response = await fetch(`${API_BASE_URL}${endpoint}`, {
       method: "POST",
       body: formData,
     });
@@ -165,7 +189,9 @@ export async function analyzeAcademicRecordsCsv(
   }
 
   if (!response.ok) {
-    throw new Error("The uploaded file could not be analyzed. Please check the file and retry.");
+    throw new Error(
+      `The uploaded ${fileTypeLabel} file could not be analyzed. Please check the file and retry.`,
+    );
   }
 
   if (isAnalysisResult(payload)) {

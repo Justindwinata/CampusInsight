@@ -2,7 +2,7 @@ import { FormEvent, useId, useState } from "react";
 
 import {
   AcademicRecordsAnalysisResult,
-  analyzeAcademicRecordsCsv,
+  analyzeAcademicRecordsFile,
 } from "./services/academicRecordsService";
 import AnalyticsDashboard from "./components/analytics/AnalyticsDashboard";
 import {
@@ -34,19 +34,19 @@ function App() {
     setUploadError(null);
 
     if (!selectedFile) {
-      setUploadError("Choose an academic records CSV file before analyzing.");
+      setUploadError("Choose an academic records CSV or PDF file before analyzing.");
       return;
     }
 
     setIsAnalyzing(true);
     try {
-      const result = await analyzeAcademicRecordsCsv(selectedFile);
+      const result = await analyzeAcademicRecordsFile(selectedFile);
       setAnalysisResult(result);
     } catch (error) {
       setUploadError(
         error instanceof Error
           ? error.message
-          : "The CSV file could not be analyzed. Please retry.",
+          : "The academic records file could not be analyzed. Please retry.",
       );
     } finally {
       setIsAnalyzing(false);
@@ -80,8 +80,8 @@ function App() {
             <p className="eyebrow">Student Performance Analytics Dashboard</p>
             <h1 id="page-title">CampusInsight</h1>
             <p className="intro">
-              Analyze academic records from CSV files, review GPA trends and course performance, and
-              keep saved reports for local academic review.
+              Analyze academic records from CSV files or supported academic transcript PDFs, review
+              GPA trends and course performance, and keep saved reports for local academic review.
             </p>
             <div className="hero-actions">
               <a className="primary-link-button" href="#analyze">
@@ -94,8 +94,8 @@ function App() {
 
           <aside className="status-panel" aria-label="Backend status">
             <span className="status-label">Backend status</span>
-            <strong>CSV validation API ready</strong>
-            <p>Academic record CSV files can now be validated and analyzed through the backend.</p>
+            <strong>Academic analysis API ready</strong>
+            <p>Academic record CSV files and supported transcript PDFs can be analyzed.</p>
           </aside>
         </section>
 
@@ -105,22 +105,23 @@ function App() {
           aria-labelledby="upload-title"
         >
           <div className="section-heading">
-            <p className="eyebrow">CSV validation</p>
+            <p className="eyebrow">CSV and PDF analysis</p>
             <h2 id="upload-title">Validate academic records</h2>
             <p className="section-copy">
-              Upload an academic records CSV to verify that it matches the CampusInsight schema.
+              Upload an academic records CSV or supported transcript PDF to prepare deterministic
+              analytics.
             </p>
           </div>
 
           <div className="upload-layout">
             <form className="upload-form" onSubmit={handleSubmit}>
               <label className="file-label" htmlFor={fileInputId}>
-                Academic records CSV file
+                Academic records CSV or PDF file
               </label>
               <input
                 id={fileInputId}
                 type="file"
-                accept=".csv,text/csv"
+                accept=".csv,.pdf,text/csv,application/pdf"
                 onChange={(event) => {
                   setSelectedFile(event.target.files?.[0] ?? null);
                   setAnalysisResult(null);
@@ -129,7 +130,9 @@ function App() {
               />
 
               <div className="selected-file" aria-live="polite">
-                {selectedFile ? selectedFile.name : "No CSV file selected."}
+                {selectedFile
+                  ? `${selectedFile.name} (${getAcademicFileType(selectedFile)})`
+                  : "No academic records file selected."}
               </div>
 
               <button
@@ -137,14 +140,15 @@ function App() {
                 type="submit"
                 disabled={!selectedFile || isAnalyzing}
               >
-                {isAnalyzing ? "Analyzing CSV..." : "Analyze CSV"}
+                {isAnalyzing ? "Analyzing file..." : "Analyze file"}
               </button>
             </form>
 
-            <aside className="schema-hint" aria-label="Required CSV schema">
+            <aside className="schema-hint" aria-label="Required academic records schema">
               <h3>Required columns</h3>
               <p>
-                Use the sample file at <code>data/sample/academic_records_sample.csv</code>.
+                CSV uploads should use <code>data/sample/academic_records_sample.csv</code>. PDF
+                uploads must be readable transcript PDFs with selectable text.
               </p>
               <ul>
                 <li>student_id</li>
@@ -321,7 +325,7 @@ function SavedAnalysesPanel() {
       {hasLoadedHistory && savedAnalyses.length === 0 && !historyError ? (
         <section className="result-panel result-panel-empty" aria-live="polite">
           <h3>No saved analyses yet.</h3>
-          <p>Run a valid CSV analysis to save a local history entry.</p>
+          <p>Run a valid CSV or PDF analysis to save a local history entry.</p>
         </section>
       ) : null}
 
@@ -574,8 +578,11 @@ function ValidationResultPanel({
   if (isLoading) {
     return (
       <section className="result-panel" role="status" aria-live="polite" aria-busy="true">
-        <h3>Analyzing CSV...</h3>
-        <p>CampusInsight is validating the selected file and preparing deterministic analytics.</p>
+        <h3>Analyzing file...</h3>
+        <p>
+          CampusInsight is validating or extracting the selected file and preparing deterministic
+          analytics.
+        </p>
       </section>
     );
   }
@@ -583,7 +590,7 @@ function ValidationResultPanel({
   if (uploadError) {
     return (
       <section className="result-panel result-panel-error" role="alert">
-        <h3>CSV upload could not be analyzed.</h3>
+        <h3>Academic records upload could not be analyzed.</h3>
         <p>{uploadError}</p>
       </section>
     );
@@ -594,8 +601,8 @@ function ValidationResultPanel({
       <section className="result-panel result-panel-empty" role="status" aria-live="polite">
         <h3>Validation result</h3>
         <p>
-          Select a CSV file and submit it to see validation status and academic summary metrics. You
-          can run analysis again with another file at any time.
+          Select a CSV or PDF file and submit it to see validation status and academic summary
+          metrics. You can run analysis again with another file at any time.
         </p>
       </section>
     );
@@ -604,11 +611,11 @@ function ValidationResultPanel({
   if (result.is_valid) {
     return (
       <section className="result-panel result-panel-success" role="status" aria-live="polite">
-        <h3>CSV validation passed.</h3>
+        <h3>Academic record validation passed.</h3>
         <dl className="result-summary">
           <div>
             <dt>File</dt>
-            <dd>{fileName ?? "Uploaded CSV"}</dd>
+            <dd>{fileName ?? "Uploaded file"}</dd>
           </div>
           <div>
             <dt>Rows checked</dt>
@@ -625,12 +632,12 @@ function ValidationResultPanel({
 
   return (
     <section className="result-panel result-panel-warning" role="status" aria-live="polite">
-      <h3>CSV validation found issues.</h3>
-      <p>Review the listed validation errors, update the CSV, then retry the analysis.</p>
+      <h3>Academic record validation found issues.</h3>
+      <p>Review the listed validation errors, update the source file, then retry the analysis.</p>
       <dl className="result-summary">
         <div>
           <dt>File</dt>
-          <dd>{fileName ?? "Uploaded CSV"}</dd>
+          <dd>{fileName ?? "Uploaded file"}</dd>
         </div>
         <div>
           <dt>Rows checked</dt>
@@ -653,6 +660,12 @@ function ValidationResultPanel({
       </div>
     </section>
   );
+}
+
+function getAcademicFileType(file: File): "CSV" | "PDF" {
+  return file.name.toLowerCase().endsWith(".pdf") || file.type === "application/pdf"
+    ? "PDF"
+    : "CSV";
 }
 
 export default App;

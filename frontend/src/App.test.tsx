@@ -26,7 +26,7 @@ describe("App", () => {
     expect(screen.getByRole("heading", { name: "Validate academic records" })).toBeInTheDocument();
     expect(
       screen.getByText(
-        "Upload an academic records CSV to verify that it matches the CampusInsight schema.",
+        "Upload an academic records CSV or supported transcript PDF to prepare deterministic analytics.",
       ),
     ).toBeInTheDocument();
   });
@@ -34,8 +34,8 @@ describe("App", () => {
   it("renders a file input and submit button", () => {
     render(<App />);
 
-    expect(screen.getByLabelText("Academic records CSV file")).toBeInTheDocument();
-    expect(screen.getByRole("button", { name: "Analyze CSV" })).toBeInTheDocument();
+    expect(screen.getByLabelText("Academic records CSV or PDF file")).toBeInTheDocument();
+    expect(screen.getByRole("button", { name: "Analyze file" })).toBeInTheDocument();
   });
 
   it("renders the saved analyses section", () => {
@@ -55,7 +55,7 @@ describe("App", () => {
 
     expect(await screen.findByText("No saved analyses yet.")).toBeInTheDocument();
     expect(
-      screen.getByText("Run a valid CSV analysis to save a local history entry."),
+      screen.getByText("Run a valid CSV or PDF analysis to save a local history entry."),
     ).toBeInTheDocument();
   });
 
@@ -210,7 +210,7 @@ describe("App", () => {
       await screen.findByRole("heading", { name: "Saved analysis dashboard" }),
     ).toBeInTheDocument();
     expect(screen.getByText("Viewing saved analysis")).toBeInTheDocument();
-    expect(screen.getByText("CSV validation passed.")).toBeInTheDocument();
+    expect(screen.getByText("Academic record validation passed.")).toBeInTheDocument();
     expect(screen.getByRole("heading", { name: "GPA and credit summary" })).toBeInTheDocument();
     expect(screen.getByRole("heading", { name: "Analytics charts" })).toBeInTheDocument();
     expect(screen.getByRole("heading", { name: "Semester Performance" })).toBeInTheDocument();
@@ -305,10 +305,11 @@ describe("App", () => {
     render(<App />);
 
     await uploadCsv(user);
-    await user.click(screen.getByRole("button", { name: "Analyze CSV" }));
+    await user.click(screen.getByRole("button", { name: "Analyze file" }));
 
-    expect(await screen.findByText("CSV validation passed.")).toBeInTheDocument();
-    expect(screen.getAllByText("sample.csv")).toHaveLength(2);
+    expect(await screen.findByText("Academic record validation passed.")).toBeInTheDocument();
+    expect(screen.getByText("sample.csv")).toBeInTheDocument();
+    expect(screen.getByText("sample.csv (CSV)")).toBeInTheDocument();
     expect(screen.getByText("Rows checked")).toBeInTheDocument();
     expect(screen.getByText("Analytics status")).toBeInTheDocument();
     expect(screen.getByRole("heading", { name: "GPA and credit summary" })).toBeInTheDocument();
@@ -318,13 +319,35 @@ describe("App", () => {
     expect(screen.getByText("46")).toBeInTheDocument();
   });
 
+  it("supports PDF transcript uploads through the PDF analysis endpoint", async () => {
+    fetchMock.mockResolvedValueOnce(jsonResponse(validAnalysisResponse()));
+    const user = userEvent.setup();
+    render(<App />);
+
+    const file = new File(["%PDF-1.4"], "transcript.pdf", { type: "application/pdf" });
+    await user.upload(screen.getByLabelText("Academic records CSV or PDF file"), file);
+
+    expect(screen.getByText("transcript.pdf (PDF)")).toBeInTheDocument();
+
+    await user.click(screen.getByRole("button", { name: "Analyze file" }));
+
+    expect(fetchMock).toHaveBeenCalledWith(
+      "http://127.0.0.1:8000/academic-records/analyze-pdf",
+      expect.objectContaining({
+        method: "POST",
+        body: expect.any(FormData),
+      }),
+    );
+    expect(await screen.findByText("Academic record validation passed.")).toBeInTheDocument();
+  });
+
   it("displays semester, grade distribution, and course performance tables", async () => {
     fetchMock.mockResolvedValueOnce(jsonResponse(validAnalysisResponse()));
     const user = userEvent.setup();
     render(<App />);
 
     await uploadCsv(user);
-    await user.click(screen.getByRole("button", { name: "Analyze CSV" }));
+    await user.click(screen.getByRole("button", { name: "Analyze file" }));
 
     expect(
       await screen.findByRole("heading", { name: "Semester Performance" }),
@@ -348,7 +371,7 @@ describe("App", () => {
     render(<App />);
 
     await uploadCsv(user);
-    await user.click(screen.getByRole("button", { name: "Analyze CSV" }));
+    await user.click(screen.getByRole("button", { name: "Analyze file" }));
 
     expect(await screen.findByRole("heading", { name: "Analytics charts" })).toBeInTheDocument();
     expect(screen.getByRole("heading", { name: "Semester Performance Chart" })).toBeInTheDocument();
@@ -366,7 +389,7 @@ describe("App", () => {
     render(<App />);
 
     await uploadCsv(user);
-    await user.click(screen.getByRole("button", { name: "Analyze CSV" }));
+    await user.click(screen.getByRole("button", { name: "Analyze file" }));
 
     expect(
       await screen.findByRole("heading", { name: "Grade Distribution Chart" }),
@@ -388,7 +411,7 @@ describe("App", () => {
     render(<App />);
 
     await uploadCsv(user);
-    await user.click(screen.getByRole("button", { name: "Analyze CSV" }));
+    await user.click(screen.getByRole("button", { name: "Analyze file" }));
 
     expect(
       await screen.findByRole("heading", { name: "Courses that may need attention" }),
@@ -420,9 +443,9 @@ describe("App", () => {
     render(<App />);
 
     await uploadCsv(user);
-    await user.click(screen.getByRole("button", { name: "Analyze CSV" }));
+    await user.click(screen.getByRole("button", { name: "Analyze file" }));
 
-    expect(await screen.findByText("CSV validation found issues.")).toBeInTheDocument();
+    expect(await screen.findByText("Academic record validation found issues.")).toBeInTheDocument();
     expect(screen.getByText("Row 2")).toBeInTheDocument();
     expect(screen.getAllByText("score")).toHaveLength(2);
     expect(screen.getByText("score must be between 0 and 100.")).toBeInTheDocument();
@@ -456,9 +479,11 @@ describe("App", () => {
     render(<App />);
 
     await uploadCsv(user);
-    await user.click(screen.getByRole("button", { name: "Analyze CSV" }));
+    await user.click(screen.getByRole("button", { name: "Analyze file" }));
 
-    expect(await screen.findByText("CSV upload could not be analyzed.")).toBeInTheDocument();
+    expect(
+      await screen.findByText("Academic records upload could not be analyzed."),
+    ).toBeInTheDocument();
     expect(screen.getByText("Uploaded file must use a .csv extension.")).toBeInTheDocument();
     expect(screen.queryByRole("heading", { name: "Analytics charts" })).not.toBeInTheDocument();
   });
@@ -469,9 +494,11 @@ describe("App", () => {
     render(<App />);
 
     await uploadCsv(user);
-    await user.click(screen.getByRole("button", { name: "Analyze CSV" }));
+    await user.click(screen.getByRole("button", { name: "Analyze file" }));
 
-    expect(await screen.findByText("CSV upload could not be analyzed.")).toBeInTheDocument();
+    expect(
+      await screen.findByText("Academic records upload could not be analyzed."),
+    ).toBeInTheDocument();
     expect(
       screen.getByText("Unable to reach the CampusInsight API. Confirm the backend is running."),
     ).toBeInTheDocument();
@@ -489,9 +516,9 @@ describe("App", () => {
     render(<App />);
 
     await uploadCsv(user);
-    await user.click(screen.getByRole("button", { name: "Analyze CSV" }));
+    await user.click(screen.getByRole("button", { name: "Analyze file" }));
 
-    expect(screen.getAllByText("Analyzing CSV...")).toHaveLength(2);
+    expect(screen.getAllByText("Analyzing file...")).toHaveLength(2);
 
     resolveResponse(
       jsonResponse({
@@ -605,7 +632,7 @@ function savedDetailResponse() {
 
 async function uploadCsv(user: ReturnType<typeof userEvent.setup>) {
   const file = new File(["student_id\nS1001\n"], "sample.csv", { type: "text/csv" });
-  await user.upload(screen.getByLabelText("Academic records CSV file"), file);
+  await user.upload(screen.getByLabelText("Academic records CSV or PDF file"), file);
 }
 
 function jsonResponse(body: unknown, status = 200): Response {

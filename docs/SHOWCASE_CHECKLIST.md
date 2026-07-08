@@ -71,6 +71,7 @@ Mobile:
 ## GitHub README Checklist
 
 - Product preview images resolve.
+- Product preview images match the current visual baseline or are marked for refresh.
 - Quick start commands are visible.
 - Tech stack is current.
 - API overview is current.
@@ -82,6 +83,7 @@ Mobile:
 
 - Present CampusInsight as a local full-stack portfolio project.
 - Mention FastAPI, React, TypeScript, Vite, Recharts, SQLite, pytest, and Vitest.
+- Mention the professional dashboard redesign only as frontend UI polish, not as a new backend capability.
 - Mention deterministic analytics and saved HTML reports.
 - Mention that screenshots use fictional sample data.
 - Link to the GitHub repository.

@@ -75,118 +75,122 @@ function App() {
       </header>
 
       <main className="app-shell">
-      <section className="hero product-intro" aria-labelledby="page-title">
-        <div className="hero-content">
-          <p className="eyebrow">Student Performance Analytics Dashboard</p>
-          <h1 id="page-title">CampusInsight</h1>
-          <p className="intro">
-            Analyze academic records from CSV files, review GPA trends and course performance, and
-            keep saved reports for local academic review.
-          </p>
-          <div className="hero-actions">
-            <a className="primary-link-button" href="#analyze">
-              Analyze Academic Records
-            </a>
-            <p className="status-note">This product is under active development.</p>
-          </div>
-          <p className="demo-note">Demo assets use fictional sample data only.</p>
-        </div>
-
-        <aside className="status-panel" aria-label="Backend status">
-          <span className="status-label">Backend status</span>
-          <strong>CSV validation API ready</strong>
-          <p>Academic record CSV files can now be validated and analyzed through the backend.</p>
-        </aside>
-      </section>
-
-      <section id="analyze" className="upload-section page-section" aria-labelledby="upload-title">
-        <div className="section-heading">
-          <p className="eyebrow">CSV validation</p>
-          <h2 id="upload-title">Validate academic records</h2>
-          <p className="section-copy">
-            Upload an academic records CSV to verify that it matches the CampusInsight schema.
-          </p>
-        </div>
-
-        <div className="upload-layout">
-          <form className="upload-form" onSubmit={handleSubmit}>
-            <label className="file-label" htmlFor={fileInputId}>
-              Academic records CSV file
-            </label>
-            <input
-              id={fileInputId}
-              type="file"
-              accept=".csv,text/csv"
-              onChange={(event) => {
-                setSelectedFile(event.target.files?.[0] ?? null);
-                setAnalysisResult(null);
-                setUploadError(null);
-              }}
-            />
-
-            <div className="selected-file" aria-live="polite">
-              {selectedFile ? selectedFile.name : "No CSV file selected."}
-            </div>
-
-            <button
-              className="primary-button"
-              type="submit"
-              disabled={!selectedFile || isAnalyzing}
-            >
-              {isAnalyzing ? "Analyzing CSV..." : "Analyze CSV"}
-            </button>
-          </form>
-
-          <aside className="schema-hint" aria-label="Required CSV schema">
-            <h3>Required columns</h3>
-            <p>
-              Use the sample file at <code>data/sample/academic_records_sample.csv</code>.
+        <section className="hero product-intro" aria-labelledby="page-title">
+          <div className="hero-content">
+            <p className="eyebrow">Student Performance Analytics Dashboard</p>
+            <h1 id="page-title">CampusInsight</h1>
+            <p className="intro">
+              Analyze academic records from CSV files, review GPA trends and course performance, and
+              keep saved reports for local academic review.
             </p>
-            <ul>
-              <li>student_id</li>
-              <li>student_name</li>
-              <li>semester</li>
-              <li>academic_year</li>
-              <li>course_code</li>
-              <li>course_name</li>
-              <li>credits</li>
-              <li>grade_letter</li>
-              <li>grade_point</li>
-              <li>score</li>
-            </ul>
+            <div className="hero-actions">
+              <a className="primary-link-button" href="#analyze">
+                Analyze Academic Records
+              </a>
+              <p className="status-note">This product is under active development.</p>
+            </div>
+            <p className="demo-note">Demo assets use fictional sample data only.</p>
+          </div>
+
+          <aside className="status-panel" aria-label="Backend status">
+            <span className="status-label">Backend status</span>
+            <strong>CSV validation API ready</strong>
+            <p>Academic record CSV files can now be validated and analyzed through the backend.</p>
           </aside>
-        </div>
+        </section>
 
-        <div id="dashboard" className="dashboard-anchor">
-          <ValidationResultPanel
-            fileName={selectedFile?.name}
-            isLoading={isAnalyzing}
-            result={analysisResult}
-            uploadError={uploadError}
-          />
-          {analysisResult?.is_valid && analysisResult.analytics ? (
-            <AnalyticsDashboard analytics={analysisResult.analytics} />
-          ) : null}
-        </div>
-      </section>
+        <section
+          id="analyze"
+          className="upload-section page-section"
+          aria-labelledby="upload-title"
+        >
+          <div className="section-heading">
+            <p className="eyebrow">CSV validation</p>
+            <h2 id="upload-title">Validate academic records</h2>
+            <p className="section-copy">
+              Upload an academic records CSV to verify that it matches the CampusInsight schema.
+            </p>
+          </div>
 
-      <SavedAnalysesPanel />
+          <div className="upload-layout">
+            <form className="upload-form" onSubmit={handleSubmit}>
+              <label className="file-label" htmlFor={fileInputId}>
+                Academic records CSV file
+              </label>
+              <input
+                id={fileInputId}
+                type="file"
+                accept=".csv,text/csv"
+                onChange={(event) => {
+                  setSelectedFile(event.target.files?.[0] ?? null);
+                  setAnalysisResult(null);
+                  setUploadError(null);
+                }}
+              />
 
-      <section className="capability-section page-section" aria-labelledby="capabilities-title">
-        <div className="section-heading">
-          <p className="eyebrow">Planned foundation</p>
-          <h2 id="capabilities-title">Future analytics capabilities</h2>
-        </div>
+              <div className="selected-file" aria-live="polite">
+                {selectedFile ? selectedFile.name : "No CSV file selected."}
+              </div>
 
-        <div className="capability-grid">
-          {capabilities.map((capability) => (
-            <article className="capability-card" key={capability}>
-              <h3>{capability}</h3>
-              <p>Planned for a later contract.</p>
-            </article>
-          ))}
-        </div>
-      </section>
+              <button
+                className="primary-button"
+                type="submit"
+                disabled={!selectedFile || isAnalyzing}
+              >
+                {isAnalyzing ? "Analyzing CSV..." : "Analyze CSV"}
+              </button>
+            </form>
+
+            <aside className="schema-hint" aria-label="Required CSV schema">
+              <h3>Required columns</h3>
+              <p>
+                Use the sample file at <code>data/sample/academic_records_sample.csv</code>.
+              </p>
+              <ul>
+                <li>student_id</li>
+                <li>student_name</li>
+                <li>semester</li>
+                <li>academic_year</li>
+                <li>course_code</li>
+                <li>course_name</li>
+                <li>credits</li>
+                <li>grade_letter</li>
+                <li>grade_point</li>
+                <li>score</li>
+              </ul>
+            </aside>
+          </div>
+
+          <div id="dashboard" className="dashboard-anchor">
+            <ValidationResultPanel
+              fileName={selectedFile?.name}
+              isLoading={isAnalyzing}
+              result={analysisResult}
+              uploadError={uploadError}
+            />
+            {analysisResult?.is_valid && analysisResult.analytics ? (
+              <AnalyticsDashboard analytics={analysisResult.analytics} />
+            ) : null}
+          </div>
+        </section>
+
+        <SavedAnalysesPanel />
+
+        <section className="capability-section page-section" aria-labelledby="capabilities-title">
+          <div className="section-heading">
+            <p className="eyebrow">Planned foundation</p>
+            <h2 id="capabilities-title">Future analytics capabilities</h2>
+          </div>
+
+          <div className="capability-grid">
+            {capabilities.map((capability) => (
+              <article className="capability-card" key={capability}>
+                <h3>{capability}</h3>
+                <p>Planned for a later contract.</p>
+              </article>
+            ))}
+          </div>
+        </section>
       </main>
     </>
   );

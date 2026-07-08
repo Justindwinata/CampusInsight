@@ -8,11 +8,11 @@ CampusInsight currently contains a local full-stack application with separate ba
 - `backend/src/campusinsight_api/api/`: API routes, including CSV upload validation, analysis, and saved analysis history.
 - `backend/src/campusinsight_api/domain/`: academic record schema, analytics contracts, and saved analysis summary contracts.
 - `backend/src/campusinsight_api/services/`: CSV validation, deterministic analytics, SQLite saved analysis repository, and HTML report rendering services.
-- `frontend/`: React + TypeScript + Vite application shell with CSV validation, analytics summary UI, tables, charts, saved analyses panel, saved analysis detail dashboard, responsive layout polish, and HTML report action.
+- `frontend/`: React + TypeScript + Vite application shell with top navigation, CSV validation, analytics summary UI, tables, charts, saved analyses panel, saved analysis detail dashboard, responsive layout polish, and HTML report action.
 
 Local SQLite persistence exists for saved analysis results, and standalone HTML reports exist for saved analyses. The app is demo-ready for local portfolio walkthroughs, but deployment, authentication, cloud database persistence, AI, prediction logic, and PDF export are not implemented.
 
-Demo screenshots under `assets/screenshots/` are captured from the actual local application after CI-0011 UX stabilization. They use the fictional sample dataset and do not include raw CSV contents, local database paths, terminal windows, or browser developer tools.
+Demo screenshots under `assets/screenshots/` are captured from the actual local application using the fictional sample dataset. They do not include raw CSV contents, local database paths, terminal windows, or browser developer tools. Screenshots may need refresh after major UI redesign work.
 
 ## Intended Future Pipeline
 
@@ -35,7 +35,7 @@ Successful analyses are stored as canonical JSON responses in local SQLite at `d
 
 ## Frontend Boundary
 
-The frontend owns the current CSV selection, validation, analytics summary workflow, saved analyses history foundation, saved detail dashboard, HTML report action, and responsive presentation layer. It displays validation status, GPA and credit summary cards, semester and course tables, grade distribution, course score visualizations, safe course risk review, saved analysis metadata summaries, full saved dashboards from stored JSON, and a report link for loaded saved details. Charts use deterministic backend analytics only, and tables remain available as an accessible fallback.
+The frontend owns the current CSV selection, validation, analytics summary workflow, saved analyses history foundation, saved detail dashboard, HTML report action, top navigation, and responsive presentation layer. It displays validation status, GPA and credit summary cards, semester and course tables, grade distribution, course score visualizations, safe course risk review, saved analysis metadata summaries, full saved dashboards from stored JSON, and a report link for loaded saved details. Charts use deterministic backend analytics only, and tables remain available as an accessible fallback.
 
 The frontend does not generate reports itself, recalculate saved metrics, or require CSV re-upload for saved detail or report access.
 

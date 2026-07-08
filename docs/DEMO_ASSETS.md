@@ -79,6 +79,8 @@ Mobile screenshots captured from the local app after CI-0011 UX stabilization:
 
 The README product preview uses selected files from this inventory.
 
+CI-0014 introduced a professional UI redesign. Refresh these screenshots before using them as the final visual baseline for a public portfolio post.
+
 ## Safety Boundaries
 
 CampusInsight screenshots and demo copy must not claim AI, prediction, academic failure prediction, guaranteed improvement, PDF export, authentication, deployment, cloud database, or production readiness.

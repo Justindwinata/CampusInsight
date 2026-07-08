@@ -25,20 +25,13 @@
   --space-page: 32px;
   --section-gap: 64px;
   --font-family:
-    Inter,
-    ui-sans-serif,
-    system-ui,
-    -apple-system,
-    BlinkMacSystemFont,
-    "Segoe UI",
-    sans-serif;
+    Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
 
   color: var(--color-text);
   background:
     radial-gradient(circle at top left, rgb(15 118 110 / 10%), transparent 32rem),
     linear-gradient(180deg, var(--color-page-accent) 0%, var(--color-page) 24rem);
-  font-family:
-    var(--font-family);
+  font-family: var(--font-family);
   font-synthesis: none;
   text-rendering: optimizeLegibility;
   -webkit-font-smoothing: antialiased;

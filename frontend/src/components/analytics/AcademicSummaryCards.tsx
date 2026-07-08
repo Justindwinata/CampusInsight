@@ -29,7 +29,9 @@ function AcademicSummaryCards({ analytics }: AcademicSummaryCardsProps) {
       <div className="metric-grid">
         {cards.map(([label, value]) => (
           <article
-            className={label === "Weighted GPA" ? "metric-card metric-card-featured" : "metric-card"}
+            className={
+              label === "Weighted GPA" ? "metric-card metric-card-featured" : "metric-card"
+            }
             key={label}
           >
             <span>{label}</span>

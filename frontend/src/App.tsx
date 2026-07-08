@@ -18,14 +18,17 @@ type AppView = "home" | "analyze" | "dashboard" | "saved" | "report";
 
 const productHighlights = [
   {
+    icon: "IN",
     title: "Structured inputs",
     body: "Analyze academic records from CSV files or text-based transcript PDFs.",
   },
   {
+    icon: "RV",
     title: "Deterministic review",
     body: "Review GPA, grade distribution, course performance, and risk signals without prediction.",
   },
   {
+    icon: "HS",
     title: "Saved workspace",
     body: "Keep local analysis history organized and open HTML reports from saved results.",
   },
@@ -201,7 +204,12 @@ function HomeView({ onNavigate }: { onNavigate: (view: AppView) => void }) {
       <section className="overview-grid" aria-label="CampusInsight product summary">
         {productHighlights.map((highlight) => (
           <article className="overview-card" key={highlight.title}>
-            <span>{highlight.title}</span>
+            <div className="overview-card-header">
+              <span className="visual-icon" aria-hidden="true">
+                {highlight.icon}
+              </span>
+              <span>{highlight.title}</span>
+            </div>
             <p>{highlight.body}</p>
           </article>
         ))}
@@ -284,7 +292,9 @@ function AnalyzeView({
           <h3>Accepted formats</h3>
           <div className="format-list">
             <article>
-              <span>CSV</span>
+              <span className="format-icon" aria-hidden="true">
+                CSV
+              </span>
               <strong>Structured academic records</strong>
               <p>
                 Use <code>data/sample/academic_records_sample.csv</code> or the documented schema
@@ -292,7 +302,9 @@ function AnalyzeView({
               </p>
             </article>
             <article>
-              <span>PDF</span>
+              <span className="format-icon format-icon-pdf" aria-hidden="true">
+                PDF
+              </span>
               <strong>Text-based academic transcript</strong>
               <p>
                 The transcript text must be selectable. Scanned image-only documents are outside
@@ -384,15 +396,30 @@ function ReportView({ onNavigate }: { onNavigate: (view: AppView) => void }) {
 
       <div className="report-guide-grid">
         <article className="overview-card">
-          <span>1. Analyze</span>
+          <div className="overview-card-header">
+            <span className="visual-icon visual-icon-warm" aria-hidden="true">
+              01
+            </span>
+            <span>1. Analyze</span>
+          </div>
           <p>Upload a CSV or supported text-based transcript PDF and run deterministic analytics.</p>
         </article>
         <article className="overview-card">
-          <span>2. Save</span>
+          <div className="overview-card-header">
+            <span className="visual-icon" aria-hidden="true">
+              02
+            </span>
+            <span>2. Save</span>
+          </div>
           <p>Successful analyses are stored locally as canonical JSON, not as uploaded files.</p>
         </article>
         <article className="overview-card">
-          <span>3. Open report</span>
+          <div className="overview-card-header">
+            <span className="visual-icon visual-icon-cool" aria-hidden="true">
+              03
+            </span>
+            <span>3. Open report</span>
+          </div>
           <p>Use the saved detail view to open a standalone HTML report in a new tab.</p>
         </article>
       </div>

@@ -315,8 +315,8 @@ describe("App", () => {
     await user.click(screen.getByRole("button", { name: "Analyze file" }));
 
     expect(await screen.findByText("Academic record validation passed.")).toBeInTheDocument();
-    expect(screen.getByText("sample.csv")).toBeInTheDocument();
-    expect(screen.getByText("sample.csv (CSV)")).toBeInTheDocument();
+    expect(screen.getAllByText("sample.csv").length).toBeGreaterThanOrEqual(2);
+    expect(screen.getAllByText("CSV").length).toBeGreaterThanOrEqual(1);
     expect(screen.getByText("Rows checked")).toBeInTheDocument();
     expect(screen.getByText("Analytics status")).toBeInTheDocument();
     expect(screen.getByRole("heading", { name: "GPA and credit summary" })).toBeInTheDocument();
@@ -334,7 +334,8 @@ describe("App", () => {
     const file = new File(["%PDF-1.4"], "transcript.pdf", { type: "application/pdf" });
     await user.upload(screen.getByLabelText("Academic records CSV or PDF file"), file);
 
-    expect(screen.getByText("transcript.pdf (PDF)")).toBeInTheDocument();
+    expect(screen.getByText("transcript.pdf")).toBeInTheDocument();
+    expect(screen.getAllByText("PDF").length).toBeGreaterThanOrEqual(1);
 
     await user.click(screen.getByRole("button", { name: "Analyze file" }));
 

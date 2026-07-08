@@ -146,6 +146,15 @@ function App() {
 
           <div className="upload-layout">
             <form className="upload-form" onSubmit={handleSubmit}>
+              <div className="upload-form-heading">
+                <span className="form-kicker">Document intake</span>
+                <h3>Upload academic records</h3>
+                <p>
+                  Choose one CSV or text-based transcript PDF. CampusInsight validates the file,
+                  prepares the records, and returns the analytics dashboard.
+                </p>
+              </div>
+
               <label className="file-label" htmlFor={fileInputId}>
                 Academic records CSV or PDF file
               </label>
@@ -160,10 +169,16 @@ function App() {
                 }}
               />
 
-              <div className="selected-file" aria-live="polite">
-                {selectedFile
-                  ? `${selectedFile.name} (${getAcademicFileType(selectedFile)})`
-                  : "No academic records file selected."}
+              <div className="selected-file-card" aria-live="polite">
+                <span>{selectedFile ? getAcademicFileType(selectedFile) : "Waiting for file"}</span>
+                <strong>
+                  {selectedFile ? selectedFile.name : "No academic records file selected."}
+                </strong>
+                <p>
+                  {selectedFile
+                    ? "Ready to submit for validation and analytics."
+                    : "Accepted formats: .csv academic records or text-based .pdf transcript."}
+                </p>
               </div>
 
               <button
@@ -175,24 +190,41 @@ function App() {
               </button>
             </form>
 
-            <aside className="schema-hint" aria-label="Required academic records schema">
-              <h3>Required columns</h3>
-              <p>
-                CSV uploads should use <code>data/sample/academic_records_sample.csv</code>. PDF
-                uploads must be readable transcript PDFs with selectable text.
-              </p>
-              <ul>
-                <li>student_id</li>
-                <li>student_name</li>
-                <li>semester</li>
-                <li>academic_year</li>
-                <li>course_code</li>
-                <li>course_name</li>
-                <li>credits</li>
-                <li>grade_letter</li>
-                <li>grade_point</li>
-                <li>score</li>
-              </ul>
+            <aside className="schema-hint" aria-label="Accepted academic document formats">
+              <h3>Accepted formats</h3>
+              <div className="format-list">
+                <article>
+                  <span>CSV</span>
+                  <strong>Structured academic records</strong>
+                  <p>
+                    Use <code>data/sample/academic_records_sample.csv</code> or the documented
+                    schema columns.
+                  </p>
+                </article>
+                <article>
+                  <span>PDF</span>
+                  <strong>Text-based academic transcript</strong>
+                  <p>
+                    The transcript text must be selectable. Scanned image-only documents are outside
+                    this demo scope.
+                  </p>
+                </article>
+              </div>
+              <details className="schema-details">
+                <summary>CSV schema columns</summary>
+                <ul>
+                  <li>student_id</li>
+                  <li>student_name</li>
+                  <li>semester</li>
+                  <li>academic_year</li>
+                  <li>course_code</li>
+                  <li>course_name</li>
+                  <li>credits</li>
+                  <li>grade_letter</li>
+                  <li>grade_point</li>
+                  <li>score</li>
+                </ul>
+              </details>
             </aside>
           </div>
 

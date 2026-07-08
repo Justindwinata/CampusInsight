@@ -95,7 +95,7 @@ Desktop screenshots captured from the local app after the CI-0016 SaaS UI redesi
 - `assets/screenshots/saved-detail-desktop.png`
 - `assets/screenshots/html-report-desktop.png`
 
-Mobile screenshots captured from the local app after PDF transcript support:
+Mobile screenshots captured from the local app after the CI-0016 SaaS UI redesign:
 
 - `assets/screenshots/home-mobile.png`
 - `assets/screenshots/upload-csv-pdf-mobile.png`
@@ -104,7 +104,7 @@ Mobile screenshots captured from the local app after PDF transcript support:
 
 The README product preview uses selected files from this inventory.
 
-CI-0015 refreshed the screenshot baseline after professional UI polish and PDF transcript support. CI-0016 introduced another SaaS-style UI redesign, so CI-0017 refreshes the screenshots again against the latest UI. Screenshots should continue to use fictional or privacy-safe data only and should represent both CSV and text-based PDF transcript demo flows.
+CI-0017 refreshed the screenshot baseline after the CI-0016 SaaS UI redesign. The current screenshot set represents CSV and text-based PDF transcript support using fictional CSV data and a privacy-safe synthetic transcript PDF. Real transcript PDFs remain excluded from Git and must not be used in public screenshots.
 
 ## Safety Boundaries
 

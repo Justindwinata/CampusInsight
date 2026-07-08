@@ -57,7 +57,7 @@ Expected result: all commands pass. The frontend build may print a non-blocking 
 
 ## Screenshot Inventory
 
-CI-0017 refreshes these screenshots after the SaaS-style UI redesign. The refreshed images must come from the actual running application, use fictional or privacy-safe data, represent both CSV and text-based PDF transcript workflows, and avoid unsupported claims. The SaaS reference direction is limited to layout quality and product structure; do not describe the UI as copied from any third-party site.
+CI-0017 refreshed these screenshots after the SaaS-style UI redesign. The images come from the actual running application, use fictional or privacy-safe data, represent both CSV and text-based PDF transcript workflows, and avoid unsupported claims. The SaaS reference direction is limited to layout quality and product structure; do not describe the UI as copied from any third-party site.
 
 Desktop:
 

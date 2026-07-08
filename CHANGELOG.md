@@ -7,6 +7,7 @@ All notable changes to CampusInsight will be documented in this file.
 ### Added
 
 - Add PDF academic transcript processing with text extraction, rule-based metadata/course parsing, normalization into the existing analytics schema, backend analysis endpoint, and frontend upload support.
+- Refresh desktop and mobile screenshots plus README preview after the CI-0016 SaaS UI redesign, using fictional CSV data and a privacy-safe synthetic text-based transcript PDF.
 - Refresh desktop and mobile demo screenshots, README preview, and showcase documentation after PDF transcript support.
 - Refine the frontend into a more polished SaaS-style product experience with stronger landing structure, upload workflow, dashboard hierarchy, saved-analysis workflow, and report action placement.
 - Add professional SaaS-style frontend redesign with app navigation, dashboard polish, saved-analysis UX polish, and responsive stabilization.

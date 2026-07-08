@@ -18,6 +18,7 @@
 - Refine the SaaS UI again using modern product structure as inspiration only. Do not copy third-party branding, assets, colors, or text; keep the CampusInsight identity original and grounded in academic analytics.
 - Commit verified demo screenshots and README preview assets from the running local application, using fictional sample data only.
 - Refresh demo screenshots after PDF support using fictional CSV data and a synthetic text-based PDF transcript; real transcript PDFs remain ignored and must not be committed.
+- Refresh desktop and mobile screenshots again after the CI-0016 SaaS UI redesign so the README preview matches the current app shell, dashboard, saved detail, and report experience.
 - Ignore local database files under `data/database/` so personal local history is not committed to Git.
 - Do not add Docker initially to keep the first bootstrap simple for local development.
 - Do not add authentication initially because the first portfolio version is focused on local academic analytics workflows.

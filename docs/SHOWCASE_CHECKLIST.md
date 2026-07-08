@@ -57,6 +57,8 @@ Expected result: all commands pass. The frontend build may print a non-blocking 
 
 ## Screenshot Inventory
 
+CI-0017 refreshes these screenshots after the SaaS-style UI redesign. The refreshed images must come from the actual running application, use fictional or privacy-safe data, represent both CSV and text-based PDF transcript workflows, and avoid unsupported claims. The SaaS reference direction is limited to layout quality and product structure; do not describe the UI as copied from any third-party site.
+
 Desktop:
 
 - `assets/screenshots/home-desktop.png`
@@ -77,7 +79,7 @@ Mobile:
 ## GitHub README Checklist
 
 - Product preview images resolve.
-- Product preview images match the current visual baseline or are marked for refresh after the CI-0016 SaaS UI redesign.
+- Product preview images match the current CI-0016 SaaS UI baseline after the CI-0017 screenshot refresh.
 - Quick start commands are visible.
 - Tech stack is current.
 - API overview is current.
@@ -95,6 +97,7 @@ Mobile:
 - Mention that screenshots use fictional sample data.
 - Link to the GitHub repository.
 - Avoid claiming production deployment, cloud infrastructure, or AI.
+- Avoid claiming OCR, prediction, PDF export, authentication, deployment, cloud database, or production readiness.
 
 ## Limitations to Mention Honestly
 

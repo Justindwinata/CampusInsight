@@ -39,6 +39,8 @@ Supported PDF demo boundaries:
 
 Screenshots must be captured from the actual running CampusInsight app. Do not use mockups, edited fake dashboards, terminal screenshots, browser developer tools, or fabricated analytics values.
 
+CI-0017 refreshes the screenshot set after the CI-0016 SaaS-style UI redesign. New screenshots must show the latest landing shell, upload workflow, dashboard hierarchy, saved analyses workflow, saved detail dashboard, and report action. The redesign used modern SaaS product structure as high-level inspiration only; screenshots and documentation must not imply that CampusInsight copied third-party branding, assets, colors, or text.
+
 Before capturing screenshots:
 
 - Start the FastAPI backend locally.
@@ -102,7 +104,7 @@ Mobile screenshots captured from the local app after PDF transcript support:
 
 The README product preview uses selected files from this inventory.
 
-CI-0015 refreshed the screenshot baseline after professional UI polish and PDF transcript support. CI-0016 introduced another SaaS-style UI redesign, so screenshots should be refreshed again before the next public showcase pass. Screenshots should continue to use fictional or privacy-safe data only.
+CI-0015 refreshed the screenshot baseline after professional UI polish and PDF transcript support. CI-0016 introduced another SaaS-style UI redesign, so CI-0017 refreshes the screenshots again against the latest UI. Screenshots should continue to use fictional or privacy-safe data only and should represent both CSV and text-based PDF transcript demo flows.
 
 ## Safety Boundaries
 

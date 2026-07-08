@@ -5,6 +5,7 @@ import {
   analyzeAcademicRecordsFile,
 } from "./services/academicRecordsService";
 import AnalyticsDashboard from "./components/analytics/AnalyticsDashboard";
+import heroCoverUrl from "../../assets/thumbnail.png";
 import {
   deleteSavedAnalysis,
   getSavedAnalysis,
@@ -179,14 +180,22 @@ function HomeView({ onNavigate }: { onNavigate: (view: AppView) => void }) {
           </p>
         </div>
 
-        <aside className="status-panel" aria-label="Backend status">
-          <span className="status-label">Product status</span>
-          <strong>CSV and PDF analysis ready</strong>
-          <p>
-            The current local demo validates records, normalizes supported transcript PDFs, and
-            renders the same analytics dashboard for both input paths.
-          </p>
-        </aside>
+        <div className="hero-visual" aria-label="CampusInsight dashboard preview">
+          <div className="hero-cover-frame">
+            <img
+              src={heroCoverUrl}
+              alt="CampusInsight interface preview showing the academic analytics dashboard"
+            />
+          </div>
+          <div className="hero-floating-card hero-floating-card-top">
+            <span>Product status</span>
+            <strong>CSV and PDF analysis ready</strong>
+          </div>
+          <div className="hero-floating-card hero-floating-card-bottom">
+            <span>Saved reports</span>
+            <strong>HTML report workflow</strong>
+          </div>
+        </div>
       </section>
 
       <section className="overview-grid" aria-label="CampusInsight product summary">

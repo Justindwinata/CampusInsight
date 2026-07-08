@@ -363,15 +363,21 @@ function SavedAnalysesPanel() {
         </p>
       </div>
 
-      <div id="report" className="saved-history-actions">
-        <button
-          className="secondary-button"
-          type="button"
-          onClick={loadHistory}
-          disabled={isLoadingHistory}
-        >
-          {isLoadingHistory ? "Loading saved analyses..." : "Load saved analyses"}
-        </button>
+      <div id="report" className="saved-workflow-strip">
+        <div>
+          <span>History workspace</span>
+          <p>Load local saved analyses, open a stored dashboard, then access its HTML report.</p>
+        </div>
+        <div className="saved-history-actions">
+          <button
+            className="secondary-button"
+            type="button"
+            onClick={loadHistory}
+            disabled={isLoadingHistory}
+          >
+            {isLoadingHistory ? "Loading saved analyses..." : "Load saved analyses"}
+          </button>
+        </div>
       </div>
 
       {historyError ? (
@@ -401,6 +407,7 @@ function SavedAnalysesPanel() {
                 key={analysis.analysis_id}
               >
                 <div className="saved-history-item-heading">
+                  <span>Saved result</span>
                   <h3>{analysis.source_filename}</h3>
                   <p>{analysis.created_at}</p>
                   {selectedAnalysis?.analysis_id === analysis.analysis_id ? (
@@ -487,7 +494,10 @@ function SavedAnalysisDetailShell({
 }: SavedAnalysisDetailShellProps) {
   return (
     <aside className="metadata-preview" aria-labelledby="saved-detail-title">
-      <h3 id="saved-detail-title">Saved Analysis Detail</h3>
+      <div className="metadata-preview-header">
+        <span>Selected analysis</span>
+        <h3 id="saved-detail-title">Saved Analysis Detail</h3>
+      </div>
 
       {!selectedAnalysis ? <p>Select a saved analysis to load stored detail metadata.</p> : null}
 
@@ -518,21 +528,27 @@ function SavedAnalysisDetailShell({
               displayed below when analytics data is available.
             </p>
           </div>
-          <div className="saved-detail-actions">
-            <button className="secondary-button" type="button" onClick={onClear}>
-              Clear saved detail
-            </button>
-            {detail.analysis_id ? (
-              <a
-                className="secondary-link-button report-link-button"
-                aria-label={`Download HTML report for saved analysis ${detail.analysis_id}`}
-                href={getSavedAnalysisReportUrl(detail.analysis_id)}
-                rel="noreferrer"
-                target="_blank"
-              >
-                Download HTML Report
-              </a>
-            ) : null}
+          <div className="report-callout">
+            <div>
+              <span>HTML report available</span>
+              <p>Open a standalone report generated from this saved analysis response.</p>
+            </div>
+            <div className="saved-detail-actions">
+              <button className="secondary-button" type="button" onClick={onClear}>
+                Clear saved detail
+              </button>
+              {detail.analysis_id ? (
+                <a
+                  className="secondary-link-button report-link-button"
+                  aria-label={`Download HTML report for saved analysis ${detail.analysis_id}`}
+                  href={getSavedAnalysisReportUrl(detail.analysis_id)}
+                  rel="noreferrer"
+                  target="_blank"
+                >
+                  Download HTML Report
+                </a>
+              ) : null}
+            </div>
           </div>
         </div>
       ) : null}
@@ -563,7 +579,7 @@ function SavedAnalysisDashboardSection({
 
   return (
     <section className="saved-dashboard-section" aria-labelledby="saved-dashboard-title">
-      <div className="section-heading">
+      <div className="section-heading dashboard-heading">
         <p className="eyebrow">Viewing saved analysis</p>
         <h2 id="saved-dashboard-title">Saved analysis dashboard</h2>
         <p className="section-copy">

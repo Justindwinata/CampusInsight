@@ -54,16 +54,42 @@ function App() {
   }
 
   return (
-    <main className="app-shell">
+    <>
+      <header className="app-header">
+        <div className="app-header-inner">
+          <a className="brand-mark" href="#page-title" aria-label="CampusInsight home">
+            <span className="brand-symbol">CI</span>
+            <span>
+              <strong>CampusInsight</strong>
+              <small>Academic analytics dashboard</small>
+            </span>
+          </a>
+
+          <nav className="app-nav" aria-label="Primary navigation">
+            <a href="#analyze">Analyze</a>
+            <a href="#dashboard">Dashboard</a>
+            <a href="#saved-analyses-title">Saved Analyses</a>
+            <a href="#report">Report</a>
+          </nav>
+        </div>
+      </header>
+
+      <main className="app-shell">
       <section className="hero product-intro" aria-labelledby="page-title">
         <div className="hero-content">
           <p className="eyebrow">Student Performance Analytics Dashboard</p>
           <h1 id="page-title">CampusInsight</h1>
           <p className="intro">
-            A full-stack portfolio project for exploring academic records, learning patterns, and
-            student performance workflows.
+            Analyze academic records from CSV files, review GPA trends and course performance, and
+            keep saved reports for local academic review.
           </p>
-          <p className="status-note">This product is under active development.</p>
+          <div className="hero-actions">
+            <a className="primary-link-button" href="#analyze">
+              Analyze Academic Records
+            </a>
+            <p className="status-note">This product is under active development.</p>
+          </div>
+          <p className="demo-note">Demo assets use fictional sample data only.</p>
         </div>
 
         <aside className="status-panel" aria-label="Backend status">
@@ -73,7 +99,7 @@ function App() {
         </aside>
       </section>
 
-      <section className="upload-section page-section" aria-labelledby="upload-title">
+      <section id="analyze" className="upload-section page-section" aria-labelledby="upload-title">
         <div className="section-heading">
           <p className="eyebrow">CSV validation</p>
           <h2 id="upload-title">Validate academic records</h2>
@@ -131,15 +157,17 @@ function App() {
           </aside>
         </div>
 
-        <ValidationResultPanel
-          fileName={selectedFile?.name}
-          isLoading={isAnalyzing}
-          result={analysisResult}
-          uploadError={uploadError}
-        />
-        {analysisResult?.is_valid && analysisResult.analytics ? (
-          <AnalyticsDashboard analytics={analysisResult.analytics} />
-        ) : null}
+        <div id="dashboard" className="dashboard-anchor">
+          <ValidationResultPanel
+            fileName={selectedFile?.name}
+            isLoading={isAnalyzing}
+            result={analysisResult}
+            uploadError={uploadError}
+          />
+          {analysisResult?.is_valid && analysisResult.analytics ? (
+            <AnalyticsDashboard analytics={analysisResult.analytics} />
+          ) : null}
+        </div>
       </section>
 
       <SavedAnalysesPanel />
@@ -159,7 +187,8 @@ function App() {
           ))}
         </div>
       </section>
-    </main>
+      </main>
+    </>
   );
 }
 
@@ -267,7 +296,7 @@ function SavedAnalysesPanel() {
         </p>
       </div>
 
-      <div className="saved-history-actions">
+      <div id="report" className="saved-history-actions">
         <button
           className="secondary-button"
           type="button"

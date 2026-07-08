@@ -83,10 +83,11 @@ Screenshots must avoid:
 
 ## Current Screenshot Inventory
 
-Desktop screenshots captured from the local app after CI-0011 UX stabilization:
+Desktop screenshots captured from the local app after PDF transcript support:
 
 - `assets/screenshots/home-desktop.png`
-- `assets/screenshots/upload-analysis-desktop.png`
+- `assets/screenshots/upload-csv-pdf-desktop.png`
+- `assets/screenshots/pdf-analysis-dashboard-desktop.png`
 - `assets/screenshots/dashboard-charts-desktop.png`
 - `assets/screenshots/saved-analyses-desktop.png`
 - `assets/screenshots/saved-detail-desktop.png`

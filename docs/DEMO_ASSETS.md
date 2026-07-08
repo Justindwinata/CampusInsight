@@ -85,7 +85,7 @@ Screenshots must avoid:
 
 ## Current Screenshot Inventory
 
-Desktop screenshots captured from the local app after PDF transcript support:
+Desktop screenshots captured from the local app after the CI-0016 SaaS UI redesign:
 
 - `assets/screenshots/home-desktop.png`
 - `assets/screenshots/upload-csv-pdf-desktop.png`

@@ -67,6 +67,8 @@ data/sample/academic_records_sample.csv
 
 The sample data contains synthetic student identifiers and fictional names. Do not use real student records in screenshots, commits, or public demos.
 
+For PDF demos, use only a synthetic or privacy-safe text-based transcript PDF. Real transcript PDFs must not be committed or shown in public screenshots. Local transcript PDFs under `data/sample/*.pdf` are ignored by Git to reduce the risk of exposing private academic documents.
+
 ## Quick Start
 
 Run these commands from a fresh clone before using the Makefile targets.
@@ -121,8 +123,8 @@ The current Vite production build may print a chunk-size warning because chartin
 1. Start the backend.
 2. Start the frontend.
 3. Upload `data/sample/academic_records_sample.csv`.
-4. Optionally upload a supported text-based academic transcript PDF.
-5. Review validation status, summary cards, charts, tables, and course risk review.
+4. Upload a synthetic or privacy-safe text-based academic transcript PDF.
+5. Review validation/extraction status, summary cards, charts, tables, and course risk review.
 6. Load saved analyses.
 7. Open a saved analysis detail dashboard.
 8. Open the standalone HTML report.

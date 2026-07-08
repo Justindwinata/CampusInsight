@@ -193,6 +193,40 @@ html {
   padding: 32px 0 56px;
 }
 
+.app-root .hero-content,
+.app-root .hero-visual,
+.app-root .overview-card,
+.app-root .upload-layout,
+.app-root .dashboard-page,
+.app-root .saved-analyses-section,
+.app-root .report-page {
+  opacity: 0;
+  transform: translateY(14px);
+  transition:
+    opacity 420ms ease,
+    transform 420ms ease;
+}
+
+.app-root-motion-ready .hero-content,
+.app-root-motion-ready .hero-visual,
+.app-root-motion-ready .overview-card,
+.app-root-motion-ready .upload-layout,
+.app-root-motion-ready .dashboard-page,
+.app-root-motion-ready .saved-analyses-section,
+.app-root-motion-ready .report-page {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.app-root-motion-ready .hero-visual,
+.app-root-motion-ready .overview-card:nth-child(2) {
+  transition-delay: 90ms;
+}
+
+.app-root-motion-ready .overview-card:nth-child(3) {
+  transition-delay: 150ms;
+}
+
 .app-view {
   min-height: calc(100vh - 160px);
 }
@@ -392,6 +426,14 @@ h1 {
   left: -18px;
 }
 
+.app-root-motion-ready .hero-floating-card-top {
+  animation: float-card-top 6s ease-in-out infinite;
+}
+
+.app-root-motion-ready .hero-floating-card-bottom {
+  animation: float-card-bottom 7s ease-in-out infinite;
+}
+
 .primary-link-button {
   display: inline-flex;
   min-height: 44px;
@@ -411,6 +453,7 @@ h1 {
   background: var(--color-primary-strong);
   outline: 3px solid rgb(13 118 107 / 35%);
   outline-offset: 3px;
+  transform: translateY(-1px);
 }
 
 .status-panel {
@@ -708,6 +751,16 @@ input[type="file"]:focus-visible,
   line-height: 1.2;
   text-align: center;
   white-space: normal;
+  transition:
+    background 180ms ease,
+    transform 180ms ease,
+    box-shadow 180ms ease;
+}
+
+.primary-button:hover:not(:disabled) {
+  background: linear-gradient(180deg, #223c69, #15294c);
+  box-shadow: 0 12px 24px rgb(22 35 63 / 14%);
+  transform: translateY(-1px);
 }
 
 .primary-button:disabled {
@@ -729,6 +782,10 @@ input[type="file"]:focus-visible,
   line-height: 1.2;
   text-align: center;
   white-space: normal;
+  transition:
+    background 180ms ease,
+    border-color 180ms ease,
+    transform 180ms ease;
 }
 
 .secondary-button,
@@ -742,6 +799,7 @@ input[type="file"]:focus-visible,
 .secondary-link-button:hover {
   border-color: var(--color-primary);
   background: var(--color-primary-soft);
+  transform: translateY(-1px);
 }
 
 .secondary-link-button {
@@ -765,6 +823,7 @@ input[type="file"]:focus-visible,
 .danger-button:hover {
   border-color: var(--color-danger);
   background: #ffe4e8;
+  transform: translateY(-1px);
 }
 
 .schema-hint {
@@ -1655,5 +1714,53 @@ tbody tr:hover td {
   th,
   td {
     padding: 12px;
+  }
+}
+
+@keyframes float-card-top {
+  0%,
+  100% {
+    transform: translateY(0);
+  }
+
+  50% {
+    transform: translateY(-8px);
+  }
+}
+
+@keyframes float-card-bottom {
+  0%,
+  100% {
+    transform: translateY(0);
+  }
+
+  50% {
+    transform: translateY(7px);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    scroll-behavior: auto !important;
+    transition-duration: 0.01ms !important;
+  }
+
+  .app-root .hero-content,
+  .app-root .hero-visual,
+  .app-root .overview-card,
+  .app-root .upload-layout,
+  .app-root .dashboard-page,
+  .app-root .saved-analyses-section,
+  .app-root .report-page {
+    opacity: 1;
+    transform: none;
   }
 }

@@ -1,4 +1,4 @@
-import { FormEvent, useId, useState } from "react";
+import { FormEvent, useEffect, useId, useState } from "react";
 
 import {
   AcademicRecordsAnalysisResult,
@@ -41,6 +41,12 @@ function App() {
   const [analysisResult, setAnalysisResult] = useState<AcademicRecordsAnalysisResult | null>(null);
   const [uploadError, setUploadError] = useState<string | null>(null);
   const [isAnalyzing, setIsAnalyzing] = useState(false);
+  const [isMotionReady, setIsMotionReady] = useState(false);
+
+  useEffect(() => {
+    const motionFrame = window.requestAnimationFrame(() => setIsMotionReady(true));
+    return () => window.cancelAnimationFrame(motionFrame);
+  }, []);
 
   function navigateTo(view: AppView) {
     setActiveView(view);
@@ -82,7 +88,7 @@ function App() {
   }
 
   return (
-    <>
+    <div className={isMotionReady ? "app-root app-root-motion-ready" : "app-root"}>
       <header className="app-header">
         <div className="app-header-inner">
           <button
@@ -144,7 +150,7 @@ function App() {
         {activeView === "saved" ? <SavedAnalysesPanel /> : null}
         {activeView === "report" ? <ReportView onNavigate={navigateTo} /> : null}
       </main>
-    </>
+    </div>
   );
 }
 

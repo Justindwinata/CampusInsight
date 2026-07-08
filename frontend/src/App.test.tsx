@@ -20,9 +20,16 @@ describe("App", () => {
   it("renders the CampusInsight foundation page and upload section", () => {
     render(<App />);
 
-    expect(screen.getByRole("heading", { name: "CampusInsight" })).toBeInTheDocument();
-    expect(screen.getByText("This product is under active development.")).toBeInTheDocument();
-    expect(screen.getByText("Backend status")).toBeInTheDocument();
+    expect(
+      screen.getByRole("heading", {
+        name: "CampusInsight turns academic records into review-ready dashboards.",
+      }),
+    ).toBeInTheDocument();
+    expect(screen.getByRole("link", { name: "Analyze academic records" })).toBeInTheDocument();
+    expect(screen.getByRole("link", { name: "View saved analyses" })).toBeInTheDocument();
+    expect(screen.getByText("CSV academic records")).toBeInTheDocument();
+    expect(screen.getByText("PDF transcript text")).toBeInTheDocument();
+    expect(screen.getByText("Product status")).toBeInTheDocument();
     expect(screen.getByRole("heading", { name: "Validate academic records" })).toBeInTheDocument();
     expect(
       screen.getByText(

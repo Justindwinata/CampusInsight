@@ -13,12 +13,19 @@ import {
   SavedAnalysisSummary,
 } from "./services/savedAnalysesService";
 
-const capabilities = [
-  "Academic Analytics Dashboard",
-  "Upload Academic Records",
-  "GPA and Semester Trends",
-  "Course Risk Detection",
-  "Report Generation",
+const productHighlights = [
+  {
+    title: "Structured inputs",
+    body: "Analyze academic records from CSV files or text-based transcript PDFs.",
+  },
+  {
+    title: "Deterministic review",
+    body: "Review GPA, grade distribution, course performance, and risk signals without prediction.",
+  },
+  {
+    title: "Saved workspace",
+    body: "Keep local analysis history organized and open HTML reports from saved results.",
+  },
 ];
 
 function App() {
@@ -66,6 +73,7 @@ function App() {
           </a>
 
           <nav className="app-nav" aria-label="Primary navigation">
+            <a href="#overview">Overview</a>
             <a href="#analyze">Analyze</a>
             <a href="#dashboard">Dashboard</a>
             <a href="#saved-analyses-title">Saved Analyses</a>
@@ -75,28 +83,51 @@ function App() {
       </header>
 
       <main className="app-shell">
-        <section className="hero product-intro" aria-labelledby="page-title">
+        <section id="overview" className="hero product-intro" aria-labelledby="page-title">
           <div className="hero-content">
-            <p className="eyebrow">Student Performance Analytics Dashboard</p>
-            <h1 id="page-title">CampusInsight</h1>
+            <p className="eyebrow">Academic analytics workspace</p>
+            <h1 id="page-title">CampusInsight turns academic records into review-ready dashboards.</h1>
             <p className="intro">
-              Analyze academic records from CSV files or supported academic transcript PDFs, review
-              GPA trends and course performance, and keep saved reports for local academic review.
+              Analyze academic records from CSV files and text-based transcript PDFs. Review GPA,
+              grade distribution, course performance, saved history, and HTML reports in one local
+              workspace.
             </p>
             <div className="hero-actions">
               <a className="primary-link-button" href="#analyze">
-                Analyze Academic Records
+                Analyze academic records
               </a>
-              <p className="status-note">This product is under active development.</p>
+              <a className="secondary-link-button hero-secondary-link" href="#saved-analyses-title">
+                View saved analyses
+              </a>
             </div>
-            <p className="demo-note">Demo assets use fictional sample data only.</p>
+            <div className="input-badge-row" aria-label="Supported academic document inputs">
+              <span>CSV academic records</span>
+              <span>PDF transcript text</span>
+              <span>Local saved history</span>
+            </div>
+            <p className="demo-note">
+              Built for deterministic academic review with fictional demo data and transparent
+              scoring rules.
+            </p>
           </div>
 
           <aside className="status-panel" aria-label="Backend status">
-            <span className="status-label">Backend status</span>
-            <strong>Academic analysis API ready</strong>
-            <p>Academic record CSV files and supported transcript PDFs can be analyzed.</p>
+            <span className="status-label">Product status</span>
+            <strong>CSV and PDF analysis ready</strong>
+            <p>
+              The current local demo validates records, normalizes supported transcript PDFs, and
+              renders the same analytics dashboard for both input paths.
+            </p>
           </aside>
+        </section>
+
+        <section className="overview-grid" aria-label="CampusInsight product summary">
+          {productHighlights.map((highlight) => (
+            <article className="overview-card" key={highlight.title}>
+              <span>{highlight.title}</span>
+              <p>{highlight.body}</p>
+            </article>
+          ))}
         </section>
 
         <section
@@ -182,17 +213,13 @@ function App() {
 
         <section className="capability-section page-section" aria-labelledby="capabilities-title">
           <div className="section-heading">
-            <p className="eyebrow">Planned foundation</p>
-            <h2 id="capabilities-title">Future analytics capabilities</h2>
-          </div>
-
-          <div className="capability-grid">
-            {capabilities.map((capability) => (
-              <article className="capability-card" key={capability}>
-                <h3>{capability}</h3>
-                <p>Planned for a later contract.</p>
-              </article>
-            ))}
+            <p className="eyebrow">Scope boundary</p>
+            <h2 id="capabilities-title">Built for local academic review</h2>
+            <p className="section-copy">
+              CampusInsight focuses on transparent analytics from uploaded academic documents.
+              Scanned documents, sign-in, hosted infrastructure, and additional downloadable
+              formats remain outside the current scope.
+            </p>
           </div>
         </section>
       </main>

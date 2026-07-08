@@ -154,7 +154,9 @@ function HomeView({ onNavigate }: { onNavigate: (view: AppView) => void }) {
       <section id="overview" className="hero product-intro" aria-labelledby="page-title">
         <div className="hero-content">
           <p className="eyebrow">Academic analytics workspace</p>
-          <h1 id="page-title">CampusInsight turns academic records into review-ready dashboards.</h1>
+          <h1 id="page-title">
+            CampusInsight turns academic records into review-ready dashboards.
+          </h1>
           <p className="intro">
             Analyze academic records from CSV files and text-based transcript PDFs. Review GPA,
             grade distribution, course performance, saved history, and HTML reports in one local
@@ -275,7 +277,9 @@ function AnalyzeView({
 
           <div className="selected-file-card" aria-live="polite">
             <span>{selectedFile ? getAcademicFileType(selectedFile) : "Waiting for file"}</span>
-            <strong>{selectedFile ? selectedFile.name : "No academic records file selected."}</strong>
+            <strong>
+              {selectedFile ? selectedFile.name : "No academic records file selected."}
+            </strong>
             <p>
               {selectedFile
                 ? "Ready to submit for validation and analytics."
@@ -402,7 +406,9 @@ function ReportView({ onNavigate }: { onNavigate: (view: AppView) => void }) {
             </span>
             <span>1. Analyze</span>
           </div>
-          <p>Upload a CSV or supported text-based transcript PDF and run deterministic analytics.</p>
+          <p>
+            Upload a CSV or supported text-based transcript PDF and run deterministic analytics.
+          </p>
         </article>
         <article className="overview-card">
           <div className="overview-card-header">

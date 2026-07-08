@@ -56,6 +56,6 @@ Current status: local SQLite persistence, saved analysis history APIs, frontend 
 - Add deployment notes.
 - Prepare portfolio-ready screenshots and project narrative.
 
-Current status: the frontend has a professional SaaS-style app shell, responsive layout polish, clearer state messaging, and local demo-ready interaction flow for upload, analytics, saved history, saved detail, and HTML reports. Deployment, authentication, cloud database persistence, PDF export, AI, and prediction remain future work.
+Current status: the frontend has a professional SaaS-style app shell, refined landing structure, polished upload workflow, stronger dashboard hierarchy, clearer saved-analysis and report actions, responsive layout polish, and local demo-ready interaction flow for upload, analytics, saved history, saved detail, and HTML reports. Deployment, authentication, cloud database persistence, PDF export, AI, and prediction remain future work.
 
-Portfolio presentation status: verified desktop and mobile screenshots exist after PDF transcript support, the README includes product preview images, and demo documentation identifies the fictional CSV sample, privacy-safe PDF demo policy, and screenshot safety rules.
+Portfolio presentation status: verified desktop and mobile screenshots exist after PDF transcript support, the README includes product preview images, and demo documentation identifies the fictional CSV sample, privacy-safe PDF demo policy, and screenshot safety rules. Because CI-0016 changed the app shell and dashboard presentation, screenshots should be refreshed before the next public showcase pass.

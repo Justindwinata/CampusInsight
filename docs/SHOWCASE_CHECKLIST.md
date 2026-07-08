@@ -77,7 +77,7 @@ Mobile:
 ## GitHub README Checklist
 
 - Product preview images resolve.
-- Product preview images match the current visual baseline or are marked for refresh.
+- Product preview images match the current visual baseline or are marked for refresh after the CI-0016 SaaS UI redesign.
 - Quick start commands are visible.
 - Tech stack is current.
 - API overview is current.
@@ -89,7 +89,7 @@ Mobile:
 
 - Present CampusInsight as a local full-stack portfolio project.
 - Mention FastAPI, React, TypeScript, Vite, Recharts, SQLite, pytest, and Vitest.
-- Mention the professional dashboard redesign only as frontend UI polish, not as a new backend capability.
+- Mention the professional SaaS-style dashboard redesign only as frontend UI polish inspired by modern product structure, not as a copied third-party design and not as a new backend capability.
 - Mention deterministic analytics and saved HTML reports.
 - Mention text-based PDF transcript support as deterministic parsing, not OCR or AI.
 - Mention that screenshots use fictional sample data.

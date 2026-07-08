@@ -4,11 +4,11 @@ CampusInsight is a full-stack student performance analytics dashboard built as a
 
 The project is designed for local demos and GitHub review. It uses fictional sample data only and does not implement authentication, cloud persistence, deployment, PDF export, AI, or prediction logic.
 
-The frontend now uses a professional SaaS-style app shell with top navigation, structured dashboard sections, polished analytics cards, clearer saved-analysis flow, and responsive layouts for local demos.
+The frontend now uses a professional SaaS-style app shell with top navigation, structured dashboard sections, polished analytics cards, clearer saved-analysis flow, and responsive layouts for local demos. The UI redesign was guided by modern SaaS product structure and spacing discipline without copying third-party branding, assets, colors, or text.
 
 ## Product Preview
 
-The screenshots below show the current local demo flow after the professional UI redesign and PDF transcript support.
+The screenshots below show the latest captured local demo flow after PDF transcript support. Because the SaaS-style UI was refined again in CI-0016, these assets should be refreshed before the next public showcase pass.
 
 ### Desktop
 

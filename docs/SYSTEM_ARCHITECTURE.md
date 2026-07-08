@@ -8,11 +8,11 @@ CampusInsight currently contains a local full-stack application with separate ba
 - `backend/src/campusinsight_api/api/`: API routes, including CSV upload validation, CSV/PDF analysis, and saved analysis history.
 - `backend/src/campusinsight_api/domain/`: academic record schema, analytics contracts, and saved analysis summary contracts.
 - `backend/src/campusinsight_api/services/`: CSV validation, PDF text extraction, transcript parsing, transcript normalization, deterministic analytics, SQLite saved analysis repository, and HTML report rendering services.
-- `frontend/`: React + TypeScript + Vite application shell with top navigation, CSV/PDF upload support, analytics summary UI, tables, charts, saved analyses panel, saved analysis detail dashboard, responsive layout polish, and HTML report action.
+- `frontend/`: React + TypeScript + Vite application shell with top navigation, SaaS-style landing structure, CSV/PDF upload support, analytics summary UI, tables, charts, saved analyses panel, saved analysis detail dashboard, responsive layout polish, and HTML report action.
 
-Local SQLite persistence exists for saved analysis results, and standalone HTML reports exist for saved analyses. The app is demo-ready for local portfolio walkthroughs, but deployment, authentication, cloud database persistence, AI, prediction logic, OCR, and PDF export are not implemented.
+Local SQLite persistence exists for saved analysis results, and standalone HTML reports exist for saved analyses. The app is demo-ready for local portfolio walkthroughs, but deployment, authentication, cloud database persistence, AI, prediction logic, OCR, and PDF export are not implemented. The current UI polish is frontend presentation work only; it did not add backend capability, change analytics formulas, or change persistence schema.
 
-Demo screenshots under `assets/screenshots/` are captured from the actual local application using fictional CSV data and a synthetic text-based transcript PDF. They do not include raw CSV contents, real transcript data, local database paths, terminal windows, or browser developer tools.
+Demo screenshots under `assets/screenshots/` are captured from the actual local application using fictional CSV data and a synthetic text-based transcript PDF. They do not include raw CSV contents, real transcript data, local database paths, terminal windows, or browser developer tools. Screenshots should be refreshed after CI-0016 because the app shell and dashboard presentation changed.
 
 ## Intended Future Pipeline
 
@@ -47,7 +47,7 @@ Successful analyses are stored as canonical JSON responses in local SQLite at `d
 
 ## Frontend Boundary
 
-The frontend owns the current CSV/PDF selection, validation/extraction status, analytics summary workflow, saved analyses history foundation, saved detail dashboard, HTML report action, top navigation, and responsive presentation layer. It displays validation status, GPA and credit summary cards, semester and course tables, grade distribution, course score visualizations, safe course risk review, saved analysis metadata summaries, full saved dashboards from stored JSON, and a report link for loaded saved details. Charts use deterministic backend analytics only, and tables remain available as an accessible fallback.
+The frontend owns the current CSV/PDF selection, validation/extraction status, analytics summary workflow, saved analyses history foundation, saved detail dashboard, HTML report action, top navigation, and responsive presentation layer. Its SaaS-style layout uses original CampusInsight copy and styling inspired by modern product structure without copying third-party branding, assets, colors, or text. It displays validation status, GPA and credit summary cards, semester and course tables, grade distribution, course score visualizations, safe course risk review, saved analysis metadata summaries, full saved dashboards from stored JSON, and a report link for loaded saved details. Charts use deterministic backend analytics only, and tables remain available as an accessible fallback.
 
 The frontend does not generate reports itself, recalculate saved metrics, or require CSV re-upload for saved detail or report access.
 

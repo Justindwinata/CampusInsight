@@ -86,7 +86,9 @@ function App() {
         <section id="overview" className="hero product-intro" aria-labelledby="page-title">
           <div className="hero-content">
             <p className="eyebrow">Academic analytics workspace</p>
-            <h1 id="page-title">CampusInsight turns academic records into review-ready dashboards.</h1>
+            <h1 id="page-title">
+              CampusInsight turns academic records into review-ready dashboards.
+            </h1>
             <p className="intro">
               Analyze academic records from CSV files and text-based transcript PDFs. Review GPA,
               grade distribution, course performance, saved history, and HTML reports in one local
@@ -249,8 +251,8 @@ function App() {
             <h2 id="capabilities-title">Built for local academic review</h2>
             <p className="section-copy">
               CampusInsight focuses on transparent analytics from uploaded academic documents.
-              Scanned documents, sign-in, hosted infrastructure, and additional downloadable
-              formats remain outside the current scope.
+              Scanned documents, sign-in, hosted infrastructure, and additional downloadable formats
+              remain outside the current scope.
             </p>
           </div>
         </section>

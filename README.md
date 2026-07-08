@@ -8,7 +8,7 @@ The frontend now uses a professional SaaS-style app shell with top navigation, s
 
 ## Product Preview
 
-The screenshots below show the latest captured local demo flow after PDF transcript support. Because the SaaS-style UI was refined again in CI-0016, these assets should be refreshed before the next public showcase pass.
+The screenshots below show the refreshed local demo flow after the CI-0016 SaaS UI redesign. They use fictional CSV records and a privacy-safe synthetic text-based transcript PDF to demonstrate CSV/PDF analysis, deterministic dashboards, saved history, and standalone HTML reports.
 
 ### Desktop
 
@@ -29,6 +29,8 @@ The screenshots below show the latest captured local demo flow after PDF transcr
 ![CampusInsight mobile CSV and PDF upload](assets/screenshots/upload-csv-pdf-mobile.png)
 
 ![CampusInsight mobile dashboard](assets/screenshots/dashboard-mobile.png)
+
+![CampusInsight mobile saved detail](assets/screenshots/saved-detail-mobile.png)
 
 ## Core Features
 

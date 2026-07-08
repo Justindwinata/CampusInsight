@@ -17,7 +17,8 @@ afterEach(() => {
 });
 
 describe("App", () => {
-  it("renders the CampusInsight foundation page and upload section", () => {
+  it("renders the CampusInsight home page and navigates to upload section", async () => {
+    const user = userEvent.setup();
     render(<App />);
 
     expect(
@@ -25,11 +26,17 @@ describe("App", () => {
         name: "CampusInsight turns academic records into review-ready dashboards.",
       }),
     ).toBeInTheDocument();
-    expect(screen.getByRole("link", { name: "Analyze academic records" })).toBeInTheDocument();
-    expect(screen.getByRole("link", { name: "View saved analyses" })).toBeInTheDocument();
+    expect(screen.getByRole("button", { name: "Analyze academic records" })).toBeInTheDocument();
+    expect(screen.getByRole("button", { name: "View saved analyses" })).toBeInTheDocument();
     expect(screen.getByText("CSV academic records")).toBeInTheDocument();
     expect(screen.getByText("PDF transcript text")).toBeInTheDocument();
     expect(screen.getByText("Product status")).toBeInTheDocument();
+    expect(
+      screen.queryByRole("heading", { name: "Validate academic records" }),
+    ).not.toBeInTheDocument();
+
+    await user.click(screen.getByRole("button", { name: "Analyze academic records" }));
+
     expect(screen.getByRole("heading", { name: "Validate academic records" })).toBeInTheDocument();
     expect(
       screen.getByText(
@@ -38,15 +45,21 @@ describe("App", () => {
     ).toBeInTheDocument();
   });
 
-  it("renders a file input and submit button", () => {
+  it("renders a file input and submit button", async () => {
+    const user = userEvent.setup();
     render(<App />);
+
+    await user.click(screen.getByRole("button", { name: "Analyze" }));
 
     expect(screen.getByLabelText("Academic records CSV or PDF file")).toBeInTheDocument();
     expect(screen.getByRole("button", { name: "Analyze file" })).toBeInTheDocument();
   });
 
-  it("renders the saved analyses section", () => {
+  it("renders the saved analyses section", async () => {
+    const user = userEvent.setup();
     render(<App />);
+
+    await user.click(screen.getByRole("button", { name: "Saved Analyses" }));
 
     expect(screen.getByRole("heading", { name: "Saved analyses" })).toBeInTheDocument();
     expect(screen.getByRole("button", { name: "Load saved analyses" })).toBeInTheDocument();
@@ -58,7 +71,7 @@ describe("App", () => {
     const user = userEvent.setup();
     render(<App />);
 
-    await user.click(screen.getByRole("button", { name: "Load saved analyses" }));
+    await loadSavedAnalyses(user);
 
     expect(await screen.findByText("No saved analyses yet.")).toBeInTheDocument();
     expect(
@@ -71,7 +84,7 @@ describe("App", () => {
     const user = userEvent.setup();
     render(<App />);
 
-    await user.click(screen.getByRole("button", { name: "Load saved analyses" }));
+    await loadSavedAnalyses(user);
 
     expect(fetchMock).toHaveBeenCalledWith("http://127.0.0.1:8000/analyses", {
       method: "GET",
@@ -89,7 +102,7 @@ describe("App", () => {
     const user = userEvent.setup();
     render(<App />);
 
-    await user.click(screen.getByRole("button", { name: "Load saved analyses" }));
+    await loadSavedAnalyses(user);
     await screen.findByText("records.csv");
     await user.click(screen.getByRole("button", { name: "Delete saved analysis records.csv" }));
 
@@ -107,7 +120,7 @@ describe("App", () => {
     const user = userEvent.setup();
     render(<App />);
 
-    await user.click(screen.getByRole("button", { name: "Load saved analyses" }));
+    await loadSavedAnalyses(user);
     await screen.findByText("records.csv");
     await user.click(screen.getByRole("button", { name: "Open detail" }));
     await screen.findByRole("heading", { name: "Saved analysis dashboard" });
@@ -126,7 +139,7 @@ describe("App", () => {
     const user = userEvent.setup();
     render(<App />);
 
-    await user.click(screen.getByRole("button", { name: "Load saved analyses" }));
+    await loadSavedAnalyses(user);
     await screen.findByText("records.csv");
     await user.click(screen.getByRole("button", { name: "Open detail" }));
 
@@ -153,7 +166,7 @@ describe("App", () => {
     const user = userEvent.setup();
     render(<App />);
 
-    await user.click(screen.getByRole("button", { name: "Load saved analyses" }));
+    await loadSavedAnalyses(user);
     await screen.findByText("records.csv");
     await user.click(screen.getByRole("button", { name: "Open detail" }));
 
@@ -170,7 +183,7 @@ describe("App", () => {
     const user = userEvent.setup();
     render(<App />);
 
-    await user.click(screen.getByRole("button", { name: "Load saved analyses" }));
+    await loadSavedAnalyses(user);
     await screen.findByText("records.csv");
     await user.click(screen.getByRole("button", { name: "Open detail" }));
 
@@ -187,7 +200,7 @@ describe("App", () => {
     const user = userEvent.setup();
     render(<App />);
 
-    await user.click(screen.getByRole("button", { name: "Load saved analyses" }));
+    await loadSavedAnalyses(user);
     await screen.findByText("records.csv");
     await user.click(screen.getByRole("button", { name: "Open detail" }));
 
@@ -209,7 +222,7 @@ describe("App", () => {
     const user = userEvent.setup();
     render(<App />);
 
-    await user.click(screen.getByRole("button", { name: "Load saved analyses" }));
+    await loadSavedAnalyses(user);
     await screen.findByText("records.csv");
     await user.click(screen.getByRole("button", { name: "Open detail" }));
 
@@ -239,7 +252,7 @@ describe("App", () => {
       screen.queryByRole("link", { name: /Download HTML report for saved analysis/i }),
     ).not.toBeInTheDocument();
 
-    await user.click(screen.getByRole("button", { name: "Load saved analyses" }));
+    await loadSavedAnalyses(user);
     await screen.findByText("records.csv");
     await user.click(screen.getByRole("button", { name: "Open detail" }));
 
@@ -260,7 +273,7 @@ describe("App", () => {
     const user = userEvent.setup();
     render(<App />);
 
-    await user.click(screen.getByRole("button", { name: "Load saved analyses" }));
+    await loadSavedAnalyses(user);
     await screen.findByText("records.csv");
     await user.click(screen.getByRole("button", { name: "Open detail" }));
     await screen.findByRole("heading", { name: "Saved analysis dashboard" });
@@ -282,7 +295,7 @@ describe("App", () => {
     const user = userEvent.setup();
     render(<App />);
 
-    await user.click(screen.getByRole("button", { name: "Load saved analyses" }));
+    await loadSavedAnalyses(user);
     await screen.findByText("records.csv");
     await user.click(screen.getByRole("button", { name: "Open detail" }));
 
@@ -297,7 +310,7 @@ describe("App", () => {
     const user = userEvent.setup();
     render(<App />);
 
-    await user.click(screen.getByRole("button", { name: "Load saved analyses" }));
+    await loadSavedAnalyses(user);
 
     expect(await screen.findByText("Saved analyses could not be loaded.")).toBeInTheDocument();
     expect(
@@ -315,8 +328,7 @@ describe("App", () => {
     await user.click(screen.getByRole("button", { name: "Analyze file" }));
 
     expect(await screen.findByText("Academic record validation passed.")).toBeInTheDocument();
-    expect(screen.getAllByText("sample.csv").length).toBeGreaterThanOrEqual(2);
-    expect(screen.getAllByText("CSV").length).toBeGreaterThanOrEqual(1);
+    expect(screen.getAllByText("sample.csv").length).toBeGreaterThanOrEqual(1);
     expect(screen.getByText("Rows checked")).toBeInTheDocument();
     expect(screen.getByText("Analytics status")).toBeInTheDocument();
     expect(screen.getByRole("heading", { name: "GPA and credit summary" })).toBeInTheDocument();
@@ -330,6 +342,8 @@ describe("App", () => {
     fetchMock.mockResolvedValueOnce(jsonResponse(validAnalysisResponse()));
     const user = userEvent.setup();
     render(<App />);
+
+    await user.click(screen.getByRole("button", { name: "Analyze" }));
 
     const file = new File(["%PDF-1.4"], "transcript.pdf", { type: "application/pdf" });
     await user.upload(screen.getByLabelText("Academic records CSV or PDF file"), file);
@@ -455,7 +469,7 @@ describe("App", () => {
 
     expect(await screen.findByText("Academic record validation found issues.")).toBeInTheDocument();
     expect(screen.getByText("Row 2")).toBeInTheDocument();
-    expect(screen.getAllByText("score")).toHaveLength(2);
+    expect(screen.getAllByText("score")).toHaveLength(1);
     expect(screen.getByText("score must be between 0 and 100.")).toBeInTheDocument();
     expect(screen.queryByRole("heading", { name: "Analytics charts" })).not.toBeInTheDocument();
     expect(
@@ -526,7 +540,7 @@ describe("App", () => {
     await uploadCsv(user);
     await user.click(screen.getByRole("button", { name: "Analyze file" }));
 
-    expect(screen.getAllByText("Analyzing file...")).toHaveLength(2);
+    expect(screen.getAllByText("Analyzing file...")).toHaveLength(1);
 
     resolveResponse(
       jsonResponse({
@@ -639,8 +653,18 @@ function savedDetailResponse() {
 }
 
 async function uploadCsv(user: ReturnType<typeof userEvent.setup>) {
+  if (!screen.queryByLabelText("Academic records CSV or PDF file")) {
+    await user.click(screen.getByRole("button", { name: "Analyze" }));
+  }
   const file = new File(["student_id\nS1001\n"], "sample.csv", { type: "text/csv" });
   await user.upload(screen.getByLabelText("Academic records CSV or PDF file"), file);
+}
+
+async function loadSavedAnalyses(user: ReturnType<typeof userEvent.setup>) {
+  if (!screen.queryByRole("button", { name: "Load saved analyses" })) {
+    await user.click(screen.getByRole("button", { name: "Saved Analyses" }));
+  }
+  await user.click(screen.getByRole("button", { name: "Load saved analyses" }));
 }
 
 function jsonResponse(body: unknown, status = 200): Response {

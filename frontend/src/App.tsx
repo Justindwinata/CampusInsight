@@ -13,6 +13,8 @@ import {
   SavedAnalysisSummary,
 } from "./services/savedAnalysesService";
 
+type AppView = "home" | "analyze" | "dashboard" | "saved" | "report";
+
 const productHighlights = [
   {
     title: "Structured inputs",
@@ -30,10 +32,23 @@ const productHighlights = [
 
 function App() {
   const fileInputId = useId();
+  const [activeView, setActiveView] = useState<AppView>("home");
   const [selectedFile, setSelectedFile] = useState<File | null>(null);
   const [analysisResult, setAnalysisResult] = useState<AcademicRecordsAnalysisResult | null>(null);
   const [uploadError, setUploadError] = useState<string | null>(null);
   const [isAnalyzing, setIsAnalyzing] = useState(false);
+
+  function navigateTo(view: AppView) {
+    setActiveView(view);
+    if (window.navigator.userAgent.includes("jsdom")) {
+      return;
+    }
+    try {
+      window.scrollTo({ top: 0, behavior: "smooth" });
+    } catch {
+      window.scrollTo(0, 0);
+    }
+  }
 
   async function handleSubmit(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
@@ -42,10 +57,12 @@ function App() {
 
     if (!selectedFile) {
       setUploadError("Choose an academic records CSV or PDF file before analyzing.");
+      setActiveView("dashboard");
       return;
     }
 
     setIsAnalyzing(true);
+    setActiveView("dashboard");
     try {
       const result = await analyzeAcademicRecordsFile(selectedFile);
       setAnalysisResult(result);
@@ -64,200 +81,322 @@ function App() {
     <>
       <header className="app-header">
         <div className="app-header-inner">
-          <a className="brand-mark" href="#page-title" aria-label="CampusInsight home">
+          <button
+            className="brand-mark brand-button"
+            type="button"
+            onClick={() => navigateTo("home")}
+            aria-label="CampusInsight home"
+          >
             <span className="brand-symbol">CI</span>
             <span>
               <strong>CampusInsight</strong>
               <small>Academic analytics dashboard</small>
             </span>
-          </a>
+          </button>
 
           <nav className="app-nav" aria-label="Primary navigation">
-            <a href="#overview">Overview</a>
-            <a href="#analyze">Analyze</a>
-            <a href="#dashboard">Dashboard</a>
-            <a href="#saved-analyses-title">Saved Analyses</a>
-            <a href="#report">Report</a>
+            {[
+              ["home", "Home"],
+              ["analyze", "Analyze"],
+              ["dashboard", "Dashboard"],
+              ["saved", "Saved Analyses"],
+              ["report", "Report"],
+            ].map(([view, label]) => (
+              <button
+                className={activeView === view ? "app-nav-active" : undefined}
+                key={view}
+                type="button"
+                onClick={() => navigateTo(view as AppView)}
+              >
+                {label}
+              </button>
+            ))}
           </nav>
         </div>
       </header>
 
       <main className="app-shell">
-        <section id="overview" className="hero product-intro" aria-labelledby="page-title">
-          <div className="hero-content">
-            <p className="eyebrow">Academic analytics workspace</p>
-            <h1 id="page-title">
-              CampusInsight turns academic records into review-ready dashboards.
-            </h1>
-            <p className="intro">
-              Analyze academic records from CSV files and text-based transcript PDFs. Review GPA,
-              grade distribution, course performance, saved history, and HTML reports in one local
-              workspace.
-            </p>
-            <div className="hero-actions">
-              <a className="primary-link-button" href="#analyze">
-                Analyze academic records
-              </a>
-              <a className="secondary-link-button hero-secondary-link" href="#saved-analyses-title">
-                View saved analyses
-              </a>
-            </div>
-            <div className="input-badge-row" aria-label="Supported academic document inputs">
-              <span>CSV academic records</span>
-              <span>PDF transcript text</span>
-              <span>Local saved history</span>
-            </div>
-            <p className="demo-note">
-              Built for deterministic academic review with fictional demo data and transparent
-              scoring rules.
-            </p>
-          </div>
-
-          <aside className="status-panel" aria-label="Backend status">
-            <span className="status-label">Product status</span>
-            <strong>CSV and PDF analysis ready</strong>
-            <p>
-              The current local demo validates records, normalizes supported transcript PDFs, and
-              renders the same analytics dashboard for both input paths.
-            </p>
-          </aside>
-        </section>
-
-        <section className="overview-grid" aria-label="CampusInsight product summary">
-          {productHighlights.map((highlight) => (
-            <article className="overview-card" key={highlight.title}>
-              <span>{highlight.title}</span>
-              <p>{highlight.body}</p>
-            </article>
-          ))}
-        </section>
-
-        <section
-          id="analyze"
-          className="upload-section page-section"
-          aria-labelledby="upload-title"
-        >
-          <div className="section-heading">
-            <p className="eyebrow">CSV and PDF analysis</p>
-            <h2 id="upload-title">Validate academic records</h2>
-            <p className="section-copy">
-              Upload an academic records CSV or supported transcript PDF to prepare deterministic
-              analytics.
-            </p>
-          </div>
-
-          <div className="upload-layout">
-            <form className="upload-form" onSubmit={handleSubmit}>
-              <div className="upload-form-heading">
-                <span className="form-kicker">Document intake</span>
-                <h3>Upload academic records</h3>
-                <p>
-                  Choose one CSV or text-based transcript PDF. CampusInsight validates the file,
-                  prepares the records, and returns the analytics dashboard.
-                </p>
-              </div>
-
-              <label className="file-label" htmlFor={fileInputId}>
-                Academic records CSV or PDF file
-              </label>
-              <input
-                id={fileInputId}
-                type="file"
-                accept=".csv,.pdf,text/csv,application/pdf"
-                onChange={(event) => {
-                  setSelectedFile(event.target.files?.[0] ?? null);
-                  setAnalysisResult(null);
-                  setUploadError(null);
-                }}
-              />
-
-              <div className="selected-file-card" aria-live="polite">
-                <span>{selectedFile ? getAcademicFileType(selectedFile) : "Waiting for file"}</span>
-                <strong>
-                  {selectedFile ? selectedFile.name : "No academic records file selected."}
-                </strong>
-                <p>
-                  {selectedFile
-                    ? "Ready to submit for validation and analytics."
-                    : "Accepted formats: .csv academic records or text-based .pdf transcript."}
-                </p>
-              </div>
-
-              <button
-                className="primary-button"
-                type="submit"
-                disabled={!selectedFile || isAnalyzing}
-              >
-                {isAnalyzing ? "Analyzing file..." : "Analyze file"}
-              </button>
-            </form>
-
-            <aside className="schema-hint" aria-label="Accepted academic document formats">
-              <h3>Accepted formats</h3>
-              <div className="format-list">
-                <article>
-                  <span>CSV</span>
-                  <strong>Structured academic records</strong>
-                  <p>
-                    Use <code>data/sample/academic_records_sample.csv</code> or the documented
-                    schema columns.
-                  </p>
-                </article>
-                <article>
-                  <span>PDF</span>
-                  <strong>Text-based academic transcript</strong>
-                  <p>
-                    The transcript text must be selectable. Scanned image-only documents are outside
-                    this demo scope.
-                  </p>
-                </article>
-              </div>
-              <details className="schema-details">
-                <summary>CSV schema columns</summary>
-                <ul>
-                  <li>student_id</li>
-                  <li>student_name</li>
-                  <li>semester</li>
-                  <li>academic_year</li>
-                  <li>course_code</li>
-                  <li>course_name</li>
-                  <li>credits</li>
-                  <li>grade_letter</li>
-                  <li>grade_point</li>
-                  <li>score</li>
-                </ul>
-              </details>
-            </aside>
-          </div>
-
-          <div id="dashboard" className="dashboard-anchor">
-            <ValidationResultPanel
-              fileName={selectedFile?.name}
-              isLoading={isAnalyzing}
-              result={analysisResult}
-              uploadError={uploadError}
-            />
-            {analysisResult?.is_valid && analysisResult.analytics ? (
-              <AnalyticsDashboard analytics={analysisResult.analytics} />
-            ) : null}
-          </div>
-        </section>
-
-        <SavedAnalysesPanel />
-
-        <section className="capability-section page-section" aria-labelledby="capabilities-title">
-          <div className="section-heading">
-            <p className="eyebrow">Scope boundary</p>
-            <h2 id="capabilities-title">Built for local academic review</h2>
-            <p className="section-copy">
-              CampusInsight focuses on transparent analytics from uploaded academic documents.
-              Scanned documents, sign-in, hosted infrastructure, and additional downloadable formats
-              remain outside the current scope.
-            </p>
-          </div>
-        </section>
+        {activeView === "home" ? <HomeView onNavigate={navigateTo} /> : null}
+        {activeView === "analyze" ? (
+          <AnalyzeView
+            fileInputId={fileInputId}
+            handleSubmit={handleSubmit}
+            isAnalyzing={isAnalyzing}
+            selectedFile={selectedFile}
+            setAnalysisResult={setAnalysisResult}
+            setSelectedFile={setSelectedFile}
+            setUploadError={setUploadError}
+          />
+        ) : null}
+        {activeView === "dashboard" ? (
+          <DashboardView
+            analysisResult={analysisResult}
+            isAnalyzing={isAnalyzing}
+            selectedFileName={selectedFile?.name}
+            uploadError={uploadError}
+            onAnalyze={() => navigateTo("analyze")}
+          />
+        ) : null}
+        {activeView === "saved" ? <SavedAnalysesPanel /> : null}
+        {activeView === "report" ? <ReportView onNavigate={navigateTo} /> : null}
       </main>
     </>
+  );
+}
+
+function HomeView({ onNavigate }: { onNavigate: (view: AppView) => void }) {
+  return (
+    <>
+      <section id="overview" className="hero product-intro" aria-labelledby="page-title">
+        <div className="hero-content">
+          <p className="eyebrow">Academic analytics workspace</p>
+          <h1 id="page-title">CampusInsight turns academic records into review-ready dashboards.</h1>
+          <p className="intro">
+            Analyze academic records from CSV files and text-based transcript PDFs. Review GPA,
+            grade distribution, course performance, saved history, and HTML reports in one local
+            workspace.
+          </p>
+          <div className="hero-actions">
+            <button className="primary-button" type="button" onClick={() => onNavigate("analyze")}>
+              Analyze academic records
+            </button>
+            <button
+              className="secondary-button hero-secondary-link"
+              type="button"
+              onClick={() => onNavigate("saved")}
+            >
+              View saved analyses
+            </button>
+          </div>
+          <div className="input-badge-row" aria-label="Supported academic document inputs">
+            <span>CSV academic records</span>
+            <span>PDF transcript text</span>
+            <span>Local saved history</span>
+          </div>
+          <p className="demo-note">
+            Built for deterministic academic review with fictional demo data and transparent scoring
+            rules.
+          </p>
+        </div>
+
+        <aside className="status-panel" aria-label="Backend status">
+          <span className="status-label">Product status</span>
+          <strong>CSV and PDF analysis ready</strong>
+          <p>
+            The current local demo validates records, normalizes supported transcript PDFs, and
+            renders the same analytics dashboard for both input paths.
+          </p>
+        </aside>
+      </section>
+
+      <section className="overview-grid" aria-label="CampusInsight product summary">
+        {productHighlights.map((highlight) => (
+          <article className="overview-card" key={highlight.title}>
+            <span>{highlight.title}</span>
+            <p>{highlight.body}</p>
+          </article>
+        ))}
+      </section>
+    </>
+  );
+}
+
+type AnalyzeViewProps = {
+  fileInputId: string;
+  handleSubmit: (event: FormEvent<HTMLFormElement>) => void;
+  isAnalyzing: boolean;
+  selectedFile: File | null;
+  setAnalysisResult: (result: AcademicRecordsAnalysisResult | null) => void;
+  setSelectedFile: (file: File | null) => void;
+  setUploadError: (error: string | null) => void;
+};
+
+function AnalyzeView({
+  fileInputId,
+  handleSubmit,
+  isAnalyzing,
+  selectedFile,
+  setAnalysisResult,
+  setSelectedFile,
+  setUploadError,
+}: AnalyzeViewProps) {
+  return (
+    <section id="analyze" className="upload-section app-view" aria-labelledby="upload-title">
+      <div className="section-heading">
+        <p className="eyebrow">CSV and PDF analysis</p>
+        <h2 id="upload-title">Validate academic records</h2>
+        <p className="section-copy">
+          Upload an academic records CSV or supported transcript PDF to prepare deterministic
+          analytics.
+        </p>
+      </div>
+
+      <div className="upload-layout">
+        <form className="upload-form" onSubmit={handleSubmit}>
+          <div className="upload-form-heading">
+            <span className="form-kicker">Document intake</span>
+            <h3>Upload academic records</h3>
+            <p>
+              Choose one CSV or text-based transcript PDF. CampusInsight validates the file,
+              prepares the records, and returns the analytics dashboard.
+            </p>
+          </div>
+
+          <label className="file-label" htmlFor={fileInputId}>
+            Academic records CSV or PDF file
+          </label>
+          <input
+            id={fileInputId}
+            type="file"
+            accept=".csv,.pdf,text/csv,application/pdf"
+            onChange={(event) => {
+              setSelectedFile(event.target.files?.[0] ?? null);
+              setAnalysisResult(null);
+              setUploadError(null);
+            }}
+          />
+
+          <div className="selected-file-card" aria-live="polite">
+            <span>{selectedFile ? getAcademicFileType(selectedFile) : "Waiting for file"}</span>
+            <strong>{selectedFile ? selectedFile.name : "No academic records file selected."}</strong>
+            <p>
+              {selectedFile
+                ? "Ready to submit for validation and analytics."
+                : "Accepted formats: .csv academic records or text-based .pdf transcript."}
+            </p>
+          </div>
+
+          <button className="primary-button" type="submit" disabled={!selectedFile || isAnalyzing}>
+            {isAnalyzing ? "Analyzing file..." : "Analyze file"}
+          </button>
+        </form>
+
+        <aside className="schema-hint" aria-label="Accepted academic document formats">
+          <h3>Accepted formats</h3>
+          <div className="format-list">
+            <article>
+              <span>CSV</span>
+              <strong>Structured academic records</strong>
+              <p>
+                Use <code>data/sample/academic_records_sample.csv</code> or the documented schema
+                columns.
+              </p>
+            </article>
+            <article>
+              <span>PDF</span>
+              <strong>Text-based academic transcript</strong>
+              <p>
+                The transcript text must be selectable. Scanned image-only documents are outside
+                this demo scope.
+              </p>
+            </article>
+          </div>
+          <details className="schema-details">
+            <summary>CSV schema columns</summary>
+            <ul>
+              <li>student_id</li>
+              <li>student_name</li>
+              <li>semester</li>
+              <li>academic_year</li>
+              <li>course_code</li>
+              <li>course_name</li>
+              <li>credits</li>
+              <li>grade_letter</li>
+              <li>grade_point</li>
+              <li>score</li>
+            </ul>
+          </details>
+        </aside>
+      </div>
+    </section>
+  );
+}
+
+function DashboardView({
+  analysisResult,
+  isAnalyzing,
+  selectedFileName,
+  uploadError,
+  onAnalyze,
+}: {
+  analysisResult: AcademicRecordsAnalysisResult | null;
+  isAnalyzing: boolean;
+  selectedFileName?: string;
+  uploadError: string | null;
+  onAnalyze: () => void;
+}) {
+  return (
+    <section id="dashboard" className="dashboard-page app-view" aria-labelledby="dashboard-title">
+      <div className="section-heading dashboard-heading">
+        <p className="eyebrow">Academic Dashboard</p>
+        <h2 id="dashboard-title">Current analysis dashboard</h2>
+        <p className="section-copy">
+          Review validation status, GPA summary, charts, tables, and course review for the latest
+          processed academic file.
+        </p>
+      </div>
+
+      {!analysisResult && !isAnalyzing && !uploadError ? (
+        <section className="result-panel result-panel-empty dashboard-empty" role="status">
+          <h3>No analysis loaded yet.</h3>
+          <p>Go to Analyze to upload a CSV or supported transcript PDF.</p>
+          <button className="primary-button" type="button" onClick={onAnalyze}>
+            Analyze academic records
+          </button>
+        </section>
+      ) : (
+        <>
+          <ValidationResultPanel
+            fileName={selectedFileName}
+            isLoading={isAnalyzing}
+            result={analysisResult}
+            uploadError={uploadError}
+          />
+          {analysisResult?.is_valid && analysisResult.analytics ? (
+            <AnalyticsDashboard analytics={analysisResult.analytics} />
+          ) : null}
+        </>
+      )}
+    </section>
+  );
+}
+
+function ReportView({ onNavigate }: { onNavigate: (view: AppView) => void }) {
+  return (
+    <section id="report" className="report-page app-view" aria-labelledby="report-title">
+      <div className="section-heading dashboard-heading">
+        <p className="eyebrow">Report Workspace</p>
+        <h2 id="report-title">Standalone HTML reports</h2>
+        <p className="section-copy">
+          Reports are generated from saved canonical analysis JSON. Open a saved analysis detail to
+          access its standalone HTML report.
+        </p>
+      </div>
+
+      <div className="report-guide-grid">
+        <article className="overview-card">
+          <span>1. Analyze</span>
+          <p>Upload a CSV or supported text-based transcript PDF and run deterministic analytics.</p>
+        </article>
+        <article className="overview-card">
+          <span>2. Save</span>
+          <p>Successful analyses are stored locally as canonical JSON, not as uploaded files.</p>
+        </article>
+        <article className="overview-card">
+          <span>3. Open report</span>
+          <p>Use the saved detail view to open a standalone HTML report in a new tab.</p>
+        </article>
+      </div>
+
+      <div className="report-page-actions">
+        <button className="primary-button" type="button" onClick={() => onNavigate("saved")}>
+          Open saved analyses
+        </button>
+        <button className="secondary-button" type="button" onClick={() => onNavigate("analyze")}>
+          Analyze a new file
+        </button>
+      </div>
+    </section>
   );
 }
 

@@ -97,7 +97,11 @@ html {
   min-width: 0;
   align-items: center;
   gap: 12px;
+  border: 0;
+  background: transparent;
   color: var(--color-heading);
+  cursor: pointer;
+  font: inherit;
   text-decoration: none;
 }
 
@@ -138,28 +142,41 @@ html {
   gap: 6px;
 }
 
-.app-nav a {
+.app-nav button {
   min-height: 36px;
   padding: 9px 12px;
   border: 1px solid transparent;
   border-radius: 999px;
+  background: transparent;
   color: #32425c;
+  cursor: pointer;
   font-size: 0.9rem;
   font-weight: 800;
+  font-family: inherit;
   text-decoration: none;
 }
 
-.app-nav a:hover,
-.app-nav a:focus-visible {
+.app-nav button:hover,
+.app-nav button:focus-visible,
+.app-nav .app-nav-active {
   border-color: var(--color-border);
   background: rgb(255 255 255 / 72%);
   outline: none;
+}
+
+.app-nav .app-nav-active {
+  color: var(--color-primary);
+  box-shadow: var(--shadow-inset);
 }
 
 .app-shell {
   width: min(var(--container-width), calc(100% - var(--space-page)));
   margin: 0 auto;
   padding: 32px 0 56px;
+}
+
+.app-view {
+  min-height: calc(100vh - 160px);
 }
 
 .hero {
@@ -350,11 +367,27 @@ h1 {
   line-height: 1.6;
 }
 
+.report-guide-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 18px;
+  margin-top: 24px;
+}
+
+.report-page-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+  margin-top: 24px;
+}
+
 .upload-section,
 .analytics-section,
 .saved-analyses-section,
 .saved-dashboard-section,
-.capability-section {
+.capability-section,
+.report-page,
+.dashboard-page {
   padding: 56px 0 0;
 }
 
@@ -1256,6 +1289,7 @@ tbody tr:hover td {
   .chart-grid,
   .saved-history-layout,
   .risk-grid,
+  .report-guide-grid,
   .capability-grid {
     grid-template-columns: 1fr;
   }
@@ -1304,7 +1338,7 @@ tbody tr:hover td {
     grid-template-columns: repeat(2, minmax(0, 1fr));
   }
 
-  .app-nav a {
+  .app-nav button {
     text-align: center;
   }
 
@@ -1317,7 +1351,9 @@ tbody tr:hover td {
   .analytics-section,
   .saved-analyses-section,
   .saved-dashboard-section,
-  .capability-section {
+  .capability-section,
+  .report-page,
+  .dashboard-page {
     padding-top: 40px;
   }
 

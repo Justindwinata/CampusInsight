@@ -196,6 +196,7 @@ html {
 .app-root .hero-content,
 .app-root .hero-visual,
 .app-root .overview-card,
+.app-root .product-signal-strip,
 .app-root .upload-layout,
 .app-root .dashboard-page,
 .app-root .saved-analyses-section,
@@ -210,6 +211,7 @@ html {
 .app-root-motion-ready .hero-content,
 .app-root-motion-ready .hero-visual,
 .app-root-motion-ready .overview-card,
+.app-root-motion-ready .product-signal-strip,
 .app-root-motion-ready .upload-layout,
 .app-root-motion-ready .dashboard-page,
 .app-root-motion-ready .saved-analyses-section,
@@ -225,6 +227,10 @@ html {
 
 .app-root-motion-ready .overview-card:nth-child(3) {
   transition-delay: 150ms;
+}
+
+.app-root-motion-ready .product-signal-strip {
+  transition-delay: 190ms;
 }
 
 .app-view {
@@ -714,6 +720,120 @@ h1 {
   grid-template-columns: repeat(3, minmax(0, 1fr));
   gap: 18px;
   margin-top: 24px;
+}
+
+.product-signal-strip {
+  position: relative;
+  display: grid;
+  grid-template-columns: 1.05fr repeat(3, minmax(0, 1fr));
+  gap: 16px;
+  align-items: stretch;
+  margin-top: 22px;
+  padding: 18px;
+  overflow: hidden;
+  border: 1px solid rgb(222 214 202 / 86%);
+  border-radius: var(--radius-xl);
+  background:
+    radial-gradient(circle at 12% 10%, rgb(47 111 159 / 14%), transparent 34%),
+    linear-gradient(135deg, rgb(22 35 63 / 96%) 0%, rgb(35 69 105 / 94%) 100%);
+  box-shadow: var(--shadow-card);
+}
+
+.product-signal-strip::after {
+  position: absolute;
+  inset: 0;
+  background-image:
+    linear-gradient(rgb(255 255 255 / 6%) 1px, transparent 1px),
+    linear-gradient(90deg, rgb(255 255 255 / 6%) 1px, transparent 1px);
+  background-size: 28px 28px;
+  content: "";
+  pointer-events: none;
+}
+
+.signal-strip-visual {
+  position: relative;
+  z-index: 1;
+  display: grid;
+  min-height: 148px;
+  place-items: center;
+  border: 1px solid rgb(255 255 255 / 12%);
+  border-radius: var(--radius-lg);
+  background:
+    radial-gradient(circle, rgb(13 118 107 / 34%) 0%, transparent 52%), rgb(255 255 255 / 7%);
+}
+
+.signal-strip-visual span {
+  position: absolute;
+  width: 16px;
+  height: 16px;
+  border: 3px solid rgb(255 255 255 / 86%);
+  border-radius: 999px;
+  background: var(--color-accent);
+  box-shadow: 0 0 0 10px rgb(13 118 107 / 18%);
+}
+
+.signal-strip-visual span:nth-child(1) {
+  transform: translate(-54px, -30px);
+}
+
+.signal-strip-visual span:nth-child(2) {
+  transform: translate(22px, -4px);
+}
+
+.signal-strip-visual span:nth-child(3) {
+  transform: translate(-14px, 48px);
+}
+
+.signal-strip-visual::before,
+.signal-strip-visual::after {
+  position: absolute;
+  width: 120px;
+  height: 2px;
+  border-radius: 999px;
+  background: linear-gradient(90deg, transparent, rgb(255 255 255 / 72%), transparent);
+  content: "";
+}
+
+.signal-strip-visual::before {
+  transform: rotate(18deg) translateY(-12px);
+}
+
+.signal-strip-visual::after {
+  transform: rotate(-38deg) translateY(26px);
+}
+
+.signal-card {
+  position: relative;
+  z-index: 1;
+  min-width: 0;
+  padding: 20px;
+  border: 1px solid rgb(255 255 255 / 14%);
+  border-radius: var(--radius-lg);
+  background: rgb(255 255 255 / 9%);
+  color: #ffffff;
+  box-shadow: inset 0 1px 0 rgb(255 255 255 / 16%);
+}
+
+.signal-card span {
+  display: block;
+  color: rgb(255 255 255 / 70%);
+  font-size: 0.72rem;
+  font-weight: 950;
+  text-transform: uppercase;
+}
+
+.signal-card strong {
+  display: block;
+  margin-top: 10px;
+  color: #ffffff;
+  font-size: 1.3rem;
+  line-height: 1.2;
+}
+
+.signal-card p {
+  margin: 12px 0 0;
+  color: rgb(255 255 255 / 76%);
+  line-height: 1.55;
 }
 
 .report-page-actions {
@@ -1749,6 +1869,7 @@ tbody tr:hover td {
 
   .hero,
   .overview-grid,
+  .product-signal-strip,
   .upload-layout,
   .result-summary,
   .metric-grid,
@@ -1758,6 +1879,10 @@ tbody tr:hover td {
   .report-guide-grid,
   .capability-grid {
     grid-template-columns: 1fr;
+  }
+
+  .signal-strip-visual {
+    min-height: 120px;
   }
 
   .chart-grid .chart-card:first-child {
@@ -2014,6 +2139,7 @@ tbody tr:hover td {
   .app-root .hero-content,
   .app-root .hero-visual,
   .app-root .overview-card,
+  .app-root .product-signal-strip,
   .app-root .upload-layout,
   .app-root .dashboard-page,
   .app-root .saved-analyses-section,

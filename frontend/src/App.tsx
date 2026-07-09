@@ -35,6 +35,24 @@ const productHighlights = [
   },
 ];
 
+const productSignals = [
+  {
+    label: "Input coverage",
+    value: "CSV + PDF",
+    detail: "Structured records and selectable transcript text feed the same analytics schema.",
+  },
+  {
+    label: "Analysis model",
+    value: "Deterministic",
+    detail: "Metrics are calculated from uploaded records using transparent rules.",
+  },
+  {
+    label: "Output flow",
+    value: "Dashboard + report",
+    detail: "Review current results, saved details, and standalone HTML reports.",
+  },
+];
+
 function App() {
   const fileInputId = useId();
   const [activeView, setActiveView] = useState<AppView>("home");
@@ -257,6 +275,21 @@ function HomeView({ onNavigate }: { onNavigate: (view: AppView) => void }) {
               <span>{highlight.title}</span>
             </div>
             <p>{highlight.body}</p>
+          </article>
+        ))}
+      </section>
+
+      <section className="product-signal-strip" aria-label="CampusInsight workflow highlights">
+        <div className="signal-strip-visual" aria-hidden="true">
+          <span />
+          <span />
+          <span />
+        </div>
+        {productSignals.map((signal) => (
+          <article className="signal-card" key={signal.label}>
+            <span>{signal.label}</span>
+            <strong>{signal.value}</strong>
+            <p>{signal.detail}</p>
           </article>
         ))}
       </section>

@@ -36,7 +36,7 @@ Current status: backend deterministic analytics endpoints and frontend analytics
 - Add accessible charts for GPA trends, grade mix, credits, and course performance.
 - Keep visualizations honest by displaying only user-provided or sample-derived data.
 
-Current status: frontend summary cards, tables, and accessible charts exist for deterministic analytics results. Chart components now render from processed analysis data with explicit empty states instead of blank panels. Tables remain available as a fallback. PDF export, AI, and prediction remain future work.
+Current status: frontend summary cards, tables, and accessible custom SVG charts exist for deterministic analytics results. Chart components render from processed CSV and PDF analysis data with explicit empty states instead of blank panels, including saved PDF detail views. Tables remain available as a fallback. PDF export, AI, and prediction remain future work.
 
 ## 5. History and Reports
 
@@ -56,6 +56,6 @@ Current status: local SQLite persistence, saved analysis history APIs, frontend 
 - Add deployment notes.
 - Prepare portfolio-ready screenshots and project narrative.
 
-Current status: the frontend has a professional multi-page SaaS-style app shell with Home, Analyze, Dashboard, Saved Analyses, and Report views; a hero cover using `assets/thumbnail.png`; refined upload workflow; stronger dashboard hierarchy; clearer saved-analysis and report actions; responsive layout polish; and local demo-ready interaction flow for upload, analytics, saved history, saved detail, and HTML reports. Deployment, authentication, cloud database persistence, PDF export, AI, and prediction remain future work.
+Current status: the frontend has a professional multi-page SaaS-style app shell with Home, Analyze, Dashboard, Saved Analyses, and Report views; an interactive hero cover using `assets/thumbnail.png`; richer internal product visuals; refined upload workflow; stronger dashboard hierarchy; clearer saved-analysis and report actions; responsive layout polish; and local demo-ready interaction flow for upload, analytics, saved history, saved detail, and HTML reports. Deployment, authentication, cloud database persistence, PDF export, AI, and prediction remain future work.
 
 Portfolio presentation status: verified desktop and mobile screenshots currently reflect the CI-0016 SaaS UI redesign, CSV support, text-based PDF transcript support, saved analysis detail, and standalone HTML reports. The README includes product preview images, and demo documentation identifies the fictional CSV sample, privacy-safe PDF demo policy, screenshot safety rules, and unsupported capabilities. Screenshots should be refreshed again after the CI-0018 multi-page hero/navigation update.

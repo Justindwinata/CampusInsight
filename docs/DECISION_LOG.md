@@ -21,7 +21,9 @@
 - Refresh desktop and mobile screenshots again after the CI-0016 SaaS UI redesign so the README preview matches the current app shell, dashboard, saved detail, and report experience.
 - Move the frontend from a long single-page feel into explicit Home, Analyze, Dashboard, Saved Analyses, and Report views while keeping a lightweight React state navigation approach instead of adding routing complexity.
 - Use `assets/thumbnail.png` as the home hero cover image and layer it with original CampusInsight copy, internal visual accents, and subtle reduced-motion-aware interactions.
-- Harden chart rendering by keeping Recharts fed from processed analytics data only, adding explicit empty states, and disabling chart animation for more reliable demo and screenshot rendering.
+- Harden chart rendering by keeping visualizations fed from processed analytics data only and adding explicit empty states for unavailable chart data.
+- Replace runtime chart rendering with custom responsive SVG chart components after PDF analysis exposed blank-chart behavior tied to chart container measurement. The SVG charts consume the same deterministic analytics payload for CSV, PDF, and saved PDF detail views.
+- Expand page-level product presentation with interaction-ready hero treatment, internal visual signals, workflow context rails, and report/saved-analysis panels without adding backend capabilities.
 - Ignore local database files under `data/database/` so personal local history is not committed to Git.
 - Do not add Docker initially to keep the first bootstrap simple for local development.
 - Do not add authentication initially because the first portfolio version is focused on local academic analytics workflows.

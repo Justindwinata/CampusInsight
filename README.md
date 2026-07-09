@@ -4,7 +4,7 @@ CampusInsight is a full-stack student performance analytics dashboard built as a
 
 The project is designed for local demos and GitHub review. It uses fictional sample data only and does not implement authentication, cloud persistence, deployment, PDF export, AI, or prediction logic.
 
-The frontend now uses a professional multi-page SaaS-style app shell with distinct Home, Analyze, Dashboard, Saved Analyses, and Report views. The home page includes a polished hero cover from `assets/thumbnail.png`, structured product messaging, clearer saved-analysis flow, hardened chart rendering, and subtle reduced-motion-aware interactions. The UI redesign was guided by modern SaaS product structure and spacing discipline without copying third-party branding, assets, colors, or text.
+The frontend now uses a professional multi-page SaaS-style app shell with distinct Home, Analyze, Dashboard, Saved Analyses, and Report views. The home page includes an interactive hero cover from `assets/thumbnail.png`, structured product messaging, richer product visuals, clearer saved-analysis flow, hardened SVG chart rendering for CSV and PDF results, and subtle reduced-motion-aware interactions. The UI redesign was guided by modern SaaS product structure and spacing discipline without copying third-party branding, assets, colors, or text.
 
 ## Product Preview
 
@@ -38,7 +38,7 @@ The screenshots below show the local demo flow from the current portfolio docume
 - Text-based academic transcript PDF upload with rule-based extraction, metadata parsing, course parsing, and normalization into the same analytics schema.
 - Deterministic GPA, credit, semester, grade, course, and course-risk analytics.
 - Multi-view React product shell with Home, Analyze, Dashboard, Saved Analyses, and Report workspaces.
-- Responsive React dashboard with summary cards, non-blank chart empty states, charts, and accessible tables.
+- Responsive React dashboard with summary cards, custom SVG charts, non-blank chart empty states, and accessible tables.
 - Local SQLite saved-analysis history.
 - Saved analysis history and detail views rendered from stored canonical JSON.
 - Standalone HTML report generation for saved analyses.
@@ -46,7 +46,7 @@ The screenshots below show the local demo flow from the current portfolio docume
 
 ## Tech Stack
 
-- Frontend: React, TypeScript, Vite, Recharts
+- Frontend: React, TypeScript, Vite, custom SVG chart components
 - Backend: FastAPI, Python, pypdf
 - Persistence: local SQLite
 - Testing: pytest, Vitest, React Testing Library

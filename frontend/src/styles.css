@@ -1113,6 +1113,75 @@ input[type="file"]:focus-visible,
   min-height: 320px;
 }
 
+.chart-svg {
+  display: block;
+  overflow: visible;
+}
+
+.chart-grid-line {
+  stroke: #dfe7ef;
+  stroke-dasharray: 5 6;
+  stroke-width: 1;
+}
+
+.chart-bar {
+  fill: #17494d;
+}
+
+.chart-bar-muted {
+  fill: #8c6d1f;
+  opacity: 0.68;
+}
+
+.chart-bar-warm {
+  fill: #b8452a;
+}
+
+.chart-line {
+  fill: none;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  stroke-width: 4;
+}
+
+.chart-line-primary {
+  stroke: #17494d;
+}
+
+.chart-line-accent {
+  stroke: #b8452a;
+}
+
+.chart-dot {
+  stroke: #ffffff;
+  stroke-width: 2;
+}
+
+.chart-dot-primary {
+  fill: #17494d;
+}
+
+.chart-dot-accent {
+  fill: #b8452a;
+}
+
+.chart-axis-label,
+.chart-value-label,
+.chart-legend text {
+  fill: var(--color-text-muted);
+  font-size: 0.78rem;
+  font-weight: 800;
+}
+
+.chart-value-label {
+  fill: var(--color-heading);
+  font-size: 0.82rem;
+}
+
+.chart-legend text {
+  fill: var(--color-heading);
+}
+
 .chart-canvas .recharts-wrapper,
 .chart-canvas .recharts-surface {
   display: block;

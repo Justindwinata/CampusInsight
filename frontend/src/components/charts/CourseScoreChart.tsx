@@ -1,5 +1,3 @@
-import { Bar, BarChart, CartesianGrid, ResponsiveContainer, Tooltip, XAxis, YAxis } from "recharts";
-
 import { CoursePerformanceItem } from "../../services/academicRecordsService";
 import ChartCard from "./ChartCard";
 import ChartEmptyState from "./ChartEmptyState";
@@ -11,6 +9,12 @@ type CourseScoreChartProps = {
 
 function CourseScoreChart({ courses }: CourseScoreChartProps) {
   const data = toCourseScoreChartData(courses);
+  const width = 760;
+  const height = 340;
+  const padding = { top: 30, right: 30, bottom: 74, left: 48 };
+  const chartWidth = width - padding.left - padding.right;
+  const chartHeight = height - padding.top - padding.bottom;
+  const step = chartWidth / Math.max(data.length, 1);
 
   return (
     <ChartCard
@@ -20,27 +24,60 @@ function CourseScoreChart({ courses }: CourseScoreChartProps) {
       {data.length === 0 ? (
         <ChartEmptyState message="Course score charts will appear after the analysis includes course performance records." />
       ) : (
-        <div
-          className="chart-canvas chart-canvas-wide"
+        <svg
+          className="chart-canvas chart-canvas-wide chart-svg"
           role="img"
           aria-label="Course score overview chart showing scores by course code."
+          viewBox={`0 0 ${width} ${height}`}
         >
-          <ResponsiveContainer width="100%" height="100%" minHeight={320}>
-            <BarChart data={data} margin={{ top: 12, right: 8, bottom: 8, left: 0 }}>
-              <CartesianGrid stroke="#e3e9f1" strokeDasharray="4 4" />
-              <XAxis dataKey="courseCode" tick={{ fill: "#475569", fontSize: 12 }} />
-              <YAxis domain={[0, 100]} tick={{ fill: "#475569", fontSize: 12 }} width={36} />
-              <Tooltip />
-              <Bar
-                dataKey="score"
-                name="Score"
-                fill="#b8452a"
-                isAnimationActive={false}
-                radius={[4, 4, 0, 0]}
+          <title>Course score overview</title>
+          {[0, 0.25, 0.5, 0.75, 1].map((ratio) => {
+            const y = padding.top + chartHeight * ratio;
+            return (
+              <line
+                className="chart-grid-line"
+                key={ratio}
+                x1={padding.left}
+                x2={width - padding.right}
+                y1={y}
+                y2={y}
               />
-            </BarChart>
-          </ResponsiveContainer>
-        </div>
+            );
+          })}
+          {data.map((item, index) => {
+            const barHeight = (item.score / 100) * chartHeight;
+            const barWidth = Math.min(42, step * 0.58);
+            const x = padding.left + step * index + step / 2 - barWidth / 2;
+            const y = padding.top + chartHeight - barHeight;
+            return (
+              <g key={`${item.courseCode}-${index}`}>
+                <rect
+                  className="chart-bar chart-bar-warm"
+                  x={x}
+                  y={y}
+                  width={barWidth}
+                  height={barHeight}
+                  rx="8"
+                />
+                <text
+                  className="chart-value-label"
+                  textAnchor="middle"
+                  x={x + barWidth / 2}
+                  y={y - 8}
+                >
+                  {item.score}
+                </text>
+                <text
+                  className="chart-axis-label chart-axis-label-rotated"
+                  textAnchor="end"
+                  transform={`translate(${x + barWidth / 2}, ${height - 28}) rotate(-36)`}
+                >
+                  {item.courseCode}
+                </text>
+              </g>
+            );
+          })}
+        </svg>
       )}
     </ChartCard>
   );

@@ -241,6 +241,36 @@ describe("App", () => {
     ).toBeInTheDocument();
   });
 
+  it("renders saved PDF analytics detail charts from stored canonical response", async () => {
+    fetchMock
+      .mockResolvedValueOnce(jsonResponse(savedPdfHistoryResponse()))
+      .mockResolvedValueOnce(jsonResponse(savedPdfDetailResponse()));
+    const user = userEvent.setup();
+    render(<App />);
+
+    await loadSavedAnalyses(user);
+    await screen.findByText("synthetic-transcript.pdf");
+    await user.click(screen.getByRole("button", { name: "Open detail" }));
+
+    expect(
+      await screen.findByRole("heading", { name: "Saved analysis dashboard" }),
+    ).toBeInTheDocument();
+    expect(screen.getByRole("heading", { name: "Analytics charts" })).toBeInTheDocument();
+    expect(
+      screen.getByLabelText(
+        "Semester performance chart comparing GPA, average score, and credits.",
+      ),
+    ).toBeInTheDocument();
+    expect(
+      screen.getByLabelText("Grade distribution chart showing course counts by grade letter."),
+    ).toBeInTheDocument();
+    expect(
+      screen.getByLabelText("Course score overview chart showing scores by course code."),
+    ).toBeInTheDocument();
+    expect(screen.getAllByText("PDF Transcript").length).toBeGreaterThanOrEqual(1);
+    expect(screen.queryByText("No chart data available.")).not.toBeInTheDocument();
+  });
+
   it("shows html report action after saved detail loads", async () => {
     fetchMock
       .mockResolvedValueOnce(jsonResponse(savedHistoryResponse()))
@@ -332,14 +362,14 @@ describe("App", () => {
     expect(screen.getByText("Rows checked")).toBeInTheDocument();
     expect(screen.getByText("Analytics status")).toBeInTheDocument();
     expect(screen.getByRole("heading", { name: "GPA and credit summary" })).toBeInTheDocument();
-    expect(screen.getByText("Weighted GPA")).toBeInTheDocument();
+    expect(screen.getAllByText("Weighted GPA").length).toBeGreaterThanOrEqual(1);
     expect(screen.getByText("3.11")).toBeInTheDocument();
     expect(screen.getByText("Total credits")).toBeInTheDocument();
     expect(screen.getByText("46")).toBeInTheDocument();
   });
 
   it("supports PDF transcript uploads through the PDF analysis endpoint", async () => {
-    fetchMock.mockResolvedValueOnce(jsonResponse(validAnalysisResponse()));
+    fetchMock.mockResolvedValueOnce(jsonResponse(validPdfAnalysisResponse()));
     const user = userEvent.setup();
     render(<App />);
 
@@ -361,6 +391,20 @@ describe("App", () => {
       }),
     );
     expect(await screen.findByText("Academic record validation passed.")).toBeInTheDocument();
+    expect(screen.getByRole("heading", { name: "Analytics charts" })).toBeInTheDocument();
+    expect(
+      screen.getByLabelText(
+        "Semester performance chart comparing GPA, average score, and credits.",
+      ),
+    ).toBeInTheDocument();
+    expect(
+      screen.getByLabelText("Grade distribution chart showing course counts by grade letter."),
+    ).toBeInTheDocument();
+    expect(
+      screen.getByLabelText("Course score overview chart showing scores by course code."),
+    ).toBeInTheDocument();
+    expect(screen.getAllByText("PDF Transcript").length).toBeGreaterThanOrEqual(1);
+    expect(screen.queryByText("No chart data available.")).not.toBeInTheDocument();
   });
 
   it("displays semester, grade distribution, and course performance tables", async () => {
@@ -383,7 +427,7 @@ describe("App", () => {
 
     expect(screen.getByRole("heading", { name: "Course Performance" })).toBeInTheDocument();
     expect(screen.getByRole("columnheader", { name: "Course code" })).toBeInTheDocument();
-    expect(screen.getAllByText("CS101")).toHaveLength(2);
+    expect(screen.getAllByText("CS101").length).toBeGreaterThanOrEqual(2);
     expect(screen.getAllByText("Introduction to Programming")).toHaveLength(2);
   });
 
@@ -649,6 +693,103 @@ function savedDetailResponse() {
   return {
     analysis_id: "analysis-001",
     ...validAnalysisResponse(),
+  };
+}
+
+function validPdfAnalysisResponse() {
+  return {
+    is_valid: true,
+    validation: { row_count: 5, errors: [] },
+    analytics: {
+      gpa_summary: {
+        total_courses: 5,
+        total_credits: 14,
+        weighted_gpa: 3.4,
+        average_score: 86,
+        highest_score: 100,
+        lowest_score: 50,
+        best_course: "F062100001 - DASAR KEAMANAN KOMPUTER",
+        weakest_course: "W152100011 - SISTEM OPERASI",
+      },
+      semester_performance: [
+        {
+          semester: 1,
+          academic_year: "PDF Transcript",
+          course_count: 1,
+          credits: 3,
+          weighted_gpa: 4,
+          average_score: 100,
+        },
+        {
+          semester: 2,
+          academic_year: "PDF Transcript",
+          course_count: 2,
+          credits: 5,
+          weighted_gpa: 3.7,
+          average_score: 93.75,
+        },
+      ],
+      grade_distribution: [
+        { grade_letter: "A", count: 2, percentage: 40 },
+        { grade_letter: "B+", count: 1, percentage: 20 },
+        { grade_letter: "C", count: 1, percentage: 20 },
+      ],
+      course_performance: [
+        {
+          course_code: "F062100001",
+          course_name: "DASAR KEAMANAN KOMPUTER",
+          credits: 3,
+          grade_letter: "A",
+          grade_point: 4,
+          score: 100,
+        },
+        {
+          course_code: "W152100004",
+          course_name: "MATEMATIKA DISKRIT",
+          credits: 3,
+          grade_letter: "B+",
+          grade_point: 3.5,
+          score: 87.5,
+        },
+      ],
+      credit_summary: {
+        total_credits: 14,
+        attempted_courses: 5,
+        average_credits_per_course: 2.8,
+      },
+      course_risks: [
+        {
+          course_code: "W152100011",
+          course_name: "SISTEM OPERASI",
+          risk_level: "high",
+          reasons: ["Score is below 70.", "Grade point is below 2.5."],
+        },
+      ],
+    },
+  };
+}
+
+function savedPdfHistoryResponse() {
+  return {
+    analyses: [
+      {
+        analysis_id: "analysis-pdf-001",
+        created_at: "2026-07-10T08:00:00+00:00",
+        source_filename: "synthetic-transcript.pdf",
+        row_count: 5,
+        total_courses: 5,
+        weighted_gpa: 3.4,
+        average_score: 86,
+      },
+    ],
+    limit: 20,
+  };
+}
+
+function savedPdfDetailResponse() {
+  return {
+    analysis_id: "analysis-pdf-001",
+    ...validPdfAnalysisResponse(),
   };
 }
 

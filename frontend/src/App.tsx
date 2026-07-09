@@ -327,6 +327,24 @@ function AnalyzeView({
         </p>
       </div>
 
+      <div className="page-insight-row" aria-label="Analyze workflow summary">
+        <article>
+          <span>Step 01</span>
+          <strong>Select file</strong>
+          <p>Choose a CSV schema file or selectable transcript PDF.</p>
+        </article>
+        <article>
+          <span>Step 02</span>
+          <strong>Validate</strong>
+          <p>Records are checked before metrics are calculated.</p>
+        </article>
+        <article>
+          <span>Step 03</span>
+          <strong>Review</strong>
+          <p>Successful analyses open in the dashboard workspace.</p>
+        </article>
+      </div>
+
       <div className="upload-layout">
         <form className="upload-form" onSubmit={handleSubmit}>
           <div className="upload-form-heading">
@@ -438,6 +456,15 @@ function DashboardView({
         </p>
       </div>
 
+      <div className="dashboard-command-strip" aria-label="Dashboard context">
+        <span>Current source</span>
+        <strong>{selectedFileName ?? "No active file"}</strong>
+        <p>
+          Charts and tables appear only after a CSV or supported PDF has been processed
+          successfully.
+        </p>
+      </div>
+
       {!analysisResult && !isAnalyzing && !uploadError ? (
         <section className="result-panel result-panel-empty dashboard-empty" role="status">
           <h3>No analysis loaded yet.</h3>
@@ -473,6 +500,17 @@ function ReportView({ onNavigate }: { onNavigate: (view: AppView) => void }) {
           Reports are generated from saved canonical analysis JSON. Open a saved analysis detail to
           access its standalone HTML report.
         </p>
+      </div>
+
+      <div className="report-hero-panel">
+        <div>
+          <span>Report readiness</span>
+          <strong>Saved analyses become standalone HTML reports.</strong>
+          <p>
+            Reports use stored canonical JSON, so no CSV or PDF re-upload is required after the
+            analysis has been saved.
+          </p>
+        </div>
       </div>
 
       <div className="report-guide-grid">
@@ -621,6 +659,24 @@ function SavedAnalysesPanel() {
           Review locally saved analysis history, open the stored dashboard, and download a
           standalone HTML report.
         </p>
+      </div>
+
+      <div className="page-insight-row" aria-label="Saved analysis workflow summary">
+        <article>
+          <span>History</span>
+          <strong>Local SQLite</strong>
+          <p>Successful analyses are saved locally as canonical JSON.</p>
+        </article>
+        <article>
+          <span>Detail</span>
+          <strong>Stored dashboard</strong>
+          <p>Saved views reopen without recalculating from uploaded files.</p>
+        </article>
+        <article>
+          <span>Report</span>
+          <strong>HTML output</strong>
+          <p>Open a standalone report when a saved detail is loaded.</p>
+        </article>
       </div>
 
       <div id="report" className="saved-workflow-strip">

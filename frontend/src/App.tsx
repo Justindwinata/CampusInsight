@@ -1,4 +1,5 @@
-import { FormEvent, useEffect, useId, useState } from "react";
+import { useEffect, useId, useState } from "react";
+import type { CSSProperties, FormEvent, PointerEvent } from "react";
 
 import {
   AcademicRecordsAnalysisResult,
@@ -155,6 +156,26 @@ function App() {
 }
 
 function HomeView({ onNavigate }: { onNavigate: (view: AppView) => void }) {
+  const [heroTilt, setHeroTilt] = useState({ x: 0, y: 0 });
+
+  function handleHeroPointerMove(event: PointerEvent<HTMLDivElement>) {
+    const bounds = event.currentTarget.getBoundingClientRect();
+    const centerX = bounds.left + bounds.width / 2;
+    const centerY = bounds.top + bounds.height / 2;
+    const x = ((event.clientY - centerY) / bounds.height) * -8;
+    const y = ((event.clientX - centerX) / bounds.width) * 10;
+    setHeroTilt({ x, y });
+  }
+
+  function resetHeroTilt() {
+    setHeroTilt({ x: 0, y: 0 });
+  }
+
+  const heroVisualStyle = {
+    "--hero-tilt-x": `${heroTilt.x.toFixed(2)}deg`,
+    "--hero-tilt-y": `${heroTilt.y.toFixed(2)}deg`,
+  } as CSSProperties;
+
   return (
     <>
       <section id="overview" className="hero product-intro" aria-labelledby="page-title">
@@ -191,12 +212,29 @@ function HomeView({ onNavigate }: { onNavigate: (view: AppView) => void }) {
           </p>
         </div>
 
-        <div className="hero-visual" aria-label="CampusInsight dashboard preview">
+        <div
+          className="hero-visual"
+          aria-label="CampusInsight dashboard preview"
+          onPointerLeave={resetHeroTilt}
+          onPointerMove={handleHeroPointerMove}
+          style={heroVisualStyle}
+        >
+          <div className="hero-orbit hero-orbit-one" aria-hidden="true" />
+          <div className="hero-orbit hero-orbit-two" aria-hidden="true" />
           <div className="hero-cover-frame">
             <img
               src={heroCoverUrl}
               alt="CampusInsight interface preview showing the academic analytics dashboard"
             />
+            <div className="hero-cover-sheen" aria-hidden="true" />
+            <div className="hero-cover-chip hero-cover-chip-top" aria-hidden="true">
+              <span>Live dashboard</span>
+              <strong>Charts ready</strong>
+            </div>
+            <div className="hero-cover-chip hero-cover-chip-bottom" aria-hidden="true">
+              <span>Inputs</span>
+              <strong>CSV + PDF</strong>
+            </div>
           </div>
           <div className="hero-floating-card hero-floating-card-top">
             <span>Product status</span>

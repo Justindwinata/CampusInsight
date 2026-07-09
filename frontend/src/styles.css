@@ -354,12 +354,40 @@ h1 {
 }
 
 .hero-visual {
+  --hero-tilt-x: 0deg;
+  --hero-tilt-y: 0deg;
+
   position: relative;
   z-index: 1;
   display: grid;
   min-width: 0;
   align-items: center;
+  perspective: 1100px;
   isolation: isolate;
+}
+
+.hero-orbit {
+  position: absolute;
+  z-index: -1;
+  border-radius: 999px;
+  filter: blur(2px);
+  opacity: 0.82;
+  pointer-events: none;
+}
+
+.hero-orbit-one {
+  inset: -32px auto auto -28px;
+  width: 150px;
+  height: 150px;
+  background: radial-gradient(circle, rgb(47 111 159 / 22%) 0%, transparent 68%);
+}
+
+.hero-orbit-two {
+  right: -36px;
+  bottom: -38px;
+  width: 210px;
+  height: 210px;
+  background: radial-gradient(circle, rgb(13 118 107 / 20%) 0%, transparent 70%);
 }
 
 .hero-cover-frame {
@@ -368,7 +396,15 @@ h1 {
   border: 1px solid rgb(255 255 255 / 72%);
   border-radius: 26px;
   background: #17233f;
-  box-shadow: 0 28px 80px rgb(22 35 63 / 18%);
+  box-shadow:
+    0 28px 80px rgb(22 35 63 / 18%),
+    0 1px 0 rgb(255 255 255 / 62%) inset;
+  transform: rotateX(var(--hero-tilt-x)) rotateY(var(--hero-tilt-y)) translateZ(0);
+  transform-style: preserve-3d;
+  transition:
+    box-shadow 260ms ease,
+    transform 260ms ease;
+  will-change: transform;
 }
 
 .hero-cover-frame::after {
@@ -381,12 +417,101 @@ h1 {
   pointer-events: none;
 }
 
+.hero-cover-frame::before {
+  position: absolute;
+  z-index: 2;
+  inset: 14px;
+  border: 1px solid rgb(255 255 255 / 18%);
+  border-radius: 20px;
+  content: "";
+  pointer-events: none;
+}
+
 .hero-cover-frame img {
   display: block;
   width: 100%;
   min-height: 360px;
   object-fit: cover;
   object-position: center;
+  transform: scale(1.01);
+  transition: transform 520ms ease;
+}
+
+.hero-cover-frame:hover,
+.hero-visual:focus-within .hero-cover-frame {
+  box-shadow:
+    0 34px 96px rgb(22 35 63 / 24%),
+    0 0 0 1px rgb(13 118 107 / 14%),
+    0 1px 0 rgb(255 255 255 / 72%) inset;
+}
+
+.hero-cover-frame:hover img,
+.hero-visual:focus-within .hero-cover-frame img {
+  transform: scale(1.055);
+}
+
+.hero-cover-sheen {
+  position: absolute;
+  z-index: 3;
+  inset: 0;
+  background: linear-gradient(
+    115deg,
+    transparent 0%,
+    transparent 36%,
+    rgb(255 255 255 / 26%) 48%,
+    transparent 60%,
+    transparent 100%
+  );
+  mix-blend-mode: screen;
+  opacity: 0;
+  pointer-events: none;
+  transform: translateX(-48%);
+  transition:
+    opacity 260ms ease,
+    transform 740ms ease;
+}
+
+.hero-cover-frame:hover .hero-cover-sheen {
+  opacity: 1;
+  transform: translateX(54%);
+}
+
+.hero-cover-chip {
+  position: absolute;
+  z-index: 4;
+  min-width: 130px;
+  padding: 10px 12px;
+  border: 1px solid rgb(255 255 255 / 42%);
+  border-radius: 16px;
+  background: rgb(16 26 47 / 72%);
+  color: #ffffff;
+  box-shadow: 0 16px 42px rgb(15 23 42 / 24%);
+  backdrop-filter: blur(14px);
+  transform: translateZ(34px);
+}
+
+.hero-cover-chip span {
+  display: block;
+  color: rgb(255 255 255 / 72%);
+  font-size: 0.68rem;
+  font-weight: 950;
+  text-transform: uppercase;
+}
+
+.hero-cover-chip strong {
+  display: block;
+  margin-top: 4px;
+  font-size: 0.9rem;
+}
+
+.hero-cover-chip-top {
+  top: 22px;
+  left: 22px;
+}
+
+.hero-cover-chip-bottom {
+  right: 22px;
+  bottom: 22px;
 }
 
 .hero-floating-card {
@@ -432,6 +557,22 @@ h1 {
 
 .app-root-motion-ready .hero-floating-card-bottom {
   animation: float-card-bottom 7s ease-in-out infinite;
+}
+
+.app-root-motion-ready .hero-orbit-one {
+  animation: orbit-drift-one 10s ease-in-out infinite;
+}
+
+.app-root-motion-ready .hero-orbit-two {
+  animation: orbit-drift-two 12s ease-in-out infinite;
+}
+
+.app-root-motion-ready .hero-cover-chip-top {
+  animation: chip-hover-top 6.5s ease-in-out infinite;
+}
+
+.app-root-motion-ready .hero-cover-chip-bottom {
+  animation: chip-hover-bottom 7.5s ease-in-out infinite;
 }
 
 .primary-link-button {
@@ -1730,6 +1871,10 @@ tbody tr:hover td {
     min-height: 240px;
   }
 
+  .hero-cover-chip {
+    display: none;
+  }
+
   .metric-card strong {
     font-size: 1.12rem;
   }
@@ -1808,6 +1953,50 @@ tbody tr:hover td {
   }
 }
 
+@keyframes orbit-drift-one {
+  0%,
+  100% {
+    transform: translate3d(0, 0, 0) scale(1);
+  }
+
+  50% {
+    transform: translate3d(18px, 10px, 0) scale(1.08);
+  }
+}
+
+@keyframes orbit-drift-two {
+  0%,
+  100% {
+    transform: translate3d(0, 0, 0) scale(1);
+  }
+
+  50% {
+    transform: translate3d(-16px, -12px, 0) scale(1.05);
+  }
+}
+
+@keyframes chip-hover-top {
+  0%,
+  100% {
+    transform: translate3d(0, 0, 34px);
+  }
+
+  50% {
+    transform: translate3d(0, -7px, 34px);
+  }
+}
+
+@keyframes chip-hover-bottom {
+  0%,
+  100% {
+    transform: translate3d(0, 0, 34px);
+  }
+
+  50% {
+    transform: translate3d(0, 8px, 34px);
+  }
+}
+
 @media (prefers-reduced-motion: reduce) {
   html {
     scroll-behavior: auto;
@@ -1831,5 +2020,12 @@ tbody tr:hover td {
   .app-root .report-page {
     opacity: 1;
     transform: none;
+  }
+
+  .hero-cover-frame,
+  .hero-cover-frame img,
+  .hero-cover-chip,
+  .hero-orbit {
+    transform: none !important;
   }
 }

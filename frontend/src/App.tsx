@@ -53,6 +53,12 @@ const productSignals = [
   },
 ];
 
+const heroMetrics = [
+  ["Inputs", "CSV + PDF"],
+  ["Charts", "3 views"],
+  ["Reports", "HTML"],
+];
+
 function App() {
   const fileInputId = useId();
   const [activeView, setActiveView] = useState<AppView>("home");
@@ -141,6 +147,11 @@ function App() {
               </button>
             ))}
           </nav>
+
+          <div className="app-header-status" aria-hidden="true">
+            <span />
+            Local demo ready
+          </div>
         </div>
       </header>
 
@@ -198,7 +209,10 @@ function HomeView({ onNavigate }: { onNavigate: (view: AppView) => void }) {
     <>
       <section id="overview" className="hero product-intro" aria-labelledby="page-title">
         <div className="hero-content">
-          <p className="eyebrow">Academic analytics workspace</p>
+          <div className="hero-kicker-row">
+            <p className="eyebrow">Academic analytics workspace</p>
+            <span>CSV and PDF transcript support</span>
+          </div>
           <h1 id="page-title">
             CampusInsight turns academic records into review-ready dashboards.
           </h1>
@@ -228,6 +242,14 @@ function HomeView({ onNavigate }: { onNavigate: (view: AppView) => void }) {
             Built for deterministic academic review with fictional demo data and transparent scoring
             rules.
           </p>
+          <div className="hero-metric-strip" aria-label="CampusInsight product capabilities">
+            {heroMetrics.map(([label, value]) => (
+              <div key={label}>
+                <span>{label}</span>
+                <strong>{value}</strong>
+              </div>
+            ))}
+          </div>
         </div>
 
         <div
@@ -239,12 +261,14 @@ function HomeView({ onNavigate }: { onNavigate: (view: AppView) => void }) {
         >
           <div className="hero-orbit hero-orbit-one" aria-hidden="true" />
           <div className="hero-orbit hero-orbit-two" aria-hidden="true" />
+          <div className="hero-ambient-grid" aria-hidden="true" />
           <div className="hero-cover-frame">
             <img
               src={heroCoverUrl}
               alt="CampusInsight interface preview showing the academic analytics dashboard"
             />
             <div className="hero-cover-sheen" aria-hidden="true" />
+            <div className="hero-cover-depth" aria-hidden="true" />
             <div className="hero-cover-chip hero-cover-chip-top" aria-hidden="true">
               <span>Live dashboard</span>
               <strong>Charts ready</strong>
@@ -261,6 +285,12 @@ function HomeView({ onNavigate }: { onNavigate: (view: AppView) => void }) {
           <div className="hero-floating-card hero-floating-card-bottom">
             <span>Saved reports</span>
             <strong>HTML report workflow</strong>
+          </div>
+          <div className="hero-data-ribbon" aria-hidden="true">
+            <span />
+            <span />
+            <span />
+            <span />
           </div>
         </div>
       </section>

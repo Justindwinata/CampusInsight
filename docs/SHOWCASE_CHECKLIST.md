@@ -79,7 +79,7 @@ Mobile:
 ## GitHub README Checklist
 
 - Product preview images resolve.
-- Product preview images match the current CI-0016 SaaS UI baseline after the CI-0017 screenshot refresh.
+- Product preview images should be refreshed after the latest premium UI polish before a new public showcase post.
 - Quick start commands are visible.
 - Tech stack is current.
 - API overview is current.
@@ -90,7 +90,8 @@ Mobile:
 ## LinkedIn Post Checklist
 
 - Present CampusInsight as a local full-stack portfolio project.
-- Mention FastAPI, React, TypeScript, Vite, Recharts, SQLite, pytest, and Vitest.
+- Mention FastAPI, React, TypeScript, Vite, custom SVG charts, SQLite, pytest, and Vitest.
+- Mention the premium interactive hero, layered product visuals, page transitions, and reduced-motion-aware microinteractions as frontend polish.
 - Mention the professional SaaS-style dashboard redesign only as frontend UI polish inspired by modern product structure, not as a copied third-party design and not as a new backend capability.
 - Mention deterministic analytics and saved HTML reports.
 - Mention text-based PDF transcript support as deterministic parsing, not OCR or AI.

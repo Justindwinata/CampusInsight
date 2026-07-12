@@ -1,0 +1,15 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" role="img" aria-label="CampusInsight icon">
+  <defs>
+    <linearGradient id="ciGradient" x1="10" x2="54" y1="8" y2="56" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#16233f" />
+      <stop offset="0.58" stop-color="#2f6f9f" />
+      <stop offset="1" stop-color="#0d766b" />
+    </linearGradient>
+  </defs>
+  <rect width="64" height="64" rx="18" fill="url(#ciGradient)" />
+  <path
+    d="M19 41.5V23.2C19 20.9 20.9 19 23.2 19h17.6c2.3 0 4.2 1.9 4.2 4.2v5.2h-6.4v-3.2H25.4v13.6h13.2v-3.4H45v6.1c0 2.3-1.9 4.2-4.2 4.2H23.2c-2.3 0-4.2-1.9-4.2-4.2Z"
+    fill="#fff"
+  />
+  <path d="M31 30h16v5H31z" fill="#fff" opacity="0.86" />
+</svg>

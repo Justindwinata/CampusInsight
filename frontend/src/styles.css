@@ -337,6 +337,7 @@ html {
 
 .app-view {
   min-height: calc(100vh - 160px);
+  animation: view-enter 520ms var(--transition-slow) both;
 }
 
 .hero {
@@ -468,6 +469,16 @@ h1 {
   color: var(--color-primary);
   font-size: 0.86rem;
   font-weight: 900;
+  transition:
+    border-color var(--transition-fast),
+    box-shadow var(--transition-fast),
+    transform var(--transition-fast);
+}
+
+.input-badge-row span:hover {
+  border-color: rgb(13 118 107 / 28%);
+  box-shadow: 0 12px 24px rgb(22 35 63 / 8%);
+  transform: translateY(-2px);
 }
 
 .status-note {
@@ -1070,6 +1081,14 @@ h1 {
   background: rgb(255 255 255 / 9%);
   color: #ffffff;
   box-shadow: inset 0 1px 0 rgb(255 255 255 / 16%);
+  transition:
+    background var(--transition-medium),
+    transform var(--transition-medium);
+}
+
+.signal-card:hover {
+  background: rgb(255 255 255 / 13%);
+  transform: translateY(-3px);
 }
 
 .signal-card span {
@@ -1156,7 +1175,17 @@ h1 {
   border-radius: var(--radius-lg);
   background:
     linear-gradient(145deg, rgb(255 255 255 / 88%), rgb(247 243 236 / 72%)), var(--color-surface);
+  transition:
+    border-color var(--transition-medium),
+    box-shadow var(--transition-medium),
+    transform var(--transition-medium);
   box-shadow: var(--shadow-soft), var(--shadow-inset);
+}
+
+.page-insight-row article:hover {
+  border-color: rgb(102 86 217 / 20%);
+  box-shadow: var(--shadow-glow);
+  transform: translateY(-3px);
 }
 
 .page-insight-row span,
@@ -1395,6 +1424,16 @@ input[type="file"] {
   border-radius: var(--radius-md);
   background: var(--color-surface-muted);
   color: var(--color-text);
+  transition:
+    background var(--transition-fast),
+    border-color var(--transition-fast),
+    box-shadow var(--transition-fast);
+}
+
+input[type="file"]:hover {
+  border-color: var(--color-accent);
+  background: rgb(255 255 255 / 82%);
+  box-shadow: inset 0 1px 0 rgb(255 255 255 / 70%);
 }
 
 input[type="file"]:focus-visible,
@@ -1642,12 +1681,32 @@ input[type="file"]:focus-visible,
 
 .format-list article {
   position: relative;
+  overflow: hidden;
   padding: 16px;
   border: 1px solid var(--color-border);
   border-radius: var(--radius-md);
   background:
     linear-gradient(135deg, rgb(255 255 255 / 90%) 0%, rgb(232 237 245 / 45%) 100%),
     rgb(255 255 255 / 70%);
+  transition:
+    border-color var(--transition-medium),
+    transform var(--transition-medium);
+}
+
+.format-list article::after {
+  position: absolute;
+  inset: auto -28px -34px auto;
+  width: 90px;
+  height: 90px;
+  border-radius: 999px;
+  background: rgb(102 86 217 / 8%);
+  content: "";
+  pointer-events: none;
+}
+
+.format-list article:hover {
+  border-color: rgb(13 118 107 / 24%);
+  transform: translateY(-2px);
 }
 
 .format-icon {
@@ -2099,6 +2158,10 @@ tbody tr:hover td {
   background: #fffaf3;
 }
 
+tbody tr {
+  transition: background var(--transition-fast);
+}
+
 .risk-grid {
   display: grid;
   grid-template-columns: repeat(3, minmax(0, 1fr));
@@ -2112,7 +2175,15 @@ tbody tr:hover td {
   border: 1px solid #ead08b;
   border-radius: var(--radius-lg);
   background: linear-gradient(180deg, #fffaf0 0%, var(--color-warning-soft) 100%);
+  transition:
+    box-shadow var(--transition-medium),
+    transform var(--transition-medium);
   box-shadow: var(--shadow-soft);
+}
+
+.risk-card:hover {
+  box-shadow: var(--shadow-card);
+  transform: translateY(-3px);
 }
 
 .risk-card h3 {
@@ -2267,7 +2338,7 @@ tbody tr:hover td {
 }
 
 .saved-history-item:hover {
-  transform: translateY(-1px);
+  transform: translateY(-3px);
   box-shadow: var(--shadow-card);
 }
 
@@ -2747,6 +2818,20 @@ tbody tr:hover td {
   50% {
     opacity: 1;
     transform: scaleY(1.08);
+  }
+}
+
+@keyframes view-enter {
+  from {
+    filter: blur(10px);
+    opacity: 0;
+    transform: translateY(18px) scale(0.985);
+  }
+
+  to {
+    filter: blur(0);
+    opacity: 1;
+    transform: translateY(0) scale(1);
   }
 }
 

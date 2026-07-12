@@ -419,6 +419,13 @@ function AnalyzeView({
 
         <aside className="schema-hint" aria-label="Accepted academic document formats">
           <h3>Accepted formats</h3>
+          <div className="intake-visual-card" aria-hidden="true">
+            <span className="intake-node intake-node-csv">CSV</span>
+            <span className="intake-line" />
+            <span className="intake-node intake-node-pdf">PDF</span>
+            <span className="intake-line intake-line-long" />
+            <span className="intake-node intake-node-core">Schema</span>
+          </div>
           <div className="format-list">
             <article>
               <span className="format-icon" aria-hidden="true">
@@ -493,6 +500,11 @@ function DashboardView({
           Charts and tables appear only after a CSV or supported PDF has been processed
           successfully.
         </p>
+        <div className="dashboard-command-visual" aria-hidden="true">
+          <i />
+          <i />
+          <i />
+        </div>
       </div>
 
       {!analysisResult && !isAnalyzing && !uploadError ? (
@@ -540,6 +552,11 @@ function ReportView({ onNavigate }: { onNavigate: (view: AppView) => void }) {
             Reports use stored canonical JSON, so no CSV or PDF re-upload is required after the
             analysis has been saved.
           </p>
+        </div>
+        <div className="report-preview-stack" aria-hidden="true">
+          <span />
+          <span />
+          <span />
         </div>
       </div>
 
@@ -713,6 +730,11 @@ function SavedAnalysesPanel() {
         <div>
           <span>History workspace</span>
           <p>Load local saved analyses, open a stored dashboard, then access its HTML report.</p>
+        </div>
+        <div className="saved-mini-visual" aria-hidden="true">
+          <span />
+          <span />
+          <span />
         </div>
         <div className="saved-history-actions">
           <button

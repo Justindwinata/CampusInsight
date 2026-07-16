@@ -19,17 +19,17 @@ type AppView = "home" | "analyze" | "dashboard" | "saved" | "report";
 
 const productHighlights = [
   {
-    icon: "IN",
+    icon: "CSV",
     title: "Structured inputs",
     body: "Analyze academic records from CSV files or text-based transcript PDFs.",
   },
   {
-    icon: "RV",
+    icon: "GPA",
     title: "Deterministic review",
     body: "Review GPA, grade distribution, course performance, and risk signals without prediction.",
   },
   {
-    icon: "HS",
+    icon: "HTML",
     title: "Saved workspace",
     body: "Keep local analysis history organized and open HTML reports from saved results.",
   },
@@ -263,9 +263,6 @@ function HomeView({ onNavigate }: { onNavigate: (view: AppView) => void }) {
           onPointerMove={handleHeroPointerMove}
           style={heroVisualStyle}
         >
-          <div className="hero-orbit hero-orbit-one" aria-hidden="true" />
-          <div className="hero-orbit hero-orbit-two" aria-hidden="true" />
-          <div className="hero-ambient-grid" aria-hidden="true" />
           <div className="hero-cover-frame">
             <img
               src={heroCoverUrl}
@@ -285,16 +282,6 @@ function HomeView({ onNavigate }: { onNavigate: (view: AppView) => void }) {
           <div className="hero-floating-card hero-floating-card-top">
             <span>Product status</span>
             <strong>CSV and PDF analysis ready</strong>
-          </div>
-          <div className="hero-floating-card hero-floating-card-bottom">
-            <span>Saved reports</span>
-            <strong>HTML report workflow</strong>
-          </div>
-          <div className="hero-data-ribbon" aria-hidden="true">
-            <span />
-            <span />
-            <span />
-            <span />
           </div>
         </div>
       </section>
@@ -414,6 +401,18 @@ function AnalyzeView({
                 ? "Ready to submit for validation and analytics."
                 : "Accepted formats: .csv academic records or text-based .pdf transcript."}
             </p>
+            {selectedFile ? (
+              <dl className="selected-file-meta" aria-label="Selected file metadata">
+                <div>
+                  <dt>Size</dt>
+                  <dd>{formatFileSize(selectedFile.size)}</dd>
+                </div>
+                <div>
+                  <dt>Type</dt>
+                  <dd>{getAcademicFileType(selectedFile)} intake</dd>
+                </div>
+              </dl>
+            ) : null}
           </div>
 
           <button className="primary-button" type="submit" disabled={!selectedFile || isAnalyzing}>
@@ -1025,6 +1024,11 @@ function ValidationResultPanel({
   if (isLoading) {
     return (
       <section className="result-panel" role="status" aria-live="polite" aria-busy="true">
+        <div className="loading-indicator" aria-hidden="true">
+          <span />
+          <span />
+          <span />
+        </div>
         <h3>Analyzing file...</h3>
         <p>
           CampusInsight is validating or extracting the selected file and preparing deterministic
@@ -1113,6 +1117,19 @@ function getAcademicFileType(file: File): "CSV" | "PDF" {
   return file.name.toLowerCase().endsWith(".pdf") || file.type === "application/pdf"
     ? "PDF"
     : "CSV";
+}
+
+function formatFileSize(size: number) {
+  if (size < 1024) {
+    return `${size} B`;
+  }
+
+  const kilobytes = size / 1024;
+  if (kilobytes < 1024) {
+    return `${kilobytes.toFixed(1)} KB`;
+  }
+
+  return `${(kilobytes / 1024).toFixed(1)} MB`;
 }
 
 export default App;

@@ -120,6 +120,14 @@ summary:focus-visible {
   outline-offset: 3px;
 }
 
+article:focus-within,
+.chart-card:focus-within,
+.table-scroll:focus-within,
+.saved-history-item:focus-within {
+  outline: 3px solid rgb(75 87 170 / 22%);
+  outline-offset: 3px;
+}
+
 .app-header {
   position: sticky;
   z-index: 20;
@@ -2399,6 +2407,23 @@ input[type="file"]:focus-visible,
   border-radius: var(--radius-lg);
   background: var(--color-surface);
   box-shadow: var(--shadow-soft), var(--shadow-inset);
+  scrollbar-color: rgb(75 87 170 / 46%) transparent;
+  scrollbar-width: thin;
+}
+
+.table-scroll::-webkit-scrollbar {
+  height: 10px;
+}
+
+.table-scroll::-webkit-scrollbar-thumb {
+  border: 3px solid transparent;
+  border-radius: 999px;
+  background: rgb(75 87 170 / 46%);
+  background-clip: padding-box;
+}
+
+.table-scroll::-webkit-scrollbar-track {
+  background: transparent;
 }
 
 table {
@@ -2851,6 +2876,34 @@ tbody tr {
   line-height: 1.5;
 }
 
+@media (max-width: 1024px) {
+  :root {
+    --space-page: 26px;
+  }
+
+  .hero {
+    grid-template-columns: 1fr;
+  }
+
+  .hero-cover-frame img {
+    max-height: 520px;
+  }
+
+  .overview-grid,
+  .report-guide-grid,
+  .metric-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .product-signal-strip {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .signal-strip-visual {
+    grid-column: 1 / -1;
+  }
+}
+
 @media (max-width: 860px) {
   .app-header-inner {
     align-items: stretch;
@@ -2876,11 +2929,17 @@ tbody tr {
   }
 
   .app-context-actions {
+    width: 100%;
     justify-content: flex-start;
   }
 
   .current-analysis-buttons {
+    width: 100%;
     justify-content: flex-start;
+  }
+
+  .report-page-actions {
+    width: 100%;
   }
 
   .hero,
@@ -3029,6 +3088,12 @@ tbody tr {
 
   .chart-canvas {
     height: 260px;
+  }
+
+  .supported-input-grid article,
+  .saved-history-title-row {
+    align-items: flex-start;
+    flex-direction: column;
   }
 
   .hero-cover-frame {

@@ -2561,6 +2561,10 @@ tbody tr {
     gap: 12px;
   }
 
+  .hero-cover-sheen {
+    display: none;
+  }
+
   .hero-floating-card {
     position: static;
     width: 100%;
@@ -2641,6 +2645,10 @@ tbody tr {
   }
 
   .schema-hint ul {
+    grid-template-columns: 1fr;
+  }
+
+  .selected-file-meta {
     grid-template-columns: 1fr;
   }
 

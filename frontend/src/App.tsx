@@ -75,6 +75,7 @@ function App() {
   const [uploadError, setUploadError] = useState<string | null>(null);
   const [isAnalyzing, setIsAnalyzing] = useState(false);
   const [isMotionReady, setIsMotionReady] = useState(false);
+  const activeNavItem = navItems.find((item) => item.view === activeView) ?? navItems[0];
 
   useEffect(() => {
     const motionFrame = window.requestAnimationFrame(() => setIsMotionReady(true));
@@ -160,6 +161,33 @@ function App() {
       </header>
 
       <main className="app-shell">
+        <section className="app-context-bar" aria-label="Current workspace context">
+          <div>
+            <span>CampusInsight Platform</span>
+            <strong>{activeNavItem.label}</strong>
+            <p>{getViewDescription(activeView)}</p>
+          </div>
+          <div className="app-context-actions">
+            {activeView !== "analyze" ? (
+              <button
+                className="secondary-button"
+                type="button"
+                onClick={() => navigateTo("analyze")}
+              >
+                Open Analyze workspace
+              </button>
+            ) : null}
+            {activeView !== "saved" ? (
+              <button
+                className="secondary-button"
+                type="button"
+                onClick={() => navigateTo("saved")}
+              >
+                Open saved history
+              </button>
+            ) : null}
+          </div>
+        </section>
         {activeView === "home" ? <HomeView onNavigate={navigateTo} /> : null}
         {activeView === "analyze" ? (
           <AnalyzeView
@@ -186,6 +214,21 @@ function App() {
       </main>
     </div>
   );
+}
+
+function getViewDescription(view: AppView) {
+  switch (view) {
+    case "home":
+      return "Academic analytics overview, supported inputs, and workflow entry points.";
+    case "analyze":
+      return "Upload CSV records or text-based transcript PDFs for deterministic analysis.";
+    case "dashboard":
+      return "Review the current validation status, charts, tables, and course review signals.";
+    case "saved":
+      return "Open stored local analyses, inspect saved dashboards, and access HTML reports.";
+    case "report":
+      return "Understand how standalone HTML reports are generated from saved analysis JSON.";
+  }
 }
 
 function HomeView({ onNavigate }: { onNavigate: (view: AppView) => void }) {

@@ -1310,6 +1310,59 @@ h1 {
   box-shadow: var(--shadow-soft), var(--shadow-inset);
 }
 
+.current-analysis-actions {
+  display: flex;
+  gap: 18px;
+  align-items: center;
+  justify-content: space-between;
+  margin-top: 20px;
+  padding: 22px;
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-xl);
+  background:
+    radial-gradient(circle at 100% 0%, rgb(111 251 190 / 18%), transparent 30%),
+    linear-gradient(135deg, var(--color-surface), var(--color-surface-muted));
+  box-shadow: var(--shadow-soft), var(--shadow-inset);
+}
+
+.current-analysis-actions span:first-child {
+  display: block;
+  color: var(--color-primary);
+  font-size: 0.72rem;
+  font-weight: 950;
+  text-transform: uppercase;
+}
+
+.current-analysis-actions h3 {
+  margin: 8px 0 0;
+  color: var(--color-heading);
+}
+
+.current-analysis-actions p {
+  margin: 10px 0 0;
+  color: var(--color-text-muted);
+  line-height: 1.55;
+}
+
+.current-analysis-buttons {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  justify-content: flex-end;
+}
+
+.analysis-id-pill {
+  display: inline-flex;
+  min-height: 44px;
+  align-items: center;
+  padding: 0 14px;
+  border: 1px solid var(--color-border);
+  border-radius: 999px;
+  background: var(--color-primary-soft);
+  color: var(--color-primary);
+  font-weight: 900;
+}
+
 .dashboard-command-strip {
   display: grid;
   grid-template-columns: minmax(0, 1fr) auto;
@@ -2054,7 +2107,8 @@ input[type="file"]:focus-visible,
   padding: 22px;
   border: 1px solid var(--color-border);
   border-radius: var(--radius-lg);
-  background: var(--color-surface);
+  background:
+    linear-gradient(180deg, rgb(255 255 255 / 96%), rgb(239 244 255 / 62%)), var(--color-surface);
   transition:
     border-color var(--transition-medium),
     box-shadow var(--transition-medium),
@@ -2081,8 +2135,8 @@ input[type="file"]:focus-visible,
 
 .metric-card-featured {
   grid-column: span 2;
-  border-color: rgb(23 59 99 / 34%);
-  background: linear-gradient(135deg, var(--color-primary) 0%, #284f72 100%);
+  border-color: rgb(20 33 117 / 34%);
+  background: linear-gradient(135deg, var(--color-primary) 0%, var(--color-violet) 100%);
   color: #ffffff;
 }
 
@@ -2130,7 +2184,8 @@ input[type="file"]:focus-visible,
   padding: 24px;
   border: 1px solid var(--color-border);
   border-radius: var(--radius-lg);
-  background: var(--color-surface);
+  background:
+    linear-gradient(180deg, rgb(255 255 255 / 96%), rgb(239 244 255 / 46%)), var(--color-surface);
   transition:
     border-color var(--transition-medium),
     box-shadow var(--transition-medium),
@@ -2162,7 +2217,7 @@ input[type="file"]:focus-visible,
   overflow: hidden;
   border: 1px solid rgb(222 214 202 / 70%);
   border-radius: var(--radius-md);
-  background: linear-gradient(180deg, #ffffff 0%, #fbf8f2 100%);
+  background: linear-gradient(180deg, #ffffff 0%, var(--color-surface-muted) 100%);
 }
 
 .chart-canvas {
@@ -2343,7 +2398,7 @@ tbody tr:last-child td {
 }
 
 tbody tr:hover td {
-  background: #f8fbff;
+  background: #f7f9ff;
 }
 
 tbody tr {
@@ -2760,7 +2815,16 @@ tbody tr {
     flex-direction: column;
   }
 
+  .current-analysis-actions {
+    align-items: flex-start;
+    flex-direction: column;
+  }
+
   .app-context-actions {
+    justify-content: flex-start;
+  }
+
+  .current-analysis-buttons {
     justify-content: flex-start;
   }
 

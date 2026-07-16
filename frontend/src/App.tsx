@@ -665,10 +665,43 @@ function DashboardView({
             uploadError={uploadError}
           />
           {analysisResult?.is_valid && analysisResult.analytics ? (
-            <AnalyticsDashboard analytics={analysisResult.analytics} />
+            <>
+              <CurrentAnalysisActions analysis={analysisResult} />
+              <AnalyticsDashboard analytics={analysisResult.analytics} />
+            </>
           ) : null}
         </>
       )}
+    </section>
+  );
+}
+
+function CurrentAnalysisActions({ analysis }: { analysis: AcademicRecordsAnalysisResult }) {
+  return (
+    <section className="current-analysis-actions" aria-labelledby="current-actions-title">
+      <div>
+        <span>Report Actions</span>
+        <h3 id="current-actions-title">Current analysis is saved locally.</h3>
+        <p>
+          Successful analyses are stored as canonical JSON. Use the HTML report action when an
+          analysis id is available.
+        </p>
+      </div>
+      <div className="current-analysis-buttons">
+        {analysis.analysis_id ? (
+          <a
+            className="primary-link-button"
+            href={getSavedAnalysisReportUrl(analysis.analysis_id)}
+            rel="noreferrer"
+            target="_blank"
+          >
+            Open HTML Report
+          </a>
+        ) : null}
+        <span className="analysis-id-pill">
+          {analysis.analysis_id ? `ID ${analysis.analysis_id.slice(0, 8)}` : "Pending save"}
+        </span>
+      </div>
     </section>
   );
 }

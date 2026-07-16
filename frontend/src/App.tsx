@@ -59,6 +59,30 @@ const heroMetrics = [
   ["Reports", "HTML"],
 ];
 
+const workflowSteps = [
+  {
+    step: "1",
+    title: "Upload academic data",
+    body: "Start with academic records CSV files or selectable text-based transcript PDFs.",
+  },
+  {
+    step: "2",
+    title: "Validate and analyze",
+    body: "CampusInsight validates structure, normalizes records, and calculates deterministic metrics.",
+  },
+  {
+    step: "3",
+    title: "Review and save",
+    body: "Open charts, tables, saved analysis detail, and standalone HTML academic reports.",
+  },
+];
+
+const supportedInputs = [
+  ["CSV", "Canonical academic records schema"],
+  ["PDF", "Text-based transcripts only"],
+  ["Local", "Saved analyses use local history"],
+];
+
 const navItems: Array<{ view: AppView; label: string }> = [
   { view: "home", label: "Home" },
   { view: "analyze", label: "Analyze" },
@@ -357,6 +381,51 @@ function HomeView({ onNavigate }: { onNavigate: (view: AppView) => void }) {
           </article>
         ))}
       </section>
+
+      <section className="home-workflow-section" aria-labelledby="workflow-title">
+        <div className="section-heading">
+          <p className="eyebrow">How it works</p>
+          <h2 id="workflow-title">From academic document to dashboard review.</h2>
+          <p className="section-copy">
+            The workflow stays deterministic: upload, validate, analyze, save, and open an HTML
+            report when needed.
+          </p>
+        </div>
+        <div className="workflow-timeline">
+          {workflowSteps.map((item) => (
+            <article className="workflow-step-card" key={item.step}>
+              <span>{item.step}</span>
+              <h3>{item.title}</h3>
+              <p>{item.body}</p>
+            </article>
+          ))}
+        </div>
+      </section>
+
+      <section className="home-support-section" aria-labelledby="support-title">
+        <div>
+          <p className="eyebrow">Supported scope</p>
+          <h2 id="support-title">Built for local academic analytics demos.</h2>
+          <p>
+            CampusInsight supports CSV academic records and text-based PDF transcripts. It does not
+            perform OCR, model-based forecasting, cloud sync, authentication, or guaranteed
+            academic outcome scoring.
+          </p>
+        </div>
+        <div className="supported-input-grid" aria-label="Supported inputs and boundaries">
+          {supportedInputs.map(([label, detail]) => (
+            <article key={label}>
+              <strong>{label}</strong>
+              <span>{detail}</span>
+            </article>
+          ))}
+        </div>
+      </section>
+
+      <footer className="product-footer" aria-label="CampusInsight product footer">
+        <strong>CampusInsight</strong>
+        <span>Deterministic academic analytics for local portfolio demos.</span>
+      </footer>
     </>
   );
 }

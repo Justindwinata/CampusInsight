@@ -59,6 +59,14 @@ const heroMetrics = [
   ["Reports", "HTML"],
 ];
 
+const navItems: Array<{ view: AppView; label: string }> = [
+  { view: "home", label: "Home" },
+  { view: "analyze", label: "Analyze" },
+  { view: "dashboard", label: "Dashboard" },
+  { view: "saved", label: "Saved Analyses" },
+  { view: "report", label: "Report" },
+];
+
 function App() {
   const fileInputId = useId();
   const [activeView, setActiveView] = useState<AppView>("home");
@@ -130,25 +138,21 @@ function App() {
           </button>
 
           <nav className="app-nav" aria-label="Primary navigation">
-            {[
-              ["home", "Home"],
-              ["analyze", "Analyze"],
-              ["dashboard", "Dashboard"],
-              ["saved", "Saved Analyses"],
-              ["report", "Report"],
-            ].map(([view, label]) => (
+            {navItems.map(({ view, label }) => (
               <button
                 className={activeView === view ? "app-nav-active" : undefined}
                 key={view}
                 type="button"
-                onClick={() => navigateTo(view as AppView)}
+                aria-current={activeView === view ? "page" : undefined}
+                onClick={() => navigateTo(view)}
               >
+                <span aria-hidden="true" />
                 {label}
               </button>
             ))}
           </nav>
 
-          <div className="app-header-status" aria-hidden="true">
+          <div className="app-header-status" aria-label="Local demo status">
             <span />
             Local demo ready
           </div>

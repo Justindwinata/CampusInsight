@@ -121,11 +121,10 @@ summary:focus-visible {
   position: sticky;
   z-index: 20;
   top: 0;
-  border-bottom: 1px solid rgb(255 255 255 / 54%);
-  background:
-    linear-gradient(180deg, rgb(255 255 255 / 68%), rgb(246 241 233 / 76%)), rgb(246 241 233 / 86%);
-  backdrop-filter: blur(22px) saturate(130%);
-  box-shadow: 0 12px 40px rgb(22 35 63 / 6%);
+  border-bottom: 1px solid rgb(216 224 234 / 86%);
+  background: rgb(255 255 255 / 90%);
+  backdrop-filter: blur(18px) saturate(125%);
+  box-shadow: 0 10px 28px rgb(16 24 40 / 5%);
 }
 
 .app-header-inner {
@@ -133,9 +132,9 @@ summary:focus-visible {
   width: min(var(--container-width), calc(100% - var(--space-page)));
   align-items: center;
   justify-content: space-between;
-  gap: 20px;
+  gap: 18px;
   margin: 0 auto;
-  padding: 14px 0;
+  padding: 12px 0;
 }
 
 .app-header-status {
@@ -144,14 +143,13 @@ summary:focus-visible {
   align-items: center;
   gap: 8px;
   padding: 0 12px;
-  border: 1px solid rgb(13 118 107 / 16%);
+  border: 1px solid rgb(15 118 110 / 18%);
   border-radius: 999px;
-  background: rgb(255 255 255 / 54%);
+  background: var(--color-accent-soft);
   color: var(--color-accent-strong);
   font-size: 0.78rem;
   font-weight: 900;
   white-space: nowrap;
-  box-shadow: var(--shadow-inset);
 }
 
 .app-header-status span {
@@ -182,15 +180,19 @@ summary:focus-visible {
   transform: translateY(-1px);
 }
 
+.brand-mark:focus-visible {
+  border-radius: var(--radius-md);
+}
+
 .brand-symbol {
   display: inline-grid;
-  width: 42px;
-  height: 42px;
+  width: 40px;
+  height: 40px;
   flex: 0 0 auto;
   place-items: center;
-  border: 1px solid rgb(255 255 255 / 18%);
-  border-radius: 12px;
-  background: linear-gradient(135deg, var(--color-primary), #244569 58%, var(--color-accent));
+  border: 1px solid rgb(255 255 255 / 20%);
+  border-radius: var(--radius-md);
+  background: linear-gradient(135deg, var(--color-primary), #214b73 58%, var(--color-accent));
   color: #ffffff;
   font-size: 0.86rem;
   font-weight: 900;
@@ -217,16 +219,31 @@ summary:focus-visible {
 
 .app-nav {
   display: flex;
-  flex-wrap: wrap;
+  flex: 1 1 auto;
+  flex-wrap: nowrap;
   justify-content: flex-end;
-  gap: 6px;
+  gap: 4px;
+  min-width: 0;
+  padding: 4px;
+  overflow-x: auto;
+  border: 1px solid var(--color-border);
+  border-radius: 999px;
+  background: var(--color-surface-muted);
+  scrollbar-width: none;
+}
+
+.app-nav::-webkit-scrollbar {
+  display: none;
 }
 
 .app-nav button {
   position: relative;
+  display: inline-flex;
   overflow: hidden;
   min-height: 36px;
-  padding: 9px 12px;
+  align-items: center;
+  gap: 8px;
+  padding: 8px 12px;
   border: 1px solid transparent;
   border-radius: 999px;
   background: transparent;
@@ -236,6 +253,7 @@ summary:focus-visible {
   font-weight: 800;
   font-family: inherit;
   text-decoration: none;
+  white-space: nowrap;
   transition:
     background var(--transition-fast),
     border-color var(--transition-fast),
@@ -245,16 +263,16 @@ summary:focus-visible {
 }
 
 .app-nav button::after {
-  position: absolute;
-  right: 14px;
-  bottom: 5px;
-  left: 14px;
-  height: 2px;
+  content: none;
+}
+
+.app-nav button > span {
+  width: 6px;
+  height: 6px;
   border-radius: 999px;
-  background: linear-gradient(90deg, var(--color-accent), var(--color-violet));
-  content: "";
+  background: currentColor;
   opacity: 0;
-  transform: scaleX(0.35);
+  transform: scale(0.5);
   transition:
     opacity var(--transition-fast),
     transform var(--transition-fast);
@@ -263,8 +281,8 @@ summary:focus-visible {
 .app-nav button:hover,
 .app-nav button:focus-visible,
 .app-nav .app-nav-active {
-  border-color: var(--color-border);
-  background: rgb(255 255 255 / 72%);
+  border-color: rgb(174 187 208 / 52%);
+  background: var(--color-surface);
   outline: none;
   transform: translateY(-1px);
 }
@@ -273,14 +291,14 @@ summary:focus-visible {
   color: var(--color-primary);
   box-shadow:
     var(--shadow-inset),
-    0 10px 26px rgb(22 35 63 / 8%);
+    0 8px 18px rgb(16 24 40 / 7%);
 }
 
-.app-nav button:hover::after,
-.app-nav button:focus-visible::after,
-.app-nav .app-nav-active::after {
+.app-nav button:hover > span,
+.app-nav button:focus-visible > span,
+.app-nav .app-nav-active > span {
   opacity: 1;
-  transform: scaleX(1);
+  transform: scale(1);
 }
 
 .app-shell {
@@ -2511,7 +2529,7 @@ tbody tr {
 
 @media (max-width: 860px) {
   .app-header-inner {
-    align-items: flex-start;
+    align-items: stretch;
     flex-direction: column;
   }
 
@@ -2605,13 +2623,13 @@ tbody tr {
   }
 
   .app-nav {
-    display: grid;
     width: 100%;
-    grid-template-columns: repeat(2, minmax(0, 1fr));
+    padding: 3px;
   }
 
   .app-nav button {
-    text-align: center;
+    min-height: 38px;
+    padding-inline: 11px;
   }
 
   .app-shell {

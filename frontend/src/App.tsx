@@ -949,7 +949,12 @@ function SavedAnalysesPanel() {
                 key={analysis.analysis_id}
               >
                 <div className="saved-history-item-heading">
-                  <span>Saved result</span>
+                  <div className="saved-history-title-row">
+                    <span>Saved result</span>
+                    <span className="source-type-badge">
+                      {getSavedSourceType(analysis.source_filename)}
+                    </span>
+                  </div>
                   <h3>{analysis.source_filename}</h3>
                   <p>{analysis.created_at}</p>
                   {selectedAnalysis?.analysis_id === analysis.analysis_id ? (
@@ -982,6 +987,14 @@ function SavedAnalysesPanel() {
                   >
                     Open detail
                   </button>
+                  <a
+                    className="secondary-link-button"
+                    href={getSavedAnalysisReportUrl(analysis.analysis_id)}
+                    rel="noreferrer"
+                    target="_blank"
+                  >
+                    Open report
+                  </a>
                   <button
                     className="danger-button"
                     aria-label={`Delete saved analysis ${analysis.source_filename}`}
@@ -1288,6 +1301,10 @@ function getAcademicFileType(file: File): "CSV" | "PDF" {
   return file.name.toLowerCase().endsWith(".pdf") || file.type === "application/pdf"
     ? "PDF"
     : "CSV";
+}
+
+function getSavedSourceType(fileName: string): "CSV" | "PDF" {
+  return fileName.toLowerCase().endsWith(".pdf") ? "PDF" : "CSV";
 }
 
 function formatFileSize(size: number) {

@@ -2630,6 +2630,25 @@ tbody tr {
   gap: 6px;
 }
 
+.saved-history-title-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.source-type-badge {
+  width: fit-content;
+  padding: 5px 9px;
+  border: 1px solid rgb(20 33 117 / 16%);
+  border-radius: 999px;
+  background: var(--color-primary-soft);
+  color: var(--color-primary);
+  font-size: 0.72rem;
+  font-weight: 950;
+}
+
 .selected-analysis-badge {
   width: fit-content;
   margin-top: 6px;

@@ -37,15 +37,23 @@ function AcademicTables({ analytics }: AcademicTablesProps) {
               </tr>
             </thead>
             <tbody>
-              {semester_performance.map((semester) => (
-                <tr key={`${semester.academic_year}-${semester.semester}`}>
-                  <td>{semester.semester}</td>
-                  <td>{semester.academic_year}</td>
-                  <td>{semester.weighted_gpa}</td>
-                  <td>{semester.average_score}</td>
-                  <td>{semester.credits}</td>
+              {semester_performance.length > 0 ? (
+                semester_performance.map((semester) => (
+                  <tr key={`${semester.academic_year}-${semester.semester}`}>
+                    <td>{semester.semester}</td>
+                    <td>{semester.academic_year}</td>
+                    <td>{semester.weighted_gpa}</td>
+                    <td>{semester.average_score}</td>
+                    <td>{semester.credits}</td>
+                  </tr>
+                ))
+              ) : (
+                <tr>
+                  <td className="table-empty-cell" colSpan={5}>
+                    No semester performance rows were returned for this analysis.
+                  </td>
                 </tr>
-              ))}
+              )}
             </tbody>
           </table>
         </div>
@@ -69,13 +77,21 @@ function AcademicTables({ analytics }: AcademicTablesProps) {
               </tr>
             </thead>
             <tbody>
-              {grade_distribution.map((grade) => (
-                <tr key={grade.grade_letter}>
-                  <td>{grade.grade_letter}</td>
-                  <td>{grade.count}</td>
-                  <td>{grade.percentage}%</td>
+              {grade_distribution.length > 0 ? (
+                grade_distribution.map((grade) => (
+                  <tr key={grade.grade_letter}>
+                    <td>{grade.grade_letter}</td>
+                    <td>{grade.count}</td>
+                    <td>{grade.percentage}%</td>
+                  </tr>
+                ))
+              ) : (
+                <tr>
+                  <td className="table-empty-cell" colSpan={3}>
+                    No grade distribution rows were returned for this analysis.
+                  </td>
                 </tr>
-              ))}
+              )}
             </tbody>
           </table>
         </div>
@@ -102,16 +118,24 @@ function AcademicTables({ analytics }: AcademicTablesProps) {
               </tr>
             </thead>
             <tbody>
-              {course_performance.map((course, index) => (
-                <tr key={`${course.course_code}-${index}`}>
-                  <td>{course.course_code}</td>
-                  <td>{course.course_name}</td>
-                  <td>{course.credits}</td>
-                  <td>{course.grade_letter}</td>
-                  <td>{course.grade_point}</td>
-                  <td>{course.score}</td>
+              {course_performance.length > 0 ? (
+                course_performance.map((course, index) => (
+                  <tr key={`${course.course_code}-${index}`}>
+                    <td>{course.course_code}</td>
+                    <td>{course.course_name}</td>
+                    <td>{course.credits}</td>
+                    <td>{course.grade_letter}</td>
+                    <td>{course.grade_point}</td>
+                    <td>{course.score}</td>
+                  </tr>
+                ))
+              ) : (
+                <tr>
+                  <td className="table-empty-cell" colSpan={6}>
+                    No course performance rows were returned for this analysis.
+                  </td>
                 </tr>
-              ))}
+              )}
             </tbody>
           </table>
         </div>

@@ -26,7 +26,10 @@ function CourseRiskReview({ analytics }: CourseRiskReviewProps) {
       ) : (
         <div className="risk-grid">
           {risks.map((risk, index) => (
-            <article className="risk-card" key={`${risk.course_code}-${index}`}>
+            <article
+              className={`risk-card risk-card-${risk.risk_level}`}
+              key={`${risk.course_code}-${index}`}
+            >
               <span className="risk-level">Risk level: {risk.risk_level}</span>
               <h3>{risk.course_name}</h3>
               <p className="risk-code">{risk.course_code}</p>

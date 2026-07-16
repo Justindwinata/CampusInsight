@@ -2079,7 +2079,7 @@ table {
 
 th,
 td {
-  padding: 15px 18px;
+  padding: 13px 16px;
   border-bottom: 1px solid var(--color-border);
   text-align: left;
   vertical-align: top;
@@ -2087,7 +2087,7 @@ td {
 
 th {
   color: var(--color-heading);
-  background: #f4efe7;
+  background: var(--color-surface-muted);
   font-size: 0.86rem;
   font-weight: 900;
   text-transform: uppercase;
@@ -2104,11 +2104,17 @@ tbody tr:last-child td {
 }
 
 tbody tr:hover td {
-  background: #fffaf3;
+  background: #f8fbff;
 }
 
 tbody tr {
   transition: background var(--transition-fast);
+}
+
+.table-empty-cell {
+  color: var(--color-text-muted);
+  font-weight: 800;
+  text-align: center;
 }
 
 .risk-grid {
@@ -2128,6 +2134,21 @@ tbody tr {
     box-shadow var(--transition-medium),
     transform var(--transition-medium);
   box-shadow: var(--shadow-soft);
+}
+
+.risk-card-low {
+  border-color: #a8d8d1;
+  background: linear-gradient(180deg, #f2fbf7 0%, #ffffff 100%);
+}
+
+.risk-card-medium {
+  border-color: #ead08b;
+  background: linear-gradient(180deg, #fffaf0 0%, var(--color-warning-soft) 100%);
+}
+
+.risk-card-high {
+  border-color: #ef9aa7;
+  background: linear-gradient(180deg, #fff1f3 0%, #ffffff 100%);
 }
 
 .risk-card:hover {
@@ -2158,6 +2179,26 @@ tbody tr {
   text-transform: uppercase;
 }
 
+.risk-card-low .risk-level,
+.risk-card-low strong {
+  color: var(--color-accent-strong);
+}
+
+.risk-card-low .risk-level {
+  border-color: #a8d8d1;
+  background: var(--color-accent-soft);
+}
+
+.risk-card-high .risk-level,
+.risk-card-high strong {
+  color: var(--color-danger);
+}
+
+.risk-card-high .risk-level {
+  border-color: #ef9aa7;
+  background: var(--color-danger-soft);
+}
+
 .risk-code,
 .attention-note {
   margin: 8px 0 0;
@@ -2183,8 +2224,7 @@ tbody tr {
   padding: 18px;
   border: 1px solid var(--color-border);
   border-radius: var(--radius-lg);
-  background:
-    linear-gradient(135deg, rgb(23 59 99 / 6%), rgb(13 118 107 / 7%)), var(--color-surface);
+  background: var(--color-surface);
   box-shadow: var(--shadow-soft), var(--shadow-inset);
 }
 
@@ -2339,7 +2379,7 @@ tbody tr {
   padding: 16px;
   border: 1px solid var(--color-border);
   border-radius: var(--radius-md);
-  background: #fbf8f2;
+  background: var(--color-surface-muted);
 }
 
 .metadata-preview-header {

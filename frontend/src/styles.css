@@ -1,42 +1,42 @@
 :root {
-  --color-page: #f6f1e9;
-  --color-page-accent: #e9e3d8;
+  --color-page: #f5f7fb;
+  --color-page-accent: #e8edf5;
   --color-surface: #ffffff;
-  --color-surface-raised: #fffbf5;
-  --color-surface-muted: #f7f1e8;
-  --color-glass: rgb(255 255 255 / 72%);
-  --color-border: #ded3c4;
-  --color-border-strong: #b2a28e;
-  --color-text: #253044;
-  --color-text-muted: #6b7280;
-  --color-heading: #111827;
-  --color-primary: #16233f;
-  --color-primary-strong: #0b1429;
-  --color-primary-soft: #e8edf5;
-  --color-accent: #0d766b;
-  --color-accent-strong: #075e55;
-  --color-accent-soft: #e5f4f0;
-  --color-sky: #2f6f9f;
-  --color-sky-soft: #e8f3fb;
-  --color-violet: #6656d9;
-  --color-violet-soft: #efedff;
-  --color-coral: #b8452a;
-  --color-coral-soft: #fff0e9;
-  --color-warning: #8a5a00;
-  --color-warning-soft: #fff8e8;
-  --color-danger: #9f1d2d;
+  --color-surface-raised: #fbfdff;
+  --color-surface-muted: #f8fafc;
+  --color-glass: rgb(255 255 255 / 86%);
+  --color-border: #d8e0ea;
+  --color-border-strong: #aebbd0;
+  --color-text: #263245;
+  --color-text-muted: #687385;
+  --color-heading: #101828;
+  --color-primary: #16243f;
+  --color-primary-strong: #0b162c;
+  --color-primary-soft: #e8eef7;
+  --color-accent: #0f766e;
+  --color-accent-strong: #115e59;
+  --color-accent-soft: #e8f6f3;
+  --color-sky: #2563eb;
+  --color-sky-soft: #eaf1ff;
+  --color-violet: #5b5bd6;
+  --color-violet-soft: #f0f0ff;
+  --color-coral: #b45309;
+  --color-coral-soft: #fff4e6;
+  --color-warning: #9a6700;
+  --color-warning-soft: #fff8e6;
+  --color-danger: #b4233a;
   --color-danger-soft: #fff1f3;
-  --color-focus: #0d766b;
-  --shadow-card: 0 28px 80px rgb(22 35 63 / 13%);
-  --shadow-soft: 0 16px 38px rgb(22 35 63 / 8%);
-  --shadow-float: 0 34px 96px rgb(15 23 42 / 18%);
-  --shadow-glow: 0 0 0 1px rgb(255 255 255 / 70%), 0 24px 70px rgb(13 118 107 / 13%);
-  --shadow-inset: inset 0 1px 0 rgb(255 255 255 / 74%);
-  --radius-sm: 8px;
-  --radius-md: 14px;
-  --radius-lg: 22px;
-  --radius-xl: 28px;
-  --radius-2xl: 36px;
+  --color-focus: #2563eb;
+  --shadow-card: 0 18px 44px rgb(16 24 40 / 10%);
+  --shadow-soft: 0 10px 24px rgb(16 24 40 / 7%);
+  --shadow-float: 0 22px 58px rgb(16 24 40 / 14%);
+  --shadow-glow: 0 0 0 1px rgb(37 99 235 / 9%), 0 18px 40px rgb(15 118 110 / 10%);
+  --shadow-inset: inset 0 1px 0 rgb(255 255 255 / 86%);
+  --radius-sm: 6px;
+  --radius-md: 8px;
+  --radius-lg: 8px;
+  --radius-xl: 10px;
+  --radius-2xl: 12px;
   --space-page: 32px;
   --section-gap: 64px;
   --container-width: 1180px;
@@ -47,10 +47,7 @@
     Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
 
   color: var(--color-text);
-  background:
-    radial-gradient(circle at 82% 8%, rgb(102 86 217 / 13%), transparent 26rem),
-    radial-gradient(circle at top left, rgb(15 118 110 / 10%), transparent 32rem),
-    linear-gradient(180deg, var(--color-page-accent) 0%, var(--color-page) 24rem);
+  background: linear-gradient(180deg, var(--color-page-accent) 0%, var(--color-page) 360px);
   font-family: var(--font-family);
   font-synthesis: none;
   text-rendering: optimizeLegibility;
@@ -81,9 +78,8 @@ body {
   overflow-x: clip;
   color: var(--color-text);
   background:
-    radial-gradient(circle at 80% 16rem, rgb(47 111 159 / 12%), transparent 26rem),
-    radial-gradient(circle at 4% 32rem, rgb(184 69 42 / 10%), transparent 22rem),
-    linear-gradient(180deg, rgb(246 241 233 / 82%) 0%, rgb(246 241 233) 38rem), var(--color-page);
+    linear-gradient(180deg, rgb(248 250 252 / 96%) 0%, rgb(245 247 251 / 100%) 420px),
+    var(--color-page);
 }
 
 body::before {
@@ -91,31 +87,34 @@ body::before {
   z-index: -1;
   inset: 0;
   background-image:
-    linear-gradient(rgb(22 35 63 / 4%) 1px, transparent 1px),
-    linear-gradient(90deg, rgb(22 35 63 / 4%) 1px, transparent 1px);
-  background-size: 44px 44px;
-  mask-image: linear-gradient(180deg, rgb(0 0 0 / 70%), transparent 72%);
+    linear-gradient(rgb(16 24 40 / 4%) 1px, transparent 1px),
+    linear-gradient(90deg, rgb(16 24 40 / 4%) 1px, transparent 1px);
+  background-size: 48px 48px;
+  mask-image: linear-gradient(180deg, rgb(0 0 0 / 48%), transparent 68%);
   content: "";
   pointer-events: none;
 }
 
 body::after {
-  position: fixed;
-  z-index: -1;
-  inset: 0;
-  background-image:
-    radial-gradient(circle at 20% 30%, rgb(255 255 255 / 34%) 0 1px, transparent 1.5px),
-    radial-gradient(circle at 72% 48%, rgb(22 35 63 / 10%) 0 1px, transparent 1.5px);
-  background-size:
-    120px 120px,
-    180px 180px;
-  opacity: 0.42;
-  content: "";
-  pointer-events: none;
+  content: none;
 }
 
 html {
   scroll-behavior: smooth;
+}
+
+button,
+input,
+summary {
+  font: inherit;
+}
+
+button:focus-visible,
+a:focus-visible,
+input:focus-visible,
+summary:focus-visible {
+  outline: 3px solid rgb(37 99 235 / 32%);
+  outline-offset: 3px;
 }
 
 .app-header {

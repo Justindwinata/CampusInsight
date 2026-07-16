@@ -408,8 +408,8 @@ function HomeView({ onNavigate }: { onNavigate: (view: AppView) => void }) {
           <h2 id="support-title">Built for local academic analytics demos.</h2>
           <p>
             CampusInsight supports CSV academic records and text-based PDF transcripts. It does not
-            perform OCR, model-based forecasting, cloud sync, authentication, or guaranteed
-            academic outcome scoring.
+            perform OCR, model-based forecasting, cloud sync, authentication, or guaranteed academic
+            outcome scoring.
           </p>
         </div>
         <div className="supported-input-grid" aria-label="Supported inputs and boundaries">
@@ -579,6 +579,32 @@ function AnalyzeView({
             </ul>
           </details>
         </aside>
+      </div>
+
+      <div className="analysis-readiness-panel" aria-label="Analysis workflow states">
+        <article>
+          <span>Current file</span>
+          <strong>
+            {selectedFile ? `${getAcademicFileType(selectedFile)} selected` : "No file selected"}
+          </strong>
+          <p>
+            {selectedFile
+              ? "The selected file will be validated before analytics are produced."
+              : "Select a CSV record file or text-based PDF transcript to begin."}
+          </p>
+        </article>
+        <article>
+          <span>Processing model</span>
+          <strong>Rule-based analytics</strong>
+          <p>
+            Records are parsed, validated, normalized, and analyzed through deterministic rules.
+          </p>
+        </article>
+        <article>
+          <span>PDF boundary</span>
+          <strong>No OCR</strong>
+          <p>Scanned image-only transcripts need OCR and are outside this current workflow.</p>
+        </article>
       </div>
     </section>
   );

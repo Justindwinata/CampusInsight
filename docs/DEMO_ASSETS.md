@@ -39,7 +39,7 @@ Supported PDF demo boundaries:
 
 Screenshots must be captured from the actual running CampusInsight app. Do not use mockups, edited fake dashboards, terminal screenshots, browser developer tools, or fabricated analytics values.
 
-CI-0017 refreshes the screenshot set after the CI-0016 SaaS-style UI redesign. New screenshots must show the latest neutral analytics shell, upload workflow, dashboard hierarchy, saved analyses workflow, saved detail dashboard, and report action. The redesign used modern SaaS product structure as high-level inspiration only; screenshots and documentation must not imply that CampusInsight copied third-party branding, assets, colors, or text.
+CI-0017 refreshes the screenshot set after the CI-0016 SaaS-style UI redesign. New screenshots must show the latest neutral analytics shell, upload workflow, dashboard hierarchy, saved analyses workflow, saved detail dashboard, and report action. The later Stitch UI adoption used an inspected Stitch analytics platform package as a reference for page structure, surfaces, chart cards, saved-detail panels, and report actions only; screenshots and documentation must not imply that CampusInsight copied third-party branding, assets, colors, static mock data, or text.
 
 Before capturing screenshots:
 
@@ -106,7 +106,7 @@ The README product preview uses selected files from this inventory.
 
 CI-0017 refreshed the screenshot baseline after the CI-0016 SaaS UI redesign. The current screenshot set represents CSV and text-based PDF transcript support using fictional CSV data and a privacy-safe synthetic transcript PDF. Real transcript PDFs remain excluded from Git and must not be used in public screenshots.
 
-After the latest UI polish, refresh screenshots before publishing a new public showcase. The current committed screenshots may not exactly match the refined palette, navigation, card radius, table density, and responsive mobile polish.
+After the latest Stitch-inspired UI polish, refresh screenshots before publishing a new public showcase. The current committed screenshots may not exactly match the refined palette, navigation, card radius, table density, report panels, and responsive mobile polish.
 
 ## Safety Boundaries
 

@@ -79,7 +79,7 @@ Mobile:
 ## GitHub README Checklist
 
 - Product preview images resolve.
-- Product preview images should be refreshed after the latest premium UI polish before a new public showcase post.
+- Product preview images should be refreshed after the latest Stitch-inspired UI polish before a new public showcase post.
 - Quick start commands are visible.
 - Tech stack is current.
 - API overview is current.
@@ -92,7 +92,7 @@ Mobile:
 - Present CampusInsight as a local full-stack portfolio project.
 - Mention FastAPI, React, TypeScript, Vite, custom SVG charts, SQLite, pytest, and Vitest.
 - Mention the premium interactive hero, layered product visuals, page transitions, and reduced-motion-aware microinteractions as frontend polish.
-- Mention the professional SaaS-style dashboard redesign only as frontend UI polish inspired by modern product structure, not as a copied third-party design and not as a new backend capability.
+- Mention the professional Stitch-inspired dashboard redesign only as frontend UI polish based on an inspected reference package, not as copied third-party branding and not as a new backend capability.
 - Mention deterministic analytics and saved HTML reports.
 - Mention text-based PDF transcript support as deterministic parsing, not OCR or AI.
 - Mention that screenshots use fictional sample data.

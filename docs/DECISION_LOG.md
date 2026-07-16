@@ -24,6 +24,7 @@
 - Harden chart rendering by keeping visualizations fed from processed analytics data only and adding explicit empty states for unavailable chart data.
 - Replace runtime chart rendering with custom responsive SVG chart components after PDF analysis exposed blank-chart behavior tied to chart container measurement. The SVG charts consume the same deterministic analytics payload for CSV, PDF, and saved PDF detail views.
 - Expand page-level product presentation with interaction-ready hero treatment, internal visual signals, workflow context rails, and report/saved-analysis panels without adding backend capabilities.
+- Inspect and adopt the Stitch analytics platform package as a frontend reference only. Use its page mapping, pale dashboard surfaces, chart cards, saved-detail composition, and report panels to improve CampusInsight presentation while rejecting unsupported mock actions, static chart placeholders, account/profile controls, and any copy that implies prediction, AI, cloud deployment, OCR, authentication, or PDF export.
 - Ignore local database files under `data/database/` so personal local history is not committed to Git.
 - Do not add Docker initially to keep the first bootstrap simple for local development.
 - Do not add authentication initially because the first portfolio version is focused on local academic analytics workflows.

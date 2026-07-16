@@ -6,7 +6,7 @@ The project is designed for local demos and GitHub review. It uses fictional sam
 
 The frontend now uses a professional multi-page SaaS-style app shell with distinct Home, Analyze, Dashboard, Saved Analyses, and Report views. The home page includes an interactive hero cover from `assets/thumbnail.png`, layered product visuals, premium hover and page-transition motion, clearer saved-analysis flow, hardened SVG chart rendering for CSV and PDF results, and reduced-motion-aware interactions. The UI redesign was guided by modern product structure, spacing discipline, and polished motion patterns without copying third-party branding, assets, colors, or text.
 
-The latest UI pass refines the app toward a quieter analytics workspace: neutral SaaS surfaces, tighter navigation, clearer file intake states, scroll-safe tables, stronger risk/status badges, and verified responsive behavior at 1280px, 1024px, 768px, 390px, and 320px. See [UI Redesign Plan](docs/UI_REDESIGN_PLAN.md) for the audit, references studied, and design decisions.
+The latest UI pass adopts the inspected Stitch analytics platform reference as a visual direction for the existing CampusInsight app. It refines the product into a quieter academic analytics workspace with pale dashboard surfaces, tighter navigation, clearer file intake states, scroll-safe tables, stronger risk/status badges, report panels, and verified responsive behavior at 1280px, 1024px, 768px, 390px, and 320px. See [Stitch UI Adoption Plan](docs/STITCH_UI_ADOPTION_PLAN.md) and [UI Redesign Plan](docs/UI_REDESIGN_PLAN.md) for the audits, references studied, and design decisions.
 
 ## Product Preview
 
@@ -147,12 +147,13 @@ Browser viewport checks were also run against the local Vite app for Home, Analy
 
 1. Start the backend.
 2. Start the frontend.
-3. Upload `data/sample/academic_records_sample.csv`.
-4. Upload a synthetic or privacy-safe text-based academic transcript PDF.
-5. Review validation/extraction status, summary cards, charts, tables, and course risk review.
-6. Load saved analyses.
-7. Open a saved analysis detail dashboard.
-8. Open the standalone HTML report.
+3. Open the Home view and confirm the Stitch-inspired app shell, hero, and product preview load.
+4. Open Analyze and upload `data/sample/academic_records_sample.csv`.
+5. Upload a synthetic or privacy-safe text-based academic transcript PDF if one is available locally.
+6. Review validation/extraction status, summary cards, charts, tables, and course risk review.
+7. Load saved analyses.
+8. Open a saved analysis detail dashboard.
+9. Open the standalone HTML report.
 
 ## API Overview
 
@@ -171,6 +172,7 @@ Browser viewport checks were also run against the local Vite app for Home, Analy
 - [Roadmap](docs/ROADMAP.md)
 - [System Architecture](docs/SYSTEM_ARCHITECTURE.md)
 - [Decision Log](docs/DECISION_LOG.md)
+- [Stitch UI Adoption Plan](docs/STITCH_UI_ADOPTION_PLAN.md)
 - [Demo Assets](docs/DEMO_ASSETS.md)
 - [Showcase Checklist](docs/SHOWCASE_CHECKLIST.md)
 

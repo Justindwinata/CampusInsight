@@ -774,6 +774,24 @@ function ReportView({ onNavigate }: { onNavigate: (view: AppView) => void }) {
           Analyze a new file
         </button>
       </div>
+
+      <div className="report-scope-grid" aria-label="Report scope and limitations">
+        <article>
+          <span>Report format</span>
+          <strong>Standalone HTML</strong>
+          <p>Reports open in the browser from saved canonical analysis data.</p>
+        </article>
+        <article>
+          <span>Source</span>
+          <strong>Saved analysis JSON</strong>
+          <p>No re-upload is required after a successful analysis has been saved locally.</p>
+        </article>
+        <article>
+          <span>Boundary</span>
+          <strong>No OCR or PDF file output</strong>
+          <p>Text-based PDF intake is supported, but report output remains HTML.</p>
+        </article>
+      </div>
     </section>
   );
 }

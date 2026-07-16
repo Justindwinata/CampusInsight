@@ -1201,6 +1201,42 @@ h1 {
   margin-top: 24px;
 }
 
+.report-scope-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 14px;
+  margin-top: 20px;
+}
+
+.report-scope-grid article {
+  min-width: 0;
+  padding: 18px;
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-xl);
+  background: var(--color-surface);
+  box-shadow: var(--shadow-soft), var(--shadow-inset);
+}
+
+.report-scope-grid span {
+  display: block;
+  color: var(--color-primary);
+  font-size: 0.72rem;
+  font-weight: 950;
+  text-transform: uppercase;
+}
+
+.report-scope-grid strong {
+  display: block;
+  margin-top: 8px;
+  color: var(--color-heading);
+}
+
+.report-scope-grid p {
+  margin: 10px 0 0;
+  color: var(--color-text-muted);
+  line-height: 1.55;
+}
+
 .upload-section,
 .analytics-section,
 .saved-analyses-section,
@@ -2854,6 +2890,7 @@ tbody tr {
   .home-support-section,
   .page-insight-row,
   .analysis-readiness-panel,
+  .report-scope-grid,
   .upload-layout,
   .result-summary,
   .metric-grid,

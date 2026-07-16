@@ -26,6 +26,9 @@ data/database/*.sqlite3
 # Local transcript PDFs may contain private student data.
 data/sample/*.pdf
 
+# Local design reference packages should be inspected, not committed.
+stitch_*.zip
+
 # Environment
 .env
 .env.*

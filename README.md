@@ -6,6 +6,8 @@ The project is designed for local demos and GitHub review. It uses fictional sam
 
 The frontend now uses a professional multi-page SaaS-style app shell with distinct Home, Analyze, Dashboard, Saved Analyses, and Report views. The home page includes an interactive hero cover from `assets/thumbnail.png`, layered product visuals, premium hover and page-transition motion, clearer saved-analysis flow, hardened SVG chart rendering for CSV and PDF results, and reduced-motion-aware interactions. The UI redesign was guided by modern product structure, spacing discipline, and polished motion patterns without copying third-party branding, assets, colors, or text.
 
+The latest UI pass refines the app toward a quieter analytics workspace: neutral SaaS surfaces, tighter navigation, clearer file intake states, scroll-safe tables, stronger risk/status badges, and verified responsive behavior at 1280px, 1024px, 768px, 390px, and 320px. See [UI Redesign Plan](docs/UI_REDESIGN_PLAN.md) for the audit, references studied, and design decisions.
+
 ## Product Preview
 
 The screenshots below show the local demo flow from the portfolio documentation set. They use fictional CSV records and a privacy-safe synthetic text-based transcript PDF to demonstrate CSV/PDF analysis, deterministic dashboards, saved history, and standalone HTML reports. Refresh these screenshots after the latest premium UI polish before publishing a new public showcase post.
@@ -126,6 +128,20 @@ make check
 `make check` runs backend tests, frontend tests, linting, formatting checks, and the production frontend build.
 
 The current Vite production build may print a chunk-size warning because charting dependencies are bundled into the demo app. The warning is non-blocking; the build still succeeds.
+
+## UI Polish Validation
+
+The current redesign was validated locally with:
+
+```bash
+git diff --check
+cd frontend && npm run test
+cd frontend && npm run lint
+cd frontend && npm run build
+cd backend && python3 -m pytest
+```
+
+Browser viewport checks were also run against the local Vite app for Home, Analyze, Dashboard, Saved Analyses, and Report views at 1280px, 1024px, 768px, 390px, and 320px. The checks confirmed no page-level horizontal overflow and no undersized visible interactive targets in those views.
 
 ## Local Demo Flow
 
